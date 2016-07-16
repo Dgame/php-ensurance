@@ -140,6 +140,16 @@ final class Ensurance
     }
 
     /**
+     * @param string $pattern
+     *
+     * @return StringEnsurance
+     */
+    public function matches(string $pattern) : StringEnsurance
+    {
+        return $this->isString()->matches($pattern);
+    }
+
+    /**
      * @return Ensurance
      * @throws EnsuranceException
      */

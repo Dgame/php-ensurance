@@ -42,10 +42,15 @@ final class Enforcement
 
 /**
  * @param string $message
+ * @param array  ...$args
  *
  * @return Enforcement
  */
-function enforce(string $message) : Enforcement
+function enforce(string $message, ...$args) : Enforcement
 {
+    if (!empty($args)) {
+        $message = sprintf($message, ...$args);
+    }
+
     return new Enforcement($message);
 }

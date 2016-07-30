@@ -4,6 +4,7 @@ namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\ResourceException;
 use Dgame\Ensurance\Traits\EnsuranceTrait;
+use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
 
 /**
  * Class ResourceEnsurance
@@ -11,7 +12,7 @@ use Dgame\Ensurance\Traits\EnsuranceTrait;
  */
 final class ResourceEnsurance
 {
-    use EnsuranceTrait;
+    use EnsuranceTrait, ExceptionCascadeTrait;
 
     /**
      * ResourceEnsurance constructor.
@@ -23,7 +24,7 @@ final class ResourceEnsurance
         $this->value = $ensurance->getValue();
 
         if (!is_resource($this->value)) {
-            throw new ResourceException($this);
+            $this->triggerCascade(new ResourceException($this));
         }
     }
 }

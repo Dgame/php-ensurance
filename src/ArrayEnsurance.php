@@ -8,6 +8,7 @@ use Dgame\Ensurance\Exception\ArrayValueException;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use Dgame\Ensurance\Exception\InvalidLengthException;
 use Dgame\Ensurance\Traits\EnsuranceTrait;
+use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
 
 /**
  * Class ArrayEnsurance
@@ -15,7 +16,7 @@ use Dgame\Ensurance\Traits\EnsuranceTrait;
  */
 final class ArrayEnsurance
 {
-    use EnsuranceTrait;
+    use EnsuranceTrait, ExceptionCascadeTrait;
 
     /**
      * ArrayEnsurance constructor.
@@ -27,7 +28,7 @@ final class ArrayEnsurance
         $this->value = $ensurance->getValue();
 
         if (!is_array($this->value)) {
-            throw new ArrayException($this);
+            $this->triggerCascade(new ArrayException($this));
         }
     }
 
@@ -48,12 +49,11 @@ final class ArrayEnsurance
      * @param $key
      *
      * @return ArrayEnsurance
-     * @throws ArrayKeyException
      */
     public function hasKey($key) : ArrayEnsurance
     {
         if (!array_key_exists($key, $this->value)) {
-            throw new ArrayKeyException('%s is not a key', $key);
+            $this->triggerCascade(new ArrayKeyException('%s is not a key', $key));
         }
 
         return $this;
@@ -63,12 +63,11 @@ final class ArrayEnsurance
      * @param $value
      *
      * @return ArrayEnsurance
-     * @throws ArrayValueException
      */
     public function hasValue($value) : ArrayEnsurance
     {
         if (!in_array($value, $this->value)) {
-            throw new ArrayValueException('%s is not a value', $value);
+            $this->triggerCascade(new ArrayValueException('%s is not a value', $value));
         }
 
         return $this;
@@ -78,18 +77,16 @@ final class ArrayEnsurance
      * @param array $data
      *
      * @return ArrayEnsurance
-     * @throws ArrayKeyException
-     * @throws ArrayValueException
      */
     public function contains(array $data) : ArrayEnsurance
     {
         foreach ($data as $key => $value) {
             if (!array_key_exists($key, $this->value)) {
-                throw new ArrayKeyException('%s is not a key', $key);
+                $this->triggerCascade(new ArrayKeyException('%s is not a key', $key));
             }
 
             if ($this->value[$key] !== $value) {
-                throw new ArrayValueException('%s is not the value of key %s', $value, $key);
+                $this->triggerCascade(new ArrayValueException('%s is not the value of key %s', $value, $key));
             }
         }
 
@@ -100,12 +97,11 @@ final class ArrayEnsurance
      * @param int $length
      *
      * @return ArrayEnsurance
-     * @throws InvalidLengthException
      */
     public function haslengthOf(int $length) : ArrayEnsurance
     {
         if ($this->count() !== $length) {
-            throw new InvalidLengthException('array has not the length %d (%d)', $length, $this->count());
+            $this->triggerCascade(new InvalidLengthException('array has not the length %d (%d)', $length, $this->count()));
         }
 
         return $this;
@@ -115,12 +111,11 @@ final class ArrayEnsurance
      * @param int $length
      *
      * @return ArrayEnsurance
-     * @throws InvalidLengthException
      */
     public function isShorterThan(int $length) : ArrayEnsurance
     {
         if ($this->count() >= $length) {
-            throw new InvalidLengthException('array is not shorter than %d (%d)', $length, $this->count());
+            $this->triggerCascade(new InvalidLengthException('array is not shorter than %d (%d)', $length, $this->count()));
         }
 
         return $this;
@@ -130,12 +125,11 @@ final class ArrayEnsurance
      * @param int $length
      *
      * @return ArrayEnsurance
-     * @throws InvalidLengthException
      */
     public function isShortOrEqualsTo(int $length) : ArrayEnsurance
     {
         if ($this->count() > $length) {
-            throw new InvalidLengthException('array is not shorter or equal to %d (%d)', $length, $this->count());
+            $this->triggerCascade(new InvalidLengthException('array is not shorter or equal to %d (%d)', $length, $this->count()));
         }
 
         return $this;
@@ -145,12 +139,11 @@ final class ArrayEnsurance
      * @param int $length
      *
      * @return ArrayEnsurance
-     * @throws InvalidLengthException
      */
     public function isLongerThan(int $length) : ArrayEnsurance
     {
         if ($this->count() <= $length) {
-            throw new InvalidLengthException('array is longer than %d (%d)', $length, $this->count());
+            $this->triggerCascade(new InvalidLengthException('array is longer than %d (%d)', $length, $this->count()));
         }
 
         return $this;
@@ -160,12 +153,11 @@ final class ArrayEnsurance
      * @param int $length
      *
      * @return ArrayEnsurance
-     * @throws InvalidLengthException
      */
     public function isLongerOrEqualTo(int $length) : ArrayEnsurance
     {
         if ($this->count() < $length) {
-            throw new InvalidLengthException('array is not longer or equal to %d (%d)', $length, $this->count());
+            $this->triggerCascade(new InvalidLengthException('array is not longer or equal to %d (%d)', $length, $this->count()));
         }
 
         return $this;
@@ -173,12 +165,11 @@ final class ArrayEnsurance
 
     /**
      * @return ArrayEnsurance
-     * @throws EnsuranceException
      */
     public function isAssociative() : ArrayEnsurance
     {
         if (array_keys($this->value) === range(0, $this->count() - 1)) {
-            throw new EnsuranceException('array is not associative');
+            $this->triggerCascade(new EnsuranceException('array is not associative'));
         }
 
         return $this;
@@ -186,12 +177,11 @@ final class ArrayEnsurance
 
     /**
      * @return ArrayEnsurance
-     * @throws EnsuranceException
      */
     public function isNotAssociative() : ArrayEnsurance
     {
         if (array_keys($this->value) !== range(0, $this->count() - 1)) {
-            throw new EnsuranceException('array is associative');
+            $this->triggerCascade(new EnsuranceException('array is associative'));
         }
 
         return $this;

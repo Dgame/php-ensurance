@@ -8,7 +8,7 @@ use Dgame\Ensurance\NumericEnsurance;
  * Class NumericException
  * @package Dgame\Ensurance\Exception
  */
-final class NumericException extends EnsuranceException
+final class NumericException extends FormatException
 {
     const MESSAGE = '"%s" is not a numeric value';
 

@@ -8,7 +8,7 @@ use Dgame\Ensurance\CallableEnsurance;
  * Class CallableException
  * @package Dgame\Ensurance\Exception
  */
-final class CallableException extends EnsuranceException
+final class CallableException extends FormatException
 {
     const MESSAGE = '"%s" is not a callable';
 

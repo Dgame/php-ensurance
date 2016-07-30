@@ -23,7 +23,7 @@ final class ScalarEnsurance
         $this->value = $ensurance->getValue();
 
         if (!is_scalar($this->value)) {
-            throw new ScalarException($this);
+            $this->triggerCascade(new ScalarException($this));
         }
     }
 

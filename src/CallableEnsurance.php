@@ -4,6 +4,7 @@ namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\CallableException;
 use Dgame\Ensurance\Traits\EnsuranceTrait;
+use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
 
 /**
  * Class CallableEnsurance
@@ -11,7 +12,7 @@ use Dgame\Ensurance\Traits\EnsuranceTrait;
  */
 final class CallableEnsurance
 {
-    use EnsuranceTrait;
+    use EnsuranceTrait, ExceptionCascadeTrait;
 
     /**
      * CallableEnsurance constructor.
@@ -23,7 +24,7 @@ final class CallableEnsurance
         $this->value = $ensurance->getValue();
 
         if (!is_callable($this->value)) {
-            throw new CallableException($this);
+            $this->triggerCascade(new CallableException($this));
         }
     }
 }

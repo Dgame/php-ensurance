@@ -13,11 +13,11 @@ class EnsuranceException extends Exception
     /**
      * EnsuranceException constructor.
      *
-     * @param string $message
-     * @param array  ...$args
+     * @param string         $message
+     * @param Exception|null $previous
      */
-    public function __construct(string $message, ...$args)
+    public function __construct(string $message, Exception $previous = null)
     {
-        parent::__construct(vsprintf($message, $args));
+        parent::__construct($message, 0, $previous);
     }
 }

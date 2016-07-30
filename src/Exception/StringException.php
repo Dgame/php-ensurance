@@ -8,7 +8,7 @@ use Dgame\Ensurance\StringEnsurance;
  * Class StringException
  * @package Dgame\Ensurance\Exception
  */
-final class StringException extends EnsuranceException
+final class StringException extends FormatException
 {
     const MESSAGE = '"%s" is not a string';
 

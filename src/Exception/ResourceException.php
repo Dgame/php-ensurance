@@ -8,7 +8,7 @@ use Dgame\Ensurance\ResourceEnsurance;
  * Class ResourceException
  * @package Dgame\Ensurance\Exception
  */
-final class ResourceException extends EnsuranceException
+final class ResourceException extends FormatException
 {
     const MESSAGE = '"%s" is not a resource';
 

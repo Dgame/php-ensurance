@@ -8,7 +8,7 @@ use Dgame\Ensurance\ObjectEnsurance;
  * Class ObjectException
  * @package Dgame\Ensurance\Exception
  */
-final class ObjectException extends EnsuranceException
+final class ObjectException extends FormatException
 {
     const MESSAGE = '"%s" is not an object';
 

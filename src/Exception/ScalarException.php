@@ -8,7 +8,7 @@ use Dgame\Ensurance\ScalarEnsurance;
  * Class ScalarException
  * @package Dgame\Ensurance\Exception
  */
-final class ScalarException extends EnsuranceException
+final class ScalarException extends FormatException
 {
     const MESSAGE = '"%s" is not a scalar value';
 

@@ -164,12 +164,11 @@ final class Ensurance
 
     /**
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isNotNull() : Ensurance
     {
         if ($this->value === null) {
-            throw new EnsuranceException('The given value is null');
+            $this->triggerCascade(new EnsuranceException('The given value is null'));
         }
 
         return $this;
@@ -177,12 +176,11 @@ final class Ensurance
 
     /**
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isEmpty() : Ensurance
     {
         if (!empty($this->value)) {
-            throw new EnsuranceException('"%s" is not empty', $this->value);
+            $this->triggerCascade(new EnsuranceException('"%s" is not empty', $this->value));
         }
 
         return $this;
@@ -190,12 +188,11 @@ final class Ensurance
 
     /**
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isNotEmpty() : Ensurance
     {
         if (empty($this->value)) {
-            throw new EnsuranceException('The given value is empty');
+            $this->triggerCascade(new EnsuranceException('The given value is empty'));
         }
 
         return $this;
@@ -205,12 +202,11 @@ final class Ensurance
      * @param $value
      *
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isEqualTo($value) : Ensurance
     {
         if ($this->value != $value) {
-            throw new EnsuranceException('"%s" is not equal to "%s"', $this->value, $value);
+            $this->triggerCascade(new EnsuranceException('"%s" is not equal to "%s"', $this->value, $value));
         }
 
         return $this;
@@ -220,12 +216,11 @@ final class Ensurance
      * @param $value
      *
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isNotEqualTo($value) : Ensurance
     {
         if ($this->value == $value) {
-            throw new EnsuranceException('"%s" is equal to "%s"', $this->value, $value);
+            $this->triggerCascade(new EnsuranceException('"%s" is equal to "%s"', $this->value, $value));
         }
 
         return $this;
@@ -235,12 +230,11 @@ final class Ensurance
      * @param $value
      *
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isIdenticalTo($value) : Ensurance
     {
         if ($this->value !== $value) {
-            throw new EnsuranceException('"%s" is not identical to "%s"', $this->value, $value);
+            $this->triggerCascade(new EnsuranceException('"%s" is not identical to "%s"', $this->value, $value));
         }
 
         return $this;
@@ -250,12 +244,11 @@ final class Ensurance
      * @param $value
      *
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isNotIdenticalTo($value) : Ensurance
     {
         if ($this->value === $value) {
-            throw new EnsuranceException('"%s" is identical to "%s"', $this->value, $value);
+            $this->triggerCascade(new EnsuranceException('"%s" is identical to "%s"', $this->value, $value));
         }
 
         return $this;

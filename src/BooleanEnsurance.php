@@ -24,18 +24,17 @@ final class BooleanEnsurance
         $this->value = $ensurance->getValue();
 
         if (!is_bool($this->value)) {
-            throw new BooleanException($this);
+            $this->triggerCascade(new BooleanException($this));
         }
     }
 
     /**
      * @return BooleanEnsurance
-     * @throws EnsuranceException
      */
     public function isTrue() : BooleanEnsurance
     {
         if (!$this->value) {
-            throw new EnsuranceException('The value is not true');
+            $this->triggerCascade(new EnsuranceException('The value is not true'));
         }
 
         return $this;
@@ -43,12 +42,11 @@ final class BooleanEnsurance
 
     /**
      * @return BooleanEnsurance
-     * @throws EnsuranceException
      */
     public function isFalse() : BooleanEnsurance
     {
         if ($this->value) {
-            throw new EnsuranceException('The value is true');
+            $this->triggerCascade(new EnsuranceException('The value is true'));
         }
 
         return $this;

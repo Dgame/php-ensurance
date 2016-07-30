@@ -8,7 +8,7 @@ use Dgame\Ensurance\BooleanEnsurance;
  * Class BooleanException
  * @package Dgame\Ensurance\Exception
  */
-final class BooleanException extends EnsuranceException
+final class BooleanException extends FormatException
 {
     const MESSAGE = '"%s" is not a boolean value';
 

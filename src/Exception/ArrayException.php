@@ -8,7 +8,7 @@ use Dgame\Ensurance\ArrayEnsurance;
  * Class ArrayException
  * @package Dgame\Ensurance\Exception
  */
-final class ArrayException extends EnsuranceException
+final class ArrayException extends FormatException
 {
     const MESSAGE = '"%s" is not an array';
 

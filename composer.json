@@ -20,8 +20,7 @@
             "src/"
         ],
         "files": [
-            "src/Ensurance.php",
-            "src/Enforcement.php"
+            "src/Ensurance.php"
         ],
         "psr-4": {
             "Dgame\\Ensurance\\": "src/"

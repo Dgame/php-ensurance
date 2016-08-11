@@ -4,6 +4,12 @@
     "license": "MIT",
     "type": "library",
     "homepage": "https://github.com/php-ensurance",
+    "keywords": [
+        "Ensurance",
+        "Enforcement",
+        "Assertion",
+        "Design by contract"
+    ],
     "authors": [
         {
             "name": "Randy Schuett ",
@@ -12,8 +18,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
-        "dgame/php-conditional": "*"
+        "php": ">=7.0"
     },
     "autoload": {
         "classmap": [

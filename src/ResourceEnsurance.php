@@ -2,9 +2,8 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\ResourceException;
-use Dgame\Ensurance\Traits\EnsuranceTrait;
-use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
+use Dgame\Ensurance\Exception\EnsuranceException;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class ResourceEnsurance
@@ -12,19 +11,26 @@ use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
  */
 final class ResourceEnsurance
 {
-    use EnsuranceTrait, ExceptionCascadeTrait;
+    /**
+     * @var null|resource
+     */
+    private $resource = null;
+
+    use EnforcementTrait;
 
     /**
      * ResourceEnsurance constructor.
      *
-     * @param Ensurance $ensurance
+     * @param $resource
+     *
+     * @throws EnsuranceException
      */
-    public function __construct(Ensurance $ensurance)
+    public function __construct($resource)
     {
-        $this->value = $ensurance->getValue();
-
-        if (!is_resource($this->value)) {
-            $this->triggerCascade(new ResourceException($this));
+        if (!is_resource($resource)) {
+            throw new EnsuranceException('That is not a resource');
         }
+
+        $this->resource = $resource;
     }
 }

@@ -2,9 +2,7 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\BooleanException;
-use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class BooleanEnsurance
@@ -12,20 +10,21 @@ use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
  */
 final class BooleanEnsurance
 {
-    use ArrayEnsuranceTrait;
+    /**
+     * @var null|bool
+     */
+    private $condition = null;
+
+    use EnforcementTrait;
 
     /**
      * BooleanEnsurance constructor.
      *
-     * @param ScalarEnsurance $ensurance
+     * @param bool $condition
      */
-    public function __construct(ScalarEnsurance $ensurance)
+    public function __construct(bool $condition)
     {
-        $this->value = $ensurance->getValue();
-
-        if (!is_bool($this->value)) {
-            $this->triggerCascade(new BooleanException($this));
-        }
+        $this->condition = $condition;
     }
 
     /**
@@ -33,9 +32,7 @@ final class BooleanEnsurance
      */
     public function isTrue() : BooleanEnsurance
     {
-        if (!$this->value) {
-            $this->triggerCascade(new EnsuranceException('The value is not true'));
-        }
+        $this->enforce($this->condition === true)->orThrow('The value is not true');
 
         return $this;
     }
@@ -45,9 +42,7 @@ final class BooleanEnsurance
      */
     public function isFalse() : BooleanEnsurance
     {
-        if ($this->value) {
-            $this->triggerCascade(new EnsuranceException('The value is true'));
-        }
+        $this->enforce($this->condition === false)->orThrow('The value is true');
 
         return $this;
     }

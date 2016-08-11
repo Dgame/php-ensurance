@@ -2,13 +2,7 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\ArrayException;
-use Dgame\Ensurance\Exception\ArrayKeyException;
-use Dgame\Ensurance\Exception\ArrayValueException;
-use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Ensurance\Exception\InvalidLengthException;
-use Dgame\Ensurance\Traits\EnsuranceTrait;
-use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class ArrayEnsurance
@@ -16,33 +10,21 @@ use Dgame\Ensurance\Traits\ExceptionCascadeTrait;
  */
 final class ArrayEnsurance
 {
-    use EnsuranceTrait, ExceptionCascadeTrait;
+    /**
+     * @var array
+     */
+    private $values = [];
+    
+    use EnforcementTrait;
 
     /**
      * ArrayEnsurance constructor.
      *
-     * @param Ensurance $ensurance
+     * @param array $values
      */
-    public function __construct(Ensurance $ensurance)
+    public function __construct(array $values)
     {
-        $this->value = $ensurance->getValue();
-
-        if (!is_array($this->value)) {
-            $this->triggerCascade(new ArrayException($this));
-        }
-    }
-
-    /**
-     * @return int
-     */
-    private function count() : int
-    {
-        static $count = null;
-        if ($count === null) {
-            $count = count($this->value);
-        }
-
-        return $count;
+        $this->values = $values;
     }
 
     /**
@@ -52,9 +34,7 @@ final class ArrayEnsurance
      */
     public function hasKey($key) : ArrayEnsurance
     {
-        if (!array_key_exists($key, $this->value)) {
-            $this->triggerCascade(new ArrayKeyException('%s is not a key', $key));
-        }
+        $this->enforce(array_key_exists($key, $this->values))->orThrow('Key "%s" is not contained', $key);
 
         return $this;
     }
@@ -66,29 +46,7 @@ final class ArrayEnsurance
      */
     public function hasValue($value) : ArrayEnsurance
     {
-        if (!in_array($value, $this->value)) {
-            $this->triggerCascade(new ArrayValueException('%s is not a value', $value));
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param array $data
-     *
-     * @return ArrayEnsurance
-     */
-    public function contains(array $data) : ArrayEnsurance
-    {
-        foreach ($data as $key => $value) {
-            if (!array_key_exists($key, $this->value)) {
-                $this->triggerCascade(new ArrayKeyException('%s is not a key', $key));
-            }
-
-            if ($this->value[$key] !== $value) {
-                $this->triggerCascade(new ArrayValueException('%s is not the value of key %s', $value, $key));
-            }
-        }
+        $this->enforce(in_array($value, $this->values))->orThrow('Value "%s" is not contained', $value);
 
         return $this;
     }
@@ -100,9 +58,8 @@ final class ArrayEnsurance
      */
     public function haslengthOf(int $length) : ArrayEnsurance
     {
-        if ($this->count() !== $length) {
-            $this->triggerCascade(new InvalidLengthException('array has not the length %d (%d)', $length, $this->count()));
-        }
+        $c = count($this->values);
+        $this->enforce($c === $length)->orThrow('array has not the length %d (%d)', $length, $c);
 
         return $this;
     }
@@ -114,9 +71,8 @@ final class ArrayEnsurance
      */
     public function isShorterThan(int $length) : ArrayEnsurance
     {
-        if ($this->count() >= $length) {
-            $this->triggerCascade(new InvalidLengthException('array is not shorter than %d (%d)', $length, $this->count()));
-        }
+        $c = count($this->values);
+        $this->enforce($c < $length)->orThrow('array is not shorter than %d (%d)', $length, $c);
 
         return $this;
     }
@@ -128,9 +84,8 @@ final class ArrayEnsurance
      */
     public function isShortOrEqualsTo(int $length) : ArrayEnsurance
     {
-        if ($this->count() > $length) {
-            $this->triggerCascade(new InvalidLengthException('array is not shorter or equal to %d (%d)', $length, $this->count()));
-        }
+        $c = count($this->values);
+        $this->enforce($c <= $length)->orThrow('array is not shorter or equal to %d (%d)', $length, $c);
 
         return $this;
     }
@@ -142,9 +97,8 @@ final class ArrayEnsurance
      */
     public function isLongerThan(int $length) : ArrayEnsurance
     {
-        if ($this->count() <= $length) {
-            $this->triggerCascade(new InvalidLengthException('array is longer than %d (%d)', $length, $this->count()));
-        }
+        $c = count($this->values);
+        $this->enforce($c > $length)->orThrow('array is longer than %d (%d)', $length, $c);
 
         return $this;
     }
@@ -156,9 +110,8 @@ final class ArrayEnsurance
      */
     public function isLongerOrEqualTo(int $length) : ArrayEnsurance
     {
-        if ($this->count() < $length) {
-            $this->triggerCascade(new InvalidLengthException('array is not longer or equal to %d (%d)', $length, $this->count()));
-        }
+        $c = count($this->values);
+        $this->enforce($c >= $length)->orThrow('array is not longer or equal to %d (%d)', $length, $c);
 
         return $this;
     }
@@ -168,9 +121,8 @@ final class ArrayEnsurance
      */
     public function isAssociative() : ArrayEnsurance
     {
-        if (array_keys($this->value) === range(0, $this->count() - 1)) {
-            $this->triggerCascade(new EnsuranceException('array is not associative'));
-        }
+        $c = count($this->values);
+        $this->enforce(array_keys($this->values) === range(0, $c - 1))->orThrow('array is not associative');
 
         return $this;
     }
@@ -180,9 +132,8 @@ final class ArrayEnsurance
      */
     public function isNotAssociative() : ArrayEnsurance
     {
-        if (array_keys($this->value) !== range(0, $this->count() - 1)) {
-            $this->triggerCascade(new EnsuranceException('array is associative'));
-        }
+        $c = count($this->values);
+        $this->enforce(array_keys($this->values) !== range(0, $c - 1))->orThrow('array is associative');
 
         return $this;
     }

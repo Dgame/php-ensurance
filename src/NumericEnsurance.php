@@ -2,11 +2,8 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\ArrayValueException;
 use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Ensurance\Exception\NumericalException;
-use Dgame\Ensurance\Exception\NumericException;
-use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class NumericEnsurance
@@ -16,20 +13,27 @@ final class NumericEnsurance
 {
     const EPSILON = 0.00001;
 
-    use ArrayEnsuranceTrait;
+    /**
+     * @var int|null|float
+     */
+    private $number = null;
+
+    use EnforcementTrait;
 
     /**
      * NumericEnsurance constructor.
      *
-     * @param ScalarEnsurance $ensurance
+     * @param $number
+     *
+     * @throws EnsuranceException
      */
-    public function __construct(ScalarEnsurance $ensurance)
+    public function __construct($number)
     {
-        $this->value = $ensurance->getValue();
-
-        if (!is_numeric($this->value)) {
-            $this->triggerCascade(new NumericException($this));
+        if (!is_numeric($number)) {
+            throw new EnsuranceException('That is not a numerical value');
         }
+
+        $this->number = $number + 0; // PHP converts a numerical string to a float/int by adding another numerical value
     }
 
     /**
@@ -37,9 +41,7 @@ final class NumericEnsurance
      */
     public function isInt() : NumericEnsurance
     {
-        if (!is_int($this->value)) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not an int', $this->value));
-        }
+        $this->enforce(is_int($this->number))->orThrow('"%s" is not an int', $this->number);
 
         return $this;
     }
@@ -49,9 +51,7 @@ final class NumericEnsurance
      */
     public function isFloat() : NumericEnsurance
     {
-        if (!is_float($this->value)) {
-            $this->triggerCascade(new NumericalException('"%s" is not a float', $this->value));
-        }
+        $this->enforce(is_float($this->number))->orThrow('"%s" is not a float', $this->number);
 
         return $this;
     }
@@ -63,9 +63,7 @@ final class NumericEnsurance
      */
     public function isGreaterThan(float $value) : NumericEnsurance
     {
-        if ($this->value <= $value) {
-            $this->triggerCascade(new NumericalException('"%s" is not greater than "%s"', $this->value, $value));
-        }
+        $this->enforce($this->number > $value)->orThrow('"%s" is not greater than "%s"', $this->number, $value);
 
         return $this;
     }
@@ -77,9 +75,7 @@ final class NumericEnsurance
      */
     public function isGreaterOrEqualTo(float $value) : NumericEnsurance
     {
-        if ($this->value < $value) {
-            $this->triggerCascade(new NumericalException('"%s" is not greater or equal than "%s"', $this->value, $value));
-        }
+        $this->enforce($this->number >= $value)->orThrow('"%s" is not greater or equal than "%s"', $this->number, $value);
 
         return $this;
     }
@@ -91,9 +87,7 @@ final class NumericEnsurance
      */
     public function isLessThan(float $value) : NumericEnsurance
     {
-        if ($this->value >= $value) {
-            $this->triggerCascade(new NumericalException('"%s" is greater or equal to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->number < $value)->orThrow('"%s" is greater or equal to "%s"', $this->number, $value);
 
         return $this;
     }
@@ -105,9 +99,7 @@ final class NumericEnsurance
      */
     public function isLessOrEqualTo(float $value) : NumericEnsurance
     {
-        if ($this->value > $value) {
-            $this->triggerCascade(new NumericalException('"%s" is greater than "%s"', $this->value, $value));
-        }
+        $this->enforce($this->number <= $value)->orThrow('"%s" is greater than "%s"', $this->number, $value);
 
         return $this;
     }
@@ -129,15 +121,33 @@ final class NumericEnsurance
     }
 
     /**
+     * @return NumericEnsurance+
+     */
+    public function isEven() : NumericEnsurance
+    {
+        $this->enforce($this->number & 1 === 0)->orThrow('"%s is not even"', $this->number);
+
+        return $this;
+    }
+
+    /**
+     * @return NumericEnsurance
+     */
+    public function isOdd() : NumericEnsurance
+    {
+        $this->enforce($this->number & 1 !== 0)->orThrow('"%s is even"', $this->number);
+
+        return $this;
+    }
+
+    /**
      * @param float $value
      *
      * @return NumericEnsurance
      */
     public function isEqualTo(float $value) : NumericEnsurance
     {
-        if (abs($this->value - $value) < self::EPSILON) {
-            $this->triggerCascade(new NumericalException('"%s" is not equal to "%s"', $this->value, $value));
-        }
+        $this->enforce(abs($this->number - $value) < self::EPSILON)->orThrow('"%s" is not equal to "%s"', $this->number, $value);
 
         return $this;
     }
@@ -149,9 +159,7 @@ final class NumericEnsurance
      */
     public function isNotEqualTo(float $value) : NumericEnsurance
     {
-        if (abs($this->value - $value) >= self::EPSILON) {
-            $this->triggerCascade(new NumericalException('"%s" is equal to "%s"', $this->value, $value));
-        }
+        $this->enforce(abs($this->number - $value) > self::EPSILON)->orThrow('"%s" is equal to "%s"', $this->number, $value);
 
         return $this;
     }
@@ -164,9 +172,8 @@ final class NumericEnsurance
      */
     public function isBetween(float $lhs, float $rhs) : NumericEnsurance
     {
-        if ($lhs > $this->value || $rhs < $this->value) {
-            $this->triggerCascade(new NumericalException('"%s" is not between "%s" and "%s"', $this->value, $lhs, $rhs));
-        }
+        $this->enforce($lhs <= $this->number && $rhs >= $this->number)
+             ->orThrow('"%s" is not between "%s" and "%s"', $this->number, $lhs, $rhs);
 
         return $this;
     }
@@ -179,43 +186,8 @@ final class NumericEnsurance
      */
     public function isNotBetween(float $lhs, float $rhs) : NumericEnsurance
     {
-        if ($lhs <= $this->value || $rhs >= $this->value) {
-            $this->triggerCascade(new NumericalException('"%s" is between "%s" and "%s"', $this->value, $lhs, $rhs));
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param float $lhs
-     * @param float $rhs
-     *
-     * @return NumericEnsurance
-     */
-    public function isInRange(float $lhs, float $rhs) : NumericEnsurance
-    {
-        try {
-            $this->isValueOf(range($lhs, $rhs));
-        } catch (ArrayValueException $e) {
-            $this->triggerCascade(new NumericalException('"%s" is not in range of "%s" and "%s"', $this->value, $lhs, $rhs));
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param float $lhs
-     * @param float $rhs
-     *
-     * @return NumericEnsurance
-     */
-    public function isNotInRange(float $lhs, float $rhs) : NumericEnsurance
-    {
-        try {
-            $this->isNotValueOf(range($lhs, $rhs));
-        } catch (ArrayValueException $e) {
-            $this->triggerCascade(new NumericalException('"%s" is in range of "%s" and "%s"', $this->value, $lhs, $rhs));
-        }
+        $this->enforce($lhs > $this->number || $rhs < $this->number)
+             ->orThrow('"%s" is between "%s" and "%s"', $this->number, $lhs, $rhs);
 
         return $this;
     }

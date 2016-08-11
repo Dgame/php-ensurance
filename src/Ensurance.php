@@ -3,7 +3,7 @@
 namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class Ensurance
@@ -11,7 +11,12 @@ use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
  */
 final class Ensurance
 {
-    use ArrayEnsuranceTrait;
+    /**
+     * @var null|mixed
+     */
+    private $value = null;
+
+    use EnforcementTrait;
 
     /**
      * Ensurance constructor.
@@ -28,7 +33,9 @@ final class Ensurance
      */
     public function isArray() : ArrayEnsurance
     {
-        return new ArrayEnsurance($this);
+        $this->enforce(is_array($this->value))->orThrow('Value is not an array');
+
+        return new ArrayEnsurance($this->value);
     }
 
     /**
@@ -36,7 +43,9 @@ final class Ensurance
      */
     public function isCallable() : CallableEnsurance
     {
-        return new CallableEnsurance($this);
+        $this->enforce(is_callable($this->value))->orThrow('Value is not a callable');
+
+        return new CallableEnsurance($this->value);
     }
 
     /**
@@ -44,7 +53,9 @@ final class Ensurance
      */
     public function isObject() : ObjectEnsurance
     {
-        return new ObjectEnsurance($this);
+        $this->enforce(is_object($this->value))->orThrow('Value is not an object');
+
+        return new ObjectEnsurance($this->value);
     }
 
     /**
@@ -52,7 +63,9 @@ final class Ensurance
      */
     public function isResource() : ResourceEnsurance
     {
-        return new ResourceEnsurance($this);
+        $this->enforce(is_resource($this->value))->orThrow('Value is not a resource');
+
+        return new ResourceEnsurance($this->value);
     }
 
     /**
@@ -60,7 +73,9 @@ final class Ensurance
      */
     public function isScalar() : ScalarEnsurance
     {
-        return new ScalarEnsurance($this);
+        $this->enforce(is_scalar($this->value))->orThrow('Value is not a scalar');
+
+        return new ScalarEnsurance($this->value);
     }
 
     /**
@@ -89,7 +104,6 @@ final class Ensurance
 
     /**
      * @return NumericEnsurance
-     * @throws EnsuranceException
      */
     public function isInt() : NumericEnsurance
     {
@@ -98,7 +112,6 @@ final class Ensurance
 
     /**
      * @return NumericEnsurance
-     * @throws Exception\NumericalException
      */
     public function isFloat() : NumericEnsurance
     {
@@ -107,7 +120,6 @@ final class Ensurance
 
     /**
      * @return BooleanEnsurance
-     * @throws EnsuranceException
      */
     public function isTrue() : BooleanEnsurance
     {
@@ -116,7 +128,6 @@ final class Ensurance
 
     /**
      * @return BooleanEnsurance
-     * @throws EnsuranceException
      */
     public function isFalse() : BooleanEnsurance
     {
@@ -146,18 +157,15 @@ final class Ensurance
      */
     public function matches(string $pattern) : StringEnsurance
     {
-        return $this->isString()->matches($pattern);
+        return $this->isString()->match($pattern);
     }
 
     /**
      * @return Ensurance
-     * @throws EnsuranceException
      */
     public function isNull() : Ensurance
     {
-        if ($this->value !== null) {
-            throw new EnsuranceException('"%s" is not null', $this->value);
-        }
+        $this->enforce($this->value === null)->orThrow('Value is not null');
 
         return $this;
     }
@@ -167,9 +175,7 @@ final class Ensurance
      */
     public function isNotNull() : Ensurance
     {
-        if ($this->value === null) {
-            $this->triggerCascade(new EnsuranceException('The given value is null'));
-        }
+        $this->enforce($this->value !== null)->orThrow('Value is null');
 
         return $this;
     }
@@ -179,9 +185,7 @@ final class Ensurance
      */
     public function isEmpty() : Ensurance
     {
-        if (!empty($this->value)) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not empty', $this->value));
-        }
+        $this->enforce(empty($this->value))->orThrow('Value is not empty');
 
         return $this;
     }
@@ -191,9 +195,7 @@ final class Ensurance
      */
     public function isNotEmpty() : Ensurance
     {
-        if (empty($this->value)) {
-            $this->triggerCascade(new EnsuranceException('The given value is empty'));
-        }
+        $this->enforce(!empty($this->value))->orThrow('Value is empty');
 
         return $this;
     }
@@ -205,9 +207,7 @@ final class Ensurance
      */
     public function isEqualTo($value) : Ensurance
     {
-        if ($this->value != $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not equal to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->value == $value)->orThrow('"%s" is not equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -219,9 +219,7 @@ final class Ensurance
      */
     public function isNotEqualTo($value) : Ensurance
     {
-        if ($this->value == $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" is equal to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->value != $value)->orThrow('"%s" is equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -233,9 +231,7 @@ final class Ensurance
      */
     public function isIdenticalTo($value) : Ensurance
     {
-        if ($this->value !== $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not identical to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->value === $value)->orThrow('"%s" is not identical to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -247,9 +243,7 @@ final class Ensurance
      */
     public function isNotIdenticalTo($value) : Ensurance
     {
-        if ($this->value === $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" is identical to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->value !== $value)->orThrow('"%s" is identical to "%s"', $this->value, $value);
 
         return $this;
     }

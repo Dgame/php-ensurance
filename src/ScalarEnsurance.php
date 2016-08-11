@@ -2,8 +2,8 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\ScalarException;
-use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
+use Dgame\Ensurance\Exception\EnsuranceException;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class ScalarEnsurance
@@ -11,20 +11,27 @@ use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
  */
 final class ScalarEnsurance
 {
-    use ArrayEnsuranceTrait;
+    /**
+     * @var bool|float|int|null|string
+     */
+    private $scalar = null;
+
+    use EnforcementTrait;
 
     /**
      * ScalarEnsurance constructor.
      *
-     * @param Ensurance $ensurance
+     * @param $scalar
+     *
+     * @throws EnsuranceException
      */
-    public function __construct(Ensurance $ensurance)
+    public function __construct($scalar)
     {
-        $this->value = $ensurance->getValue();
-
-        if (!is_scalar($this->value)) {
-            $this->triggerCascade(new ScalarException($this));
+        if (!is_scalar($scalar)) {
+            throw new EnsuranceException('That is not a scalar value');
         }
+
+        $this->scalar = $scalar;
     }
 
     /**
@@ -32,7 +39,9 @@ final class ScalarEnsurance
      */
     public function isString() : StringEnsurance
     {
-        return new StringEnsurance($this);
+        $this->enforce(is_string($this->scalar))->orThrow('That is not a string');
+
+        return new StringEnsurance($this->scalar);
     }
 
     /**
@@ -40,7 +49,9 @@ final class ScalarEnsurance
      */
     public function isNumeric() : NumericEnsurance
     {
-        return new NumericEnsurance($this);
+        $this->enforce(is_numeric($this->scalar))->orThrow('That is not numeric');
+
+        return new NumericEnsurance($this->scalar);
     }
 
     /**
@@ -48,6 +59,8 @@ final class ScalarEnsurance
      */
     public function isBool() : BooleanEnsurance
     {
-        return new BooleanEnsurance($this);
+        $this->enforce(is_bool($this->scalar))->orThrow('That is not a bool');
+
+        return new BooleanEnsurance($this->scalar);
     }
 }

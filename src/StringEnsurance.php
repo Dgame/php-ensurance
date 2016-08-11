@@ -2,10 +2,7 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Ensurance\Exception\InvalidLengthException;
-use Dgame\Ensurance\Exception\StringException;
-use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
+use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class StringEnsurance
@@ -13,59 +10,43 @@ use Dgame\Ensurance\Traits\ArrayEnsuranceTrait;
  */
 final class StringEnsurance
 {
-    use ArrayEnsuranceTrait;
+    /**
+     * @var null|string
+     */
+    private $str = null;
+
+    use EnforcementTrait;
 
     /**
      * StringEnsurance constructor.
      *
-     * @param ScalarEnsurance $ensurance
+     * @param string $str
      */
-    public function __construct(ScalarEnsurance $ensurance)
+    public function __construct(string $str)
     {
-        $this->value = $ensurance->getValue();
-
-        if (!is_string($this->value)) {
-            $this->triggerCascade(new StringException($this));
-        }
+        $this->str = $str;
     }
 
     /**
-     * @return int
-     */
-    private function length() : int
-    {
-        static $length = null;
-        if ($length === null) {
-            $length = strlen($this->value);
-        }
-
-        return $length;
-    }
-
-    /**
-     * @param string $value
+     * @param string $str
      *
      * @return StringEnsurance
      */
-    public function isEqualTo(string $value) : StringEnsurance
+    public function isEqualTo(string $str) : StringEnsurance
     {
-        if ($this->value !== $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not equal to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->str === $str)->orThrow('"%s" is not equal to "%s"', $this->str, $str);
 
         return $this;
     }
 
     /**
-     * @param string $value
+     * @param string $str
      *
      * @return StringEnsurance
      */
-    public function isNotEqualTo(string $value) : StringEnsurance
+    public function isNotEqualTo(string $str) : StringEnsurance
     {
-        if ($this->value === $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" is equal to "%s"', $this->value, $value));
-        }
+        $this->enforce($this->str !== $str)->orThrow('"%s" is equal to "%s"', $this->str, $str);
 
         return $this;
     }
@@ -77,9 +58,7 @@ final class StringEnsurance
      */
     public function match(string $pattern) : StringEnsurance
     {
-        if (!preg_match($pattern, $this->value)) {
-            $this->triggerCascade(new EnsuranceException('"%s" does not match "%s"', $this->value, $pattern));
-        }
+        $this->enforce((bool) preg_match($pattern, $this->str))->orThrow('"%s" does not match pattern "%s"', $this->str, $pattern);
 
         return $this;
     }
@@ -91,9 +70,8 @@ final class StringEnsurance
      */
     public function haslengthOf(int $length) : StringEnsurance
     {
-        if ($this->length() !== $length) {
-            $this->triggerCascade(new InvalidLengthException('"%s" (%d) has not the length of %d', $this->value, $this->length(), $length));
-        }
+        $len = strlen($this->str);
+        $this->enforce($len === $length)->orThrow('"%s" (%d) has not the length of %d', $this->str, $len, $length);
 
         return $this;
     }
@@ -105,9 +83,8 @@ final class StringEnsurance
      */
     public function isShorterThan(int $length) : StringEnsurance
     {
-        if ($this->length() >= $length) {
-            $this->triggerCascade(new InvalidLengthException('"%s" (%d) is not shorter than %d', $this->value, $this->length(), $length));
-        }
+        $len = strlen($this->str);
+        $this->enforce($len < $length)->orThrow('"%s" (%d) is not shorter than %d', $this->str, $len, $length);
 
         return $this;
     }
@@ -119,10 +96,8 @@ final class StringEnsurance
      */
     public function isShortOrEqualsTo(int $length) : StringEnsurance
     {
-        if ($this->length() > $length) {
-            $this->triggerCascade(new InvalidLengthException('"%s" (%d) is not shorter or equal to %d', $this->value, $this->length(),
-                                                             $length));
-        }
+        $len = strlen($this->str);
+        $this->enforce($len <= $length)->orThrow('"%s" (%d) is not shorter or equal to %d', $this->str, $len, $length);
 
         return $this;
     }
@@ -134,9 +109,8 @@ final class StringEnsurance
      */
     public function isLongerThan(int $length) : StringEnsurance
     {
-        if ($this->length() <= $length) {
-            $this->triggerCascade(new InvalidLengthException('"%s" (%d) is longer than %d', $this->value, $this->length(), $length));
-        }
+        $len = strlen($this->str);
+        $this->enforce($len > $length)->orThrow('"%s" (%d) is longer than %d', $this->str, $len, $length);
 
         return $this;
     }
@@ -148,38 +122,32 @@ final class StringEnsurance
      */
     public function isLongerOrEqualTo(int $length) : StringEnsurance
     {
-        if ($this->length() < $length) {
-            $this->triggerCascade(new InvalidLengthException('"%s" (%d) is not longer or equal to %d', $this->value, $this->length(),
-                                                             $length));
-        }
+        $len = strlen($this->str);
+        $this->enforce($len >= $length)->orThrow('"%s" (%d) is not longer or equal to %d', $this->str, $len, $length);
 
         return $this;
     }
 
     /**
-     * @param string $value
+     * @param string $str
      *
      * @return StringEnsurance
      */
-    public function beginsWith(string $value) : StringEnsurance
+    public function beginsWith(string $str) : StringEnsurance
     {
-        if (substr($this->value, 0, strlen($value)) !== $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" did not begin with "%s"', $this->value, $value));
-        }
+        $this->enforce(substr($this->str, 0, strlen($str)) === $str)->orThrow('"%s" did not begin with "%s"', $this->str, $str);
 
         return $this;
     }
 
     /**
-     * @param string $value
+     * @param string $str
      *
      * @return StringEnsurance
      */
-    public function endsWith(string $value) : StringEnsurance
+    public function endsWith(string $str) : StringEnsurance
     {
-        if (substr($this->value, strlen($value) * -1) !== $value) {
-            $this->triggerCascade(new EnsuranceException('"%s" did not end with "%s"', $this->value, $value));
-        }
+        $this->enforce(substr($this->str, strlen($str) * -1) === $str)->orThrow('"%s" did not end with "%s"', $this->str, $str);
 
         return $this;
     }
@@ -189,9 +157,7 @@ final class StringEnsurance
      */
     public function isCallable() : StringEnsurance
     {
-        if (!is_callable($this->value, true)) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not a callable', $this->value));
-        }
+        $this->enforce(is_callable($this->str, true))->orThrow('"%s" is not a callable', $this->str);
 
         return $this;
     }
@@ -201,9 +167,7 @@ final class StringEnsurance
      */
     public function isClassName() : StringEnsurance
     {
-        if (!class_exists($this->value, true)) {
-            $this->triggerCascade(new EnsuranceException('"%s" is not an existing class', $this->value));
-        }
+        $this->enforce(class_exists($this->str, true))->orThrow('"%s" is not an existing class', $this->str);
 
         return $this;
     }

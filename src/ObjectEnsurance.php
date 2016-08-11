@@ -90,7 +90,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function useTrait(string $trait) : ObjectEnsurance
+    public function uses(string $trait) : ObjectEnsurance
     {
         $this->enforce(array_key_exists($trait, class_uses($this->object)))
              ->orThrow('"%s" does not use trait "%s"', get_class($this->object), $trait);

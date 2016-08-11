@@ -82,7 +82,7 @@ final class ArrayEnsurance
      *
      * @return ArrayEnsurance
      */
-    public function isShortOrEqualsTo(int $length) : ArrayEnsurance
+    public function isShorterOrEqualsTo(int $length) : ArrayEnsurance
     {
         $c = count($this->values);
         $this->enforce($c <= $length)->orThrow('array is not shorter or equal to %d (%d)', $length, $c);
@@ -122,7 +122,7 @@ final class ArrayEnsurance
     public function isAssociative() : ArrayEnsurance
     {
         $c = count($this->values);
-        $this->enforce(array_keys($this->values) === range(0, $c - 1))->orThrow('array is not associative');
+        $this->enforce(array_keys($this->values) !== range(0, $c - 1))->orThrow('array is not associative');
 
         return $this;
     }
@@ -133,7 +133,7 @@ final class ArrayEnsurance
     public function isNotAssociative() : ArrayEnsurance
     {
         $c = count($this->values);
-        $this->enforce(array_keys($this->values) !== range(0, $c - 1))->orThrow('array is associative');
+        $this->enforce(array_keys($this->values) === range(0, $c - 1))->orThrow('array is associative');
 
         return $this;
     }

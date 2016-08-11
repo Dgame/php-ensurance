@@ -2,7 +2,6 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\EnsuranceException;
 use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
@@ -36,16 +35,6 @@ final class Ensurance
         $this->enforce(is_array($this->value))->orThrow('Value is not an array');
 
         return new ArrayEnsurance($this->value);
-    }
-
-    /**
-     * @return CallableEnsurance
-     */
-    public function isCallable() : CallableEnsurance
-    {
-        $this->enforce(is_callable($this->value))->orThrow('Value is not a callable');
-
-        return new CallableEnsurance($this->value);
     }
 
     /**
@@ -148,6 +137,22 @@ final class Ensurance
     public function isNegative() : NumericEnsurance
     {
         return $this->isNumeric()->isNegative();
+    }
+
+    /**
+     * @return NumericEnsurance
+     */
+    public function isEven() : NumericEnsurance
+    {
+        return $this->isNumeric()->isEven();
+    }
+
+    /**
+     * @return NumericEnsurance
+     */
+    public function isOdd() : NumericEnsurance
+    {
+        return $this->isNumeric()->isOdd();
     }
 
     /**

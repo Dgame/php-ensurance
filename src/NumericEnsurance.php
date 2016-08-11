@@ -125,7 +125,7 @@ final class NumericEnsurance
      */
     public function isEven() : NumericEnsurance
     {
-        $this->enforce($this->number & 1 === 0)->orThrow('"%s is not even"', $this->number);
+        $this->enforce(($this->number & 1) === 0)->orThrow('"%s is not even"', $this->number);
 
         return $this;
     }
@@ -135,7 +135,7 @@ final class NumericEnsurance
      */
     public function isOdd() : NumericEnsurance
     {
-        $this->enforce($this->number & 1 !== 0)->orThrow('"%s is even"', $this->number);
+        $this->enforce(($this->number & 1) === 1)->orThrow('"%s is not odd"', $this->number);
 
         return $this;
     }

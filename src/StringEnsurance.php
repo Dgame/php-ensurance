@@ -94,7 +94,7 @@ final class StringEnsurance
      *
      * @return StringEnsurance
      */
-    public function isShortOrEqualsTo(int $length) : StringEnsurance
+    public function isShorterOrEqualTo(int $length) : StringEnsurance
     {
         $len = strlen($this->str);
         $this->enforce($len <= $length)->orThrow('"%s" (%d) is not shorter or equal to %d', $this->str, $len, $length);
@@ -153,13 +153,13 @@ final class StringEnsurance
     }
 
     /**
-     * @return StringEnsurance
+     * @return CallableEnsurance
      */
-    public function isCallable() : StringEnsurance
+    public function isCallable() : CallableEnsurance
     {
-        $this->enforce(is_callable($this->str, true))->orThrow('"%s" is not a callable', $this->str);
+        $this->enforce(is_callable($this->str))->orThrow('Value is not a callable');
 
-        return $this;
+        return new CallableEnsurance($this->str);
     }
 
     /**

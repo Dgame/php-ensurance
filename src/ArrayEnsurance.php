@@ -14,7 +14,7 @@ final class ArrayEnsurance
      * @var array
      */
     private $values = [];
-    
+
     use EnforcementTrait;
 
     /**
@@ -136,5 +136,15 @@ final class ArrayEnsurance
         $this->enforce(array_keys($this->values) === range(0, $c - 1))->orThrow('array is associative');
 
         return $this;
+    }
+
+    /**
+     * @return CallableEnsurance
+     */
+    public function isCallable() : CallableEnsurance
+    {
+        $this->enforce(is_callable($this->values))->orThrow('Value is not a callable');
+
+        return new CallableEnsurance($this->values);
     }
 }

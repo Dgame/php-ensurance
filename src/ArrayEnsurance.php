@@ -56,7 +56,7 @@ final class ArrayEnsurance
      *
      * @return ArrayEnsurance
      */
-    public function haslengthOf(int $length) : ArrayEnsurance
+    public function hasLengthOf(int $length) : ArrayEnsurance
     {
         $c = count($this->values);
         $this->enforce($c === $length)->orThrow('array has not the length %d (%d)', $length, $c);

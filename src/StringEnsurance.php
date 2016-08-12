@@ -68,7 +68,7 @@ final class StringEnsurance
      *
      * @return StringEnsurance
      */
-    public function haslengthOf(int $length) : StringEnsurance
+    public function hasLengthOf(int $length) : StringEnsurance
     {
         $len = strlen($this->str);
         $this->enforce($len === $length)->orThrow('"%s" (%d) has not the length of %d', $this->str, $len, $length);

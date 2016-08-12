@@ -27,8 +27,8 @@ class ArrayEnsuranceTest extends TestCase
 
     public function testHasLengthOf()
     {
-        ensure([])->isArray()->haslengthOf(0);
-        ensure(range(0, 99))->isArray()->haslengthOf(100);
+        ensure([])->isArray()->hasLengthOf(0);
+        ensure(range(0, 99))->isArray()->hasLengthOf(100);
     }
 
     public function testIsShorterThan()

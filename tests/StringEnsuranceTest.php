@@ -23,7 +23,7 @@ class StringEnsuranceTest extends TestCase
 
     public function testHasLengthOf()
     {
-        ensure('foo')->isString()->haslengthOf(3);
+        ensure('foo')->isString()->hasLengthOf(3);
     }
 
     public function testIsShorterThan()

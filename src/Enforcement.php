@@ -3,6 +3,7 @@
 namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\EnsuranceException;
+use Exception;
 
 /**
  * Class Enforcement
@@ -15,9 +16,9 @@ final class Enforcement
      */
     private $condition = true;
     /**
-     * @var string
+     * @var null|Exception
      */
-    private $message = 'Assertion failed';
+    private $exception = null;
 
     /**
      * Enforcement constructor.
@@ -35,22 +36,47 @@ final class Enforcement
     public function __destruct()
     {
         if ($this->condition === false) {
-            throw new EnsuranceException($this->message);
+            if ($this->exception === null) {
+                throw new EnsuranceException('Assertion failed');
+            }
+
+            throw $this->exception;
         }
+    }
+
+    /**
+     * @param Exception $exception
+     */
+    private function setException(Exception $exception)
+    {
+        $this->exception = $exception;
     }
 
     /**
      * @param string $message
      * @param array  ...$args
      */
-    public function orThrow(string $message, ...$args)
+    private function setExceptionMessage(string $message, ...$args)
+    {
+        if (!empty($args)) {
+            $message = sprintf($message, ...$args);
+        }
+
+        $this->setException(new EnsuranceException($message));
+    }
+
+    /**
+     * @param Exception|string $exception
+     * @param array            ...$args
+     */
+    public function orThrow($exception, ...$args)
     {
         if ($this->condition === false) {
-            if (!empty($args)) {
-                $message = sprintf($message, ...$args);
+            if ($exception instanceof Exception) {
+                $this->setException($exception);
+            } else {
+                $this->setExceptionMessage($exception, ...$args);
             }
-
-            $this->message = $message;
         }
     }
 }

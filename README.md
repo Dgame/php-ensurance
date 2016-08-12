@@ -34,6 +34,7 @@ and more
 ```php
 ensure(42)->isInt();
 ensure('42')->isInt();
+
 ensure(4.2)->isFloat();
 ensure('4.2')->isFloat();
 ```

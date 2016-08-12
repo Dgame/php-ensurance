@@ -21,7 +21,7 @@ ensure('FooBar')->isString()->endsWith('ar');
 
 ### size
 ```php
-ensure('foo')->isString()->haslengthOf(3);
+ensure('foo')->isString()->hasLengthOf(3);
 ensure('foo')->isString()->isShorterThan(4);
 ensure('foo')->isString()->isLongerThan(2);
 ```
@@ -91,8 +91,8 @@ ensure(['a', 'b'])->isArray()->hasValue('a');
 
 ### check length
 ```php
-ensure([])->isArray()->haslengthOf(0);
-ensure(range(0, 99))->isArray()->haslengthOf(100);
+ensure([])->isArray()->hasLengthOf(0);
+ensure(range(0, 99))->isArray()->hasLengthOf(100);
 ```
 
 ```php
@@ -128,6 +128,8 @@ ensure(42)->isIdenticalTo(42);
 ensure((2 * 3) === (3 * 2))->isTrue();
 ensure((2 * 3) === (3 * 3))->isFalse();
 ```
+
+----
 
 You can also specify your own Exception messages:
 

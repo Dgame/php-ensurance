@@ -1,23 +1,131 @@
 # php-ensurance
 
-## design by contract for PHP 7
+## design by contract for PHP
 
+If your check fails, an Exception is thrown
+
+## Strings
+
+### equality
 ```php
-ensure('Hallo')->isNotEmpty()->isString()->isEqualTo('Hallo');
+ensure('foo')->isString()->isEqualTo('foo');
+ensure('foo')->isString()->isNotEqualTo('bar');
+```
 
+### pattern
+```php
+ensure('test@foo')->isString()->match('#^[a-z]+@\w{3}$#i');
+ensure('FooBar')->isString()->beginsWith('Fo');
+ensure('FooBar')->isString()->endsWith('ar');
+```
+
+### size
+```php
+ensure('foo')->isString()->haslengthOf(3);
+ensure('foo')->isString()->isShorterThan(4);
+ensure('foo')->isString()->isLongerThan(2);
+```
+
+and more
+
+## Numerics
+
+### type check
+```php
 ensure(42)->isInt();
-ensure(3.14)->isFloat();
-ensure(true)->isTrue();
-ensure(false)->isFalse();
-ensure(1)->isNotNull();
-ensure(null)->isNull();
-ensure(0)->isPositive();
-ensure(-1)->isNegative();
+ensure('42')->isInt();
+ensure(4.2)->isFloat();
+ensure('4.2')->isFloat();
+```
+
+### value check
+```php
 ensure(42)->isNumeric()->isGreaterThan(23);
 ensure(23)->isNumeric()->isLessThan(42);
-ensure('4')->isNumeric();
+ensure(42)->isEqualTo(42);
+```
 
-ensure(['a' => 'b'])->isArray()->hasKey('a')->haslengthOf(1)->hasValue('b')->isAssociative();
+### positive / negative
+```php
+foreach (range(0, 100) as $n) {
+    ensure($n)->isPositive();
+}
+````
+
+```php
+foreach (range(-1, -100) as $n) {
+    ensure($n)->isNegative();
+}
+```
+
+### even / odd
+```php
+for ($i = 0; $i < 42; $i += 2) {
+    ensure($i)->isEven();
+}
+```
+
+```php
+for ($i = 1; $i < 42; $i += 2) {
+    ensure($i)->isOdd();
+}
+```
+
+### between range
+```php
+ensure(2)->isNumeric()->isBetween(1, 3);
+```
+
+## array
+
+### check for a key
+```php
+ensure(['a' => 'b'])->isArray()->hasKey('a');
+```
+
+### check for a value
+```php
+ensure(['a', 'b'])->isArray()->hasValue('a');
+```
+
+### check length
+```php
+ensure([])->isArray()->haslengthOf(0);
+ensure(range(0, 99))->isArray()->haslengthOf(100);
+```
+
+```php
+ensure([1, 2, 3])->isArray()->isShorterThan(4);
+ensure([1, 2, 3])->isArray()->isLongerThan(2);
+```
+
+### check if associativ or not
+```php
+ensure(['a' => 'b'])->isArray()->isAssociative();
+```
+
+## ensure not empty / not null
+
+```php
+ensure('')->isNotNull()->isNotEmpty();
+```
+
+## ensure identity (`===`) / equality (`==`)
+```php
+ensure(42)->isEqualTo('42');
+```
+
+```php
+ensure(42)->isIdenticalTo(42);
+```
+
+## bool
+
+### is true / false
+
+```php
+ensure((2 * 3) === (3 * 2))->isTrue();
+ensure((2 * 3) === (3 * 3))->isFalse();
 ```
 
 You can also specify your own Exception messages:

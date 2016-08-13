@@ -160,7 +160,7 @@ final class Ensurance
      *
      * @return StringEnsurance
      */
-    public function matches(string $pattern) : StringEnsurance
+    public function match(string $pattern) : StringEnsurance
     {
         return $this->isString()->match($pattern);
     }

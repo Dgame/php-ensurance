@@ -35,13 +35,13 @@ final class ObjectEnsurance
     }
 
     /**
-     * @param string $class
+     * @param object $object
      *
      * @return ObjectEnsurance
      */
-    public function isInstanceOf(string $class) : ObjectEnsurance
+    public function isInstanceOf($object) : ObjectEnsurance
     {
-        $this->enforce($this->object instanceof $class)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), $class);
+        $this->enforce($this->object instanceof $object)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), get_class($object));
 
         return $this;
     }

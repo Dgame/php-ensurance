@@ -37,6 +37,13 @@ class ED
 
 class ObjectEnsuranceTest extends TestCase
 {
+    public function testIsInstanceOf()
+    {
+        $ea = new EA();
+
+        ensure($ea)->isObject()->isInstanceOf(EA::class);
+    }
+
     public function testIs()
     {
         $ea = new EA();

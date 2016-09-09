@@ -41,7 +41,8 @@ final class ObjectEnsurance
      */
     public function isInstanceOf($object) : ObjectEnsurance
     {
-        $this->enforce($this->object instanceof $object)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), get_class($object));
+        $class = is_object($object) ? get_class($object) : $object;
+        $this->enforce($this->object instanceof $object)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), $class);
 
         return $this;
     }

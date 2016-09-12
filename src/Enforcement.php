@@ -35,13 +35,37 @@ final class Enforcement
      */
     public function __destruct()
     {
-        if ($this->condition === false) {
+        if (!$this->isValid()) {
             if ($this->exception === null) {
                 throw new EnsuranceException('Assertion failed');
             }
 
             throw $this->exception;
         }
+    }
+
+    /**
+     *
+     */
+    public function deny()
+    {
+        $this->condition = true;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isValid(): bool
+    {
+        return $this->condition;
+    }
+
+    /**
+     * @return Exception|null
+     */
+    public function getException()
+    {
+        return $this->exception;
     }
 
     /**
@@ -71,7 +95,7 @@ final class Enforcement
      */
     public function orThrow($exception, ...$args)
     {
-        if ($this->condition === false) {
+        if (!$this->isValid()) {
             if ($exception instanceof Exception) {
                 $this->setException($exception);
             } else {

@@ -252,6 +252,30 @@ final class Ensurance
 
         return $this;
     }
+
+    /**
+     * @param array $data
+     *
+     * @return Ensurance
+     */
+    public function isValueOf(array $data) : Ensurance
+    {
+        $this->enforce(in_array($this->value, $data))->orThrow('"%s" is not a value of the given array', $this->value);
+
+        return $this;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Ensurance
+     */
+    public function isKeyOf(array $data) : Ensurance
+    {
+        $this->enforce(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of the given array', $this->value);
+
+        return $this;
+    }
 }
 
 /**

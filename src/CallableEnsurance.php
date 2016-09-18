@@ -10,7 +10,10 @@ use Dgame\Ensurance\Traits\EnforcementTrait;
  */
 final class CallableEnsurance
 {
-    private $callback = null;
+    /**
+     * @var callable
+     */
+    private $callback;
 
     use EnforcementTrait;
 

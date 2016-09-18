@@ -11,9 +11,9 @@ use Dgame\Ensurance\Traits\EnforcementTrait;
 final class Ensurance
 {
     /**
-     * @var null|mixed
+     * @var mixed
      */
-    private $value = null;
+    private $value;
 
     use EnforcementTrait;
 
@@ -30,7 +30,7 @@ final class Ensurance
     /**
      * @return ArrayEnsurance
      */
-    public function isArray() : ArrayEnsurance
+    public function isArray(): ArrayEnsurance
     {
         $this->enforce(is_array($this->value))->orThrow('Value is not an array');
 
@@ -40,7 +40,7 @@ final class Ensurance
     /**
      * @return ObjectEnsurance
      */
-    public function isObject() : ObjectEnsurance
+    public function isObject(): ObjectEnsurance
     {
         $this->enforce(is_object($this->value))->orThrow('Value is not an object');
 
@@ -50,7 +50,7 @@ final class Ensurance
     /**
      * @return ResourceEnsurance
      */
-    public function isResource() : ResourceEnsurance
+    public function isResource(): ResourceEnsurance
     {
         $this->enforce(is_resource($this->value))->orThrow('Value is not a resource');
 
@@ -60,7 +60,7 @@ final class Ensurance
     /**
      * @return ScalarEnsurance
      */
-    public function isScalar() : ScalarEnsurance
+    public function isScalar(): ScalarEnsurance
     {
         $this->enforce(is_scalar($this->value))->orThrow('Value is not a scalar');
 
@@ -70,7 +70,7 @@ final class Ensurance
     /**
      * @return StringEnsurance
      */
-    public function isString() : StringEnsurance
+    public function isString(): StringEnsurance
     {
         return $this->isScalar()->isString();
     }
@@ -78,7 +78,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isNumeric() : NumericEnsurance
+    public function isNumeric(): NumericEnsurance
     {
         return $this->isScalar()->isNumeric();
     }
@@ -86,7 +86,7 @@ final class Ensurance
     /**
      * @return BooleanEnsurance
      */
-    public function isBool() : BooleanEnsurance
+    public function isBool(): BooleanEnsurance
     {
         return $this->isScalar()->isBool();
     }
@@ -94,7 +94,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isInt() : NumericEnsurance
+    public function isInt(): NumericEnsurance
     {
         return $this->isNumeric()->isInt();
     }
@@ -102,7 +102,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isFloat() : NumericEnsurance
+    public function isFloat(): NumericEnsurance
     {
         return $this->isNumeric()->isFloat();
     }
@@ -110,7 +110,7 @@ final class Ensurance
     /**
      * @return BooleanEnsurance
      */
-    public function isTrue() : BooleanEnsurance
+    public function isTrue(): BooleanEnsurance
     {
         return $this->isBool()->isTrue();
     }
@@ -118,7 +118,7 @@ final class Ensurance
     /**
      * @return BooleanEnsurance
      */
-    public function isFalse() : BooleanEnsurance
+    public function isFalse(): BooleanEnsurance
     {
         return $this->isBool()->isFalse();
     }
@@ -126,7 +126,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isPositive() : NumericEnsurance
+    public function isPositive(): NumericEnsurance
     {
         return $this->isNumeric()->isPositive();
     }
@@ -134,7 +134,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isNegative() : NumericEnsurance
+    public function isNegative(): NumericEnsurance
     {
         return $this->isNumeric()->isNegative();
     }
@@ -142,7 +142,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isEven() : NumericEnsurance
+    public function isEven(): NumericEnsurance
     {
         return $this->isNumeric()->isEven();
     }
@@ -150,7 +150,7 @@ final class Ensurance
     /**
      * @return NumericEnsurance
      */
-    public function isOdd() : NumericEnsurance
+    public function isOdd(): NumericEnsurance
     {
         return $this->isNumeric()->isOdd();
     }
@@ -160,7 +160,7 @@ final class Ensurance
      *
      * @return StringEnsurance
      */
-    public function match(string $pattern) : StringEnsurance
+    public function match(string $pattern): StringEnsurance
     {
         return $this->isString()->match($pattern);
     }
@@ -168,7 +168,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isNull() : Ensurance
+    public function isNull(): Ensurance
     {
         $this->enforce($this->value === null)->orThrow('Value is not null');
 
@@ -178,7 +178,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isNotNull() : Ensurance
+    public function isNotNull(): Ensurance
     {
         $this->enforce($this->value !== null)->orThrow('Value is null');
 
@@ -188,7 +188,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isEmpty() : Ensurance
+    public function isEmpty(): Ensurance
     {
         $this->enforce(empty($this->value))->orThrow('Value is not empty');
 
@@ -198,7 +198,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isNotEmpty() : Ensurance
+    public function isNotEmpty(): Ensurance
     {
         $this->enforce(!empty($this->value))->orThrow('Value is empty');
 
@@ -210,7 +210,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isEqualTo($value) : Ensurance
+    public function isEqualTo($value): Ensurance
     {
         $this->enforce($this->value == $value)->orThrow('"%s" is not equal to "%s"', $this->value, $value);
 
@@ -222,7 +222,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isNotEqualTo($value) : Ensurance
+    public function isNotEqualTo($value): Ensurance
     {
         $this->enforce($this->value != $value)->orThrow('"%s" is equal to "%s"', $this->value, $value);
 
@@ -234,7 +234,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isIdenticalTo($value) : Ensurance
+    public function isIdenticalTo($value): Ensurance
     {
         $this->enforce($this->value === $value)->orThrow('"%s" is not identical to "%s"', $this->value, $value);
 
@@ -246,7 +246,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isNotIdenticalTo($value) : Ensurance
+    public function isNotIdenticalTo($value): Ensurance
     {
         $this->enforce($this->value !== $value)->orThrow('"%s" is identical to "%s"', $this->value, $value);
 
@@ -258,7 +258,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isValueOf(array $data) : Ensurance
+    public function isValueOf(array $data): Ensurance
     {
         $this->enforce(in_array($this->value, $data))->orThrow('"%s" is not a value of the given array', $this->value);
 
@@ -270,20 +270,10 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isKeyOf(array $data) : Ensurance
+    public function isKeyOf(array $data): Ensurance
     {
         $this->enforce(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of the given array', $this->value);
 
         return $this;
     }
-}
-
-/**
- * @param $value
- *
- * @return Ensurance
- */
-function ensure($value) : Ensurance
-{
-    return new Ensurance($value);
 }

@@ -25,8 +25,7 @@
             "src/"
         ],
         "files": [
-            "src/Ensurance.php",
-            "src/Enforcement.php"
+            "src/functions.php"
         ],
         "psr-4": {
             "Dgame\\Ensurance\\": "src/"

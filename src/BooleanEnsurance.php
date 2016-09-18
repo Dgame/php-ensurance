@@ -11,9 +11,9 @@ use Dgame\Ensurance\Traits\EnforcementTrait;
 final class BooleanEnsurance
 {
     /**
-     * @var null|bool
+     * @var bool
      */
-    private $condition = null;
+    private $condition;
 
     use EnforcementTrait;
 
@@ -30,7 +30,7 @@ final class BooleanEnsurance
     /**
      * @return BooleanEnsurance
      */
-    public function isTrue() : BooleanEnsurance
+    public function isTrue(): BooleanEnsurance
     {
         $this->enforce($this->condition === true)->orThrow('The value is not true');
 
@@ -40,7 +40,7 @@ final class BooleanEnsurance
     /**
      * @return BooleanEnsurance
      */
-    public function isFalse() : BooleanEnsurance
+    public function isFalse(): BooleanEnsurance
     {
         $this->enforce($this->condition === false)->orThrow('The value is true');
 

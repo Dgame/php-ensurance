@@ -12,9 +12,9 @@ use Dgame\Ensurance\Traits\EnforcementTrait;
 final class ResourceEnsurance
 {
     /**
-     * @var null|resource
+     * @var resource
      */
-    private $resource = null;
+    private $resource;
 
     use EnforcementTrait;
 

@@ -12,9 +12,9 @@ use Dgame\Ensurance\Traits\EnforcementTrait;
 final class ObjectEnsurance
 {
     /**
-     * @var null|object
+     * @var object
      */
-    private $object = null;
+    private $object;
 
     use EnforcementTrait;
 
@@ -39,9 +39,9 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function isInstanceOf($object) : ObjectEnsurance
+    public function isInstanceOf($object): ObjectEnsurance
     {
-        $class = is_object($object) ? get_class($object) : $object;
+        $class = is_object($object) ? get_class($object): $object;
         $this->enforce($this->object instanceof $object)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), $class);
 
         return $this;
@@ -52,7 +52,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function is(string $class) : ObjectEnsurance
+    public function is(string $class): ObjectEnsurance
     {
         $this->enforce(is_a($this->object, $class))->orThrow('"%s" is not "%s"', get_class($this->object), $class);
 
@@ -64,7 +64,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function extends (string $class) : ObjectEnsurance
+    public function extends (string $class): ObjectEnsurance
     {
         $this->enforce(is_subclass_of($this->object, $class))->orThrow('"%s" did not extend "%s"', get_class($this->object), $class);
 
@@ -76,7 +76,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function implements (string $interface) : ObjectEnsurance
+    public function implements (string $interface): ObjectEnsurance
     {
         $this->enforce(array_key_exists($interface, class_implements($this->object)))
              ->orThrow('"%s" does not implements interface "%s"', get_class($this->object), $interface);
@@ -89,7 +89,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function isParentOf(string $class) : ObjectEnsurance
+    public function isParentOf(string $class): ObjectEnsurance
     {
         $object_class_name = get_class($this->object);
         $this->enforce(array_key_exists($object_class_name, class_parents($class, true)))
@@ -103,7 +103,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function uses(string $trait) : ObjectEnsurance
+    public function uses(string $trait): ObjectEnsurance
     {
         $this->enforce(array_key_exists($trait, class_uses($this->object)))
              ->orThrow('"%s" does not use trait "%s"', get_class($this->object), $trait);
@@ -116,7 +116,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function hasProperty(string $property) : ObjectEnsurance
+    public function hasProperty(string $property): ObjectEnsurance
     {
         $this->enforce(property_exists($this->object, $property))
              ->orThrow('"%s" does not have a property "%s"', get_class($this->object), $property);
@@ -129,7 +129,7 @@ final class ObjectEnsurance
      *
      * @return ObjectEnsurance
      */
-    public function hasMethod(string $method) : ObjectEnsurance
+    public function hasMethod(string $method): ObjectEnsurance
     {
         $this->enforce(method_exists($this->object, $method))
              ->orThrow('"%s" does not have a method "%s"', get_class($this->object), $method);

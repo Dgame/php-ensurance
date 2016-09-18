@@ -12,9 +12,9 @@ use Dgame\Ensurance\Traits\EnforcementTrait;
 final class ScalarEnsurance
 {
     /**
-     * @var bool|float|int|null|string
+     * @var bool|float|int|string
      */
-    private $scalar = null;
+    private $scalar;
 
     use EnforcementTrait;
 
@@ -37,7 +37,7 @@ final class ScalarEnsurance
     /**
      * @return StringEnsurance
      */
-    public function isString() : StringEnsurance
+    public function isString(): StringEnsurance
     {
         $this->enforce(is_string($this->scalar))->orThrow('That is not a string');
 
@@ -47,7 +47,7 @@ final class ScalarEnsurance
     /**
      * @return NumericEnsurance
      */
-    public function isNumeric() : NumericEnsurance
+    public function isNumeric(): NumericEnsurance
     {
         $this->enforce(is_numeric($this->scalar))->orThrow('That is not numeric');
 
@@ -57,7 +57,7 @@ final class ScalarEnsurance
     /**
      * @return BooleanEnsurance
      */
-    public function isBool() : BooleanEnsurance
+    public function isBool(): BooleanEnsurance
     {
         $this->enforce(is_bool($this->scalar))->orThrow('That is not a bool');
 

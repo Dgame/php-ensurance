@@ -14,11 +14,11 @@ final class Enforcement
     /**
      * @var bool
      */
-    private $condition = true;
+    private $condition;
     /**
      * @var null|Exception
      */
-    private $exception = null;
+    private $exception;
 
     /**
      * Enforcement constructor.
@@ -103,14 +103,4 @@ final class Enforcement
             }
         }
     }
-}
-
-/**
- * @param bool $condition
- *
- * @return Enforcement
- */
-function enforce(bool $condition) : Enforcement
-{
-    return new Enforcement($condition);
 }

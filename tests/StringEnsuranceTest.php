@@ -74,12 +74,12 @@ class StringEnsuranceTest extends TestCase
         ensure('foo')->isString()->isCallable();
     }
 
-    public function testIsClassName()
+    public function testIsClass()
     {
-        ensure(static::class)->isString()->isClassName();
+        ensure(static::class)->isString()->isClass();
 
         $this->expectException(EnsuranceException::class);
 
-        ensure(uniqid())->isString()->isClassName();
+        ensure(uniqid())->isString()->isClass();
     }
 }

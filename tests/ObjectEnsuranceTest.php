@@ -51,6 +51,13 @@ class ObjectEnsuranceTest extends TestCase
         ensure($ea)->isObject()->is(EA::class);
     }
 
+    public function testIsSome()
+    {
+        $eb = new EB();
+
+        ensure($eb)->isObject()->isSome(EA::class);
+    }
+
     public function testExtends()
     {
         $eb = new EB();

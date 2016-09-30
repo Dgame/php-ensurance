@@ -234,9 +234,9 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isIdenticalTo($value): Ensurance
+    public function isSameAs($value): Ensurance
     {
-        $this->enforce($this->value === $value)->orThrow('"%s" is not identical to "%s"', $this->value, $value);
+        $this->enforce($this->value === $value)->orThrow('"%s" is not the same as "%s"', $this->value, $value);
 
         return $this;
     }
@@ -246,9 +246,9 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isNotIdenticalTo($value): Ensurance
+    public function isNotSameAs($value): Ensurance
     {
-        $this->enforce($this->value !== $value)->orThrow('"%s" is identical to "%s"', $this->value, $value);
+        $this->enforce($this->value !== $value)->orThrow('"%s" is the same as "%s"', $this->value, $value);
 
         return $this;
     }

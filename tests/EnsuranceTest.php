@@ -37,16 +37,16 @@ class EnsuranceTest extends TestCase
         ensure('42')->isNotEqualTo(4.2);
     }
 
-    public function testIsIdentical()
+    public function testIsSame()
     {
-        ensure('foo')->isIdenticalTo('foo');
-        ensure(42)->isIdenticalTo(2 * 21);
+        ensure('foo')->isSameAs('foo');
+        ensure(42)->isSameAs(2 * 21);
     }
 
-    public function testIsNotIdentical()
+    public function testIsNotSame()
     {
-        ensure('foo')->isNotIdenticalTo('bar');
-        ensure('foo')->isNotIdenticalTo(42);
+        ensure('foo')->isNotSameAs('bar');
+        ensure('foo')->isNotSameAs(42);
     }
 
     public function testIsResource()

@@ -36,7 +36,7 @@ trait EnforcementTrait
     final public function verify(): bool
     {
         if ($this->enforcement !== null && !$this->enforcement->isValid()) {
-            $this->enforcement->deny();
+            $this->enforcement->approve();
 
             return false;
         }

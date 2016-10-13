@@ -47,7 +47,7 @@ final class Enforcement
     /**
      *
      */
-    public function deny()
+    public function approve()
     {
         $this->condition = true;
     }

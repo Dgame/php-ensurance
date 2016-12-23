@@ -46,6 +46,18 @@ final class ObjectEnsurance extends ClassEnsurance
     }
 
     /**
+     * @param string $class
+     *
+     * @return ObjectEnsurance
+     */
+    public function isNotSome(string $class): ObjectEnsurance
+    {
+        $this->enforce(!is_a($this->object, $class))->orThrow('"%s" is "%s"', get_class($this->object), $class);
+
+        return $this;
+    }
+
+    /**
      * @param $class
      *
      * @return ObjectEnsurance
@@ -54,6 +66,19 @@ final class ObjectEnsurance extends ClassEnsurance
     {
         $class = is_object($class) ? get_class($class) : $class;
         $this->enforce($this->object instanceof $class)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), $class);
+
+        return $this;
+    }
+
+    /**
+     * @param $class
+     *
+     * @return ObjectEnsurance
+     */
+    public function isNotInstanceOf($class): ObjectEnsurance
+    {
+        $class = is_object($class) ? get_class($class) : $class;
+        $this->enforce(!($this->object instanceof $class))->orThrow('"%s" is an instance of "%s"', get_class($this->object), $class);
 
         return $this;
     }

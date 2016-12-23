@@ -22,6 +22,8 @@ class ClassEnsurance
      * ClassEnsurance constructor.
      *
      * @param string $class
+     *
+     * @throws EnsuranceException
      */
     public function __construct(string $class)
     {
@@ -49,9 +51,33 @@ class ClassEnsurance
      *
      * @return ClassEnsurance
      */
+    public function isNot(string $class): ClassEnsurance
+    {
+        $this->enforce($this->class !== $class)->orThrow('"%s" is "%s"', $this->class, $class);
+
+        return $this;
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return ClassEnsurance
+     */
     public function extends (string $class): ClassEnsurance
     {
         $this->enforce(is_subclass_of($this->class, $class))->orThrow('"%s" did not extend "%s"', $this->class, $class);
+
+        return $this;
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return ClassEnsurance
+     */
+    public function extendsNot(string $class): ClassEnsurance
+    {
+        $this->enforce(!is_subclass_of($this->class, $class))->orThrow('"%s" did extend "%s"', $this->class, $class);
 
         return $this;
     }
@@ -70,6 +96,19 @@ class ClassEnsurance
     }
 
     /**
+     * @param string $interface
+     *
+     * @return ClassEnsurance
+     */
+    public function implementsNot(string $interface): ClassEnsurance
+    {
+        $this->enforce(!array_key_exists($interface, class_implements($this->class)))
+             ->orThrow('"%s" does implements interface "%s"', $this->class, $interface);
+
+        return $this;
+    }
+
+    /**
      * @param string $class
      *
      * @return ClassEnsurance
@@ -78,6 +117,19 @@ class ClassEnsurance
     {
         $this->enforce(array_key_exists($this->class, class_parents($class, true)))
              ->orThrow('"%s" is not a parent of "%s"', $this->class, $class);
+
+        return $this;
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return ClassEnsurance
+     */
+    public function isNotParentOf(string $class): ClassEnsurance
+    {
+        $this->enforce(!array_key_exists($this->class, class_parents($class, true)))
+             ->orThrow('"%s" is a parent of "%s"', $this->class, $class);
 
         return $this;
     }

@@ -1,5 +1,7 @@
 # php-ensurance
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Dgame/php-ensurance/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-ensurance/?branch=master)
+
 ## design by contract for PHP
 
 If your check fails, an Exception is thrown

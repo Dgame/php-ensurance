@@ -111,8 +111,7 @@ class ClassEnsurance
      */
     public function implements (string $interface): ClassEnsurance
     {
-
-        $this->enforce($this->reflection->implementsInterface($interface))
+        $this->enforce(array_key_exists($interface, class_implements($this->class, true)))
              ->orThrow('"%s" does not implements interface "%s"', $this->class, $interface);
 
         return $this;
@@ -125,7 +124,7 @@ class ClassEnsurance
      */
     public function implementsNot(string $interface): ClassEnsurance
     {
-        $this->enforce(!$this->reflection->implementsInterface($interface))
+        $this->enforce(!array_key_exists($interface, class_implements($this->class, true)))
              ->orThrow('"%s" does implements interface "%s"', $this->class, $interface);
 
         return $this;
@@ -164,7 +163,7 @@ class ClassEnsurance
      */
     public function uses(string $trait): ClassEnsurance
     {
-        $this->enforce(array_key_exists($trait, $this->reflection->getTraitNames()))
+        $this->enforce(array_key_exists($trait, class_uses($this->class, true)))
              ->orThrow('"%s" does not use trait "%s"', $this->class, $trait);
 
         return $this;

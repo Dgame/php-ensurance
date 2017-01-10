@@ -4,6 +4,8 @@
 
 [![Build Status](https://travis-ci.org/Dgame/php-ensurance.svg?branch=master)](https://travis-ci.org/Dgame/php-ensurance)
 
+[![codecov](https://codecov.io/gh/Dgame/php-ensurance/branch/master/graph/badge.svg)](https://codecov.io/gh/Dgame/php-ensurance)
+
 ## design by contract for PHP
 
 If your check fails, an Exception is thrown

@@ -84,7 +84,7 @@ class ClassEnsurance
      *
      * @return ClassEnsurance
      */
-    public function extends (string $class): ClassEnsurance
+    public function extends(string $class): ClassEnsurance
     {
         $this->enforce($this->reflection->isSubclassOf($class))->orThrow('"%s" did not extend "%s"', $this->class, $class);
 
@@ -108,7 +108,7 @@ class ClassEnsurance
      *
      * @return ClassEnsurance
      */
-    public function implements (string $interface): ClassEnsurance
+    public function implements(string $interface): ClassEnsurance
     {
         $this->enforce(array_key_exists($interface, class_implements($this->class, true)))
              ->orThrow('"%s" does not implements interface "%s"', $this->class, $interface);

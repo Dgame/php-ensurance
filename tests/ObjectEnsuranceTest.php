@@ -18,7 +18,6 @@ class EB extends EA
 
 interface EI
 {
-
 }
 
 class EC implements EI
@@ -27,7 +26,6 @@ class EC implements EI
 
 trait ET
 {
-
 }
 
 class ED

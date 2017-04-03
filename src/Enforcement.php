@@ -35,17 +35,17 @@ final class Enforcement
      */
     public function __destruct()
     {
-        if (!$this->isValid()) {
-            if ($this->exception === null) {
-                throw new EnsuranceException('Assertion failed');
+        if (!$this->isFulfilled()) {
+            if ($this->hasException()) {
+                throw $this->exception;
             }
 
-            throw $this->exception;
+            throw new EnsuranceException('Assertion failed');
         }
     }
 
     /**
-     *
+     * Enforce approvement of the Enforcement
      */
     public function approve()
     {
@@ -55,9 +55,17 @@ final class Enforcement
     /**
      * @return boolean
      */
-    public function isValid(): bool
+    public function isFulfilled(): bool
     {
         return $this->condition;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasException(): bool
+    {
+        return $this->exception !== null;
     }
 
     /**
@@ -69,38 +77,39 @@ final class Enforcement
     }
 
     /**
-     * @param Exception $exception
+     * @param Exception|string $exception
+     * @param array            ...$args
      */
-    private function setException(Exception $exception)
+    public function orThrow($exception, ...$args)
     {
-        $this->exception = $exception;
+        if ($exception instanceof Exception) {
+            $this->setException($exception);
+        } else {
+            $this->setExceptionMessage((string) $exception, ...$args);
+        }
     }
 
     /**
      * @param string $message
      * @param array  ...$args
      */
-    private function setExceptionMessage(string $message, ...$args)
+    public function setExceptionMessage(string $message, ...$args)
     {
         if (!empty($args)) {
+            $args    = array_map(function ($arg) {
+                return !is_string($arg) ? var_export($arg, true) : $arg;
+            }, $args);
             $message = sprintf($message, ...$args);
         }
 
-        $this->setException(new EnsuranceException($message));
+        $this->setException(new EnsuranceException($message, 0, $this->exception));
     }
 
     /**
-     * @param Exception|string $exception
-     * @param array            ...$args
+     * @param Exception $exception
      */
-    public function orThrow($exception, ...$args)
+    public function setException(Exception $exception)
     {
-        if (!$this->isValid()) {
-            if ($exception instanceof Exception) {
-                $this->setException($exception);
-            } else {
-                $this->setExceptionMessage($exception, ...$args);
-            }
-        }
+        $this->exception = $exception;
     }
 }

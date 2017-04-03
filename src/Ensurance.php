@@ -2,8 +2,6 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Traits\EnforcementTrait;
-
 /**
  * Class Ensurance
  * @package Dgame\Ensurance
@@ -28,11 +26,19 @@ final class Ensurance
     }
 
     /**
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
      * @return ArrayEnsurance
      */
     public function isArray(): ArrayEnsurance
     {
-        $this->enforce(is_array($this->value))->orThrow('Value is not an array');
+        $this->enforce(is_array($this->value))->orThrow('Value is not an array: %s', $this->value);
 
         return new ArrayEnsurance($this->value);
     }
@@ -42,7 +48,7 @@ final class Ensurance
      */
     public function isObject(): ObjectEnsurance
     {
-        $this->enforce(is_object($this->value))->orThrow('Value is not an object');
+        $this->enforce(is_object($this->value))->orThrow('Value is not an object: %s', $this->value);
 
         return new ObjectEnsurance($this->value);
     }
@@ -52,7 +58,7 @@ final class Ensurance
      */
     public function isResource(): ResourceEnsurance
     {
-        $this->enforce(is_resource($this->value))->orThrow('Value is not a resource');
+        $this->enforce(is_resource($this->value))->orThrow('Value is not a resource: %s', $this->value);
 
         return new ResourceEnsurance($this->value);
     }
@@ -62,7 +68,7 @@ final class Ensurance
      */
     public function isScalar(): ScalarEnsurance
     {
-        $this->enforce(is_scalar($this->value))->orThrow('Value is not a scalar');
+        $this->enforce(is_scalar($this->value))->orThrow('Value is not a scalar: %s', $this->value);
 
         return new ScalarEnsurance($this->value);
     }
@@ -170,7 +176,7 @@ final class Ensurance
      */
     public function isNull(): Ensurance
     {
-        $this->enforce($this->value === null)->orThrow('Value is not null');
+        $this->enforce($this->value === null)->orThrow('Value is not null: %s', $this->value);
 
         return $this;
     }
@@ -180,7 +186,7 @@ final class Ensurance
      */
     public function isNotNull(): Ensurance
     {
-        $this->enforce($this->value !== null)->orThrow('Value is null');
+        $this->enforce($this->value !== null)->orThrow('Value is null: %s', $this->value);
 
         return $this;
     }
@@ -190,7 +196,7 @@ final class Ensurance
      */
     public function isEmpty(): Ensurance
     {
-        $this->enforce(empty($this->value))->orThrow('Value is not empty');
+        $this->enforce(empty($this->value))->orThrow('Value is not empty: %s', $this->value);
 
         return $this;
     }
@@ -200,7 +206,7 @@ final class Ensurance
      */
     public function isNotEmpty(): Ensurance
     {
-        $this->enforce(!empty($this->value))->orThrow('Value is empty');
+        $this->enforce(!empty($this->value))->orThrow('Value is empty: %s', $this->value);
 
         return $this;
     }
@@ -260,7 +266,7 @@ final class Ensurance
      */
     public function isValueOf(array $data): Ensurance
     {
-        $this->enforce(in_array($this->value, $data))->orThrow('"%s" is not a value of the given array', $this->value);
+        $this->enforce(in_array($this->value, $data))->orThrow('"%s" is not a value of %s', $this->value, $data);
 
         return $this;
     }
@@ -272,7 +278,7 @@ final class Ensurance
      */
     public function isKeyOf(array $data): Ensurance
     {
-        $this->enforce(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of the given array', $this->value);
+        $this->enforce(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of %s', $this->value, $data);
 
         return $this;
     }

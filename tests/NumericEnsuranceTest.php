@@ -1,5 +1,6 @@
 <?php
 
+use Dgame\Ensurance\Exception\EnsuranceException;
 use PHPUnit\Framework\TestCase;
 use function Dgame\Ensurance\ensure;
 
@@ -95,5 +96,13 @@ class NumericEnsuranceTest extends TestCase
     {
         ensure(3)->isNumeric()->isNotBetween(1, 2);
         ensure(0)->isNumeric()->isNotBetween(1, 100);
+    }
+
+    public function testInvalidNumber()
+    {
+        $this->expectException(EnsuranceException::class);
+        $this->expectExceptionMessage('not even');
+
+        ensure(23)->isNumeric()->orThrow('nothing to see')->isEven()->orThrow('not even');
     }
 }

@@ -3,7 +3,6 @@
 namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Ensurance\Traits\EnforcementTrait;
 
 /**
  * Class ResourceEnsurance

@@ -62,14 +62,14 @@ class EnsuranceTest extends TestCase
 
     public function testArray()
     {
-        ensure('foo')->isValueOf(['foo', 'bar']);
+        ensure('foo')->isIn(['foo', 'bar']);
         ensure('foo')->isKeyOf(['foo' => 'bar']);
     }
 
     public function testVerify()
     {
-        $this->assertTrue(ensure('foo')->isValueOf(['foo', 'bar'])->verify());
-        $this->assertFalse(ensure('foo')->isValueOf(['bar'])->verify());
+        $this->assertTrue(ensure('foo')->isIn(['foo', 'bar'])->verify());
+        $this->assertFalse(ensure('foo')->isIn(['bar'])->verify());
         $this->assertTrue(ensure('foo')->isKeyOf(['foo' => 'bar'])->verify());
         $this->assertFalse(ensure('foo')->isKeyOf(['foo', 'bar'])->verify());
     }

@@ -174,7 +174,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isNull(): Ensurance
+    public function isNull(): self
     {
         $this->enforce($this->value === null)->orThrow('Value is not null: %s', $this->value);
 
@@ -184,7 +184,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isNotNull(): Ensurance
+    public function isNotNull(): self
     {
         $this->enforce($this->value !== null)->orThrow('Value is null: %s', $this->value);
 
@@ -194,7 +194,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isEmpty(): Ensurance
+    public function isEmpty(): self
     {
         $this->enforce(empty($this->value))->orThrow('Value is not empty: %s', $this->value);
 
@@ -204,7 +204,7 @@ final class Ensurance
     /**
      * @return Ensurance
      */
-    public function isNotEmpty(): Ensurance
+    public function isNotEmpty(): self
     {
         $this->enforce(!empty($this->value))->orThrow('Value is empty: %s', $this->value);
 
@@ -216,7 +216,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isEqualTo($value): Ensurance
+    public function isEqualTo($value): self
     {
         $this->enforce($this->value == $value)->orThrow('"%s" is not equal to "%s"', $this->value, $value);
 
@@ -228,7 +228,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isNotEqualTo($value): Ensurance
+    public function isNotEqualTo($value): self
     {
         $this->enforce($this->value != $value)->orThrow('"%s" is equal to "%s"', $this->value, $value);
 
@@ -240,7 +240,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isSameAs($value): Ensurance
+    public function isSameAs($value): self
     {
         $this->enforce($this->value === $value)->orThrow('"%s" is not the same as "%s"', $this->value, $value);
 
@@ -252,7 +252,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isNotSameAs($value): Ensurance
+    public function isNotSameAs($value): self
     {
         $this->enforce($this->value !== $value)->orThrow('"%s" is the same as "%s"', $this->value, $value);
 
@@ -264,7 +264,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isValueOf(array $data): Ensurance
+    public function isIn(array $data): self
     {
         $this->enforce(in_array($this->value, $data))->orThrow('"%s" is not a value of %s', $this->value, $data);
 
@@ -276,7 +276,7 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isKeyOf(array $data): Ensurance
+    public function isKeyOf(array $data): self
     {
         $this->enforce(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of %s', $this->value, $data);
 

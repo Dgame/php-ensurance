@@ -54,13 +54,11 @@ final class Ensurance
     }
 
     /**
-     * @return ResourceEnsurance
+     *
      */
-    public function isResource(): ResourceEnsurance
+    public function isResource()
     {
         $this->enforce(is_resource($this->value))->orThrow('Value is not a resource: %s', $this->value);
-
-        return new ResourceEnsurance($this->value);
     }
 
     /**

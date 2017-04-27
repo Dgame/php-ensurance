@@ -151,13 +151,11 @@ final class StringEnsurance
     }
 
     /**
-     * @return CallableEnsurance
+     *
      */
-    public function isCallable(): CallableEnsurance
+    public function isCallable()
     {
         $this->enforce(is_callable($this->value))->orThrow('"%s" is not a callable', $this->value);
-
-        return new CallableEnsurance($this->value);
     }
 
     /**

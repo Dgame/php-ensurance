@@ -133,7 +133,8 @@ final class StringEnsurance
      */
     public function beginsWith(string $str): StringEnsurance
     {
-        $this->enforce(substr($this->value, 0, strlen($str)) === $str)->orThrow('"%s" did not begin with "%s"', $this->value, $str);
+        $len = strlen($str);
+        $this->enforce(substr($this->value, 0, $len) === $str)->orThrow('"%s" did not begin with "%s"', $this->value, $str);
 
         return $this;
     }
@@ -145,7 +146,8 @@ final class StringEnsurance
      */
     public function endsWith(string $str): StringEnsurance
     {
-        $this->enforce(substr($this->value, strlen($str) * -1) === $str)->orThrow('"%s" did not end with "%s"', $this->value, $str);
+        $len = strlen($str);
+        $this->enforce(substr($this->value, $len * -1) === $str)->orThrow('"%s" did not end with "%s"', $this->value, $str);
 
         return $this;
     }

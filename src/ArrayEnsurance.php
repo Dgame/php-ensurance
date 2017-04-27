@@ -137,12 +137,10 @@ final class ArrayEnsurance
     }
 
     /**
-     * @return CallableEnsurance
+     *
      */
-    public function isCallable(): CallableEnsurance
+    public function isCallable()
     {
         $this->enforce(is_callable($this->values))->orThrow('Value is not a callable');
-
-        return new CallableEnsurance($this->values);
     }
 }

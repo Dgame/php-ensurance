@@ -141,7 +141,7 @@ ensure(1 === 1)->isTrue()->orThrow('You will never see this error');
 ```
 
 
-## Enforcement
+# Enforcement
 
 You can also specify your own Exception messages:
 
@@ -150,7 +150,7 @@ If you want to enforce that some condition is true, use enforce:
 enforce(true)->orThrow('That is not true...');
 ```
 
-## Assurance
+# Assurance
 
 If you want to assure that some condition is true, you could use the PHP `assert` function. Sadly, PHP assertions are disabled in production mode, but `assure` is not:
 

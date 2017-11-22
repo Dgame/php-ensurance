@@ -2,6 +2,8 @@
 
 namespace Dgame\Ensurance;
 
+use Dgame\Ensurance\Enforcement\EnforcementTrait;
+
 /**
  * Class StringEnsurance
  * @package Dgame\Ensurance

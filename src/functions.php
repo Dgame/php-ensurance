@@ -2,6 +2,8 @@
 
 namespace Dgame\Ensurance;
 
+use Dgame\Ensurance\Enforcement\Enforcement;
+
 /**
  * @param $value
  *
@@ -13,11 +15,25 @@ function ensure($value): Ensurance
 }
 
 /**
- * @param bool $condition
+ * @param bool        $condition
+ * @param string|null $message
  *
  * @return Enforcement
  */
-function enforce(bool $condition): Enforcement
+function enforce(bool $condition, string $message = null): Enforcement
 {
-    return new Enforcement($condition);
+    return new Enforcement($condition, $message);
+}
+
+/**
+ * @param bool        $condition
+ * @param string|null $message
+ *
+ * @throws \AssertionError
+ */
+function assure(bool $condition, string $message = null): void
+{
+    if (!$condition) {
+        throw new \AssertionError($message ?? 'Assertion failed');
+    }
 }

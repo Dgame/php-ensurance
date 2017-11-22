@@ -2,6 +2,7 @@
 
 namespace Dgame\Ensurance;
 
+use Dgame\Ensurance\Enforcement\EnforcementTrait;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use ReflectionClass;
 

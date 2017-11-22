@@ -2,6 +2,8 @@
 
 namespace Dgame\Ensurance;
 
+use Dgame\Ensurance\Enforcement\EnforcementTrait;
+
 /**
  * Class ArrayEnsurance
  * @package Dgame\Ensurance

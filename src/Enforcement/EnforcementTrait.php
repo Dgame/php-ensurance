@@ -1,12 +1,12 @@
 <?php
 
-namespace Dgame\Ensurance;
+namespace Dgame\Ensurance\Enforcement;
 
-use Prophecy\Exception\Exception;
+use Throwable;
 
 /**
- * Class EnforcementTrait
- * @package Dgame\Ensurance
+ * Trait EnforcementTrait
+ * @package Dgame\Ensurance\Enforcement
  */
 trait EnforcementTrait
 {
@@ -16,15 +16,15 @@ trait EnforcementTrait
     private $enforcement;
 
     /**
-     * @param string|Exception $exception
+     * @param string|Throwable $throwable
      * @param array            ...$args
      *
      * @return $this
      */
-    final public function orThrow($exception, ...$args)
+    final public function orThrow($throwable, ...$args)
     {
         if ($this->hasEnforcement()) {
-            $this->enforcement->orThrow($exception, ...$args);
+            $this->enforcement->orThrow($throwable, ...$args);
         }
 
         return $this;
@@ -51,28 +51,9 @@ trait EnforcementTrait
      */
     final protected function enforce(bool $condition)
     {
-        $enforcement = new Enforcement($condition);
-        if (!$this->isEnforcementFulfilled() && !$enforcement->isFulfilled()) {
-            $this->approveEnforcementWith($enforcement);
-        }
-
-        $this->enforcement = $enforcement;
+        $this->enforcement = new Enforcement($condition);
 
         return $this;
-    }
-
-    /**
-     * @param Enforcement $enforcement
-     */
-    private function approveEnforcementWith(Enforcement $enforcement)
-    {
-        if ($this->hasEnforcement()) {
-            if ($this->enforcement->hasException()) {
-                $enforcement->setException($this->enforcement->getException());
-            }
-
-            $this->enforcement->approve();
-        }
     }
 
     /**

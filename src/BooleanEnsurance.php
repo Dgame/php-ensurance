@@ -30,7 +30,7 @@ final class BooleanEnsurance
     /**
      * @return BooleanEnsurance
      */
-    public function isTrue(): BooleanEnsurance
+    public function isTrue(): self
     {
         $this->enforce($this->condition === true)->orThrow('The value is not true');
 
@@ -40,7 +40,7 @@ final class BooleanEnsurance
     /**
      * @return BooleanEnsurance
      */
-    public function isFalse(): BooleanEnsurance
+    public function isFalse(): self
     {
         $this->enforce($this->condition === false)->orThrow('The value is true');
 

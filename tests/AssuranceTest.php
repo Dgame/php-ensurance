@@ -1,7 +1,7 @@
 <?php
 
-use function Dgame\Ensurance\assure;
 use PHPUnit\Framework\TestCase;
+use function Dgame\Ensurance\assure;
 
 /**
  * Class Assurance

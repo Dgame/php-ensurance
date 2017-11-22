@@ -2,7 +2,6 @@
 
 namespace Dgame\Ensurance\Enforcement;
 
-use AssertionError;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use Throwable;
 

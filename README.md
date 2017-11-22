@@ -136,14 +136,14 @@ ensure((2 * 3) === (3 * 3))->isFalse();
 ```
 ----
 
+You can also specify your own Exception messages:
+
 ```php
 ensure(1 === 1)->isTrue()->orThrow('You will never see this error');
 ```
 
 
 # Enforcement
-
-You can also specify your own Exception messages:
 
 If you want to enforce that some condition is true, use enforce:
 ```php

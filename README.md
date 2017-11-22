@@ -145,7 +145,7 @@ ensure(1 === 1)->isTrue()->orThrow('You will never see this error');
 
 # Enforcement
 
-If you want to enforce that some condition is true, use enforce:
+If you want to enforce that some condition is true, use `enforce`:
 ```php
 enforce(true)->orThrow('That is not true...');
 ```

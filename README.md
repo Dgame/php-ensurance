@@ -134,16 +134,28 @@ ensure(42)->isIdenticalTo(42);
 ensure((2 * 3) === (3 * 2))->isTrue();
 ensure((2 * 3) === (3 * 3))->isFalse();
 ```
-
 ----
-
-You can also specify your own Exception messages:
 
 ```php
 ensure(1 === 1)->isTrue()->orThrow('You will never see this error');
 ```
 
-Or, if you want to assert that some condition is true, use enforce:
+
+## Enforcement
+
+You can also specify your own Exception messages:
+
+If you want to enforce that some condition is true, use enforce:
 ```php
 enforce(true)->orThrow('That is not true...');
 ```
+
+## Assurance
+
+If you want to assure that some condition is true, you could use the PHP `assert` function. Sadly, PHP assertions are disabled in production mode, but `assure` is not:
+
+```php
+assure(0);
+```
+
+Will throw an AssertionError as a correctly configured `assert` would do.

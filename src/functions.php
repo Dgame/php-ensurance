@@ -31,7 +31,7 @@ function enforce(bool $condition, string $message = null): Enforcement
  *
  * @throws \AssertionError
  */
-function assure(bool $condition, string $message = null): void
+function assure(bool $condition, string $message = null)
 {
     if (!$condition) {
         throw new \AssertionError($message ?? 'Assertion failed');

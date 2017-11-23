@@ -31,9 +31,21 @@ function enforce(bool $condition, string $message = null): Enforcement
  *
  * @throws \AssertionError
  */
-function assure(bool $condition, string $message = null)
+function assertion(bool $condition, string $message = null)
 {
     if (!$condition) {
         throw new \AssertionError($message ?? 'Assertion failed');
     }
+}
+
+/**
+ * @param bool        $condition
+ * @param string|null $message
+ *
+ * @throws \AssertionError
+ * @deprecated Use assertion instead. `assure` is just an alias for `assertion`, since `assertion` is a more meaningful name.
+ */
+function assure(bool $condition, string $message = null)
+{
+    assertion($condition, $message);
 }

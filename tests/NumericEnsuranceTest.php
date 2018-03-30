@@ -120,7 +120,7 @@ class NumericEnsuranceTest extends TestCase
         ensure(23)->isNumeric()->orThrow('nothing to see')->isEven()->orThrow('not even');
     }
 
-    public function testInvalidNumber()
+    public function testInvalidNumber(): void
     {
         $catched = false;
         try {

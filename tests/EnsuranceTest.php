@@ -6,50 +6,50 @@ use function Dgame\Ensurance\ensure;
 
 class EnsuranceTest extends TestCase
 {
-    public function testIsNull()
+    public function testIsNull(): void
     {
         ensure(null)->isNull();
     }
 
-    public function testIsNotNull()
+    public function testIsNotNull(): void
     {
         ensure('')->isNotNull();
     }
 
-    public function testIsEmpty()
+    public function testIsEmpty(): void
     {
         ensure('')->isEmpty();
     }
 
-    public function testIsNotEmpty()
+    public function testIsNotEmpty(): void
     {
         ensure(42)->isNotEmpty();
         ensure(' ')->isNotEmpty();
     }
 
-    public function testIsEqual()
+    public function testIsEqual(): void
     {
         ensure(42)->isEqualTo('42');
     }
 
-    public function testIsNotEqual()
+    public function testIsNotEqual(): void
     {
         ensure('42')->isNotEqualTo(4.2);
     }
 
-    public function testIsSame()
+    public function testIsSame(): void
     {
         ensure('foo')->isIdenticalTo('foo');
         ensure(42)->isIdenticalTo(2 * 21);
     }
 
-    public function testIsNotSame()
+    public function testIsNotSame(): void
     {
         ensure('foo')->isNotIdenticalTo('bar');
         ensure('foo')->isNotIdenticalTo(42);
     }
 
-    public function testIsResource()
+    public function testIsResource(): void
     {
         $ch = curl_init();
         ensure($ch)->isResource();
@@ -60,13 +60,13 @@ class EnsuranceTest extends TestCase
         ensure(null)->isResource();
     }
 
-    public function testArray()
+    public function testArray(): void
     {
         ensure('foo')->isIn(['foo', 'bar']);
         ensure('foo')->isKeyOf(['foo' => 'bar']);
     }
 
-    public function testEnsurance()
+    public function testEnsurance(): void
     {
         $this->assertTrue(ensure('foo')->isIn(['foo', 'bar'])->isEnsured());
         $this->assertTrue(ensure('foo')->isKeyOf(['foo' => 'bar'])->isEnsured());

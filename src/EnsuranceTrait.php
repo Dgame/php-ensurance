@@ -2,8 +2,8 @@
 
 namespace Dgame\Ensurance;
 
-use Throwable;
 use Dgame\Ensurance\Exception\EnsuranceException;
+use Throwable;
 
 /**
  * Trait EnsuranceTrait

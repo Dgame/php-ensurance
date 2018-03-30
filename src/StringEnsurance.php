@@ -150,7 +150,7 @@ final class StringEnsurance implements EnsuranceInterface
     /**
      *
      */
-    public function isCallable()
+    public function isCallable(): void
     {
         $this->ensure(is_callable($this->value))->orThrow('"%s" is not a callable', $this->value);
     }

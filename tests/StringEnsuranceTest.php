@@ -6,48 +6,48 @@ use function Dgame\Ensurance\ensure;
 
 class StringEnsuranceTest extends TestCase
 {
-    public function testIsEqualTo()
+    public function testIsEqualTo(): void
     {
         ensure('foo')->isString()->isEqualTo('foo');
     }
 
-    public function testIsNotEqualTo()
+    public function testIsNotEqualTo(): void
     {
         ensure('foo')->isString()->isNotEqualTo('bar');
     }
 
-    public function testMatches()
+    public function testMatches(): void
     {
         ensure('test@foo')->isString()->matches('#^[a-z]+@\w{3}$#i');
     }
 
-    public function testHasLengthOf()
+    public function testHasLengthOf(): void
     {
         ensure('foo')->isString()->hasLengthOf(3);
     }
 
-    public function testIsShorterThan()
+    public function testIsShorterThan(): void
     {
         ensure('foo')->isString()->isShorterThan(4);
     }
 
-    public function testIsShorterOrEqualTo()
+    public function testIsShorterOrEqualTo(): void
     {
         ensure('foo')->isString()->isShorterOrEqualTo(3);
     }
 
-    public function testIsLongerThan()
+    public function testIsLongerThan(): void
     {
         ensure('foo')->isString()->isLongerThan(2);
     }
 
-    public function testIsLongerorEqualTo()
+    public function testIsLongerorEqualTo(): void
     {
         ensure('foo')->isString()->isLongerOrEqualTo(2);
         ensure('foo')->isString()->isLongerOrEqualTo(3);
     }
 
-    public function testBeginsWith()
+    public function testBeginsWith(): void
     {
         ensure('FooBar')->isString()->beginsWith('Fo');
 
@@ -56,7 +56,7 @@ class StringEnsuranceTest extends TestCase
         ensure('Foo')->isString()->beginsWith('fo');
     }
 
-    public function testEndsWith()
+    public function testEndsWith(): void
     {
         ensure('FooBar')->isString()->endsWith('ar');
 
@@ -65,7 +65,7 @@ class StringEnsuranceTest extends TestCase
         ensure('Bar')->isString()->endsWith('R');
     }
 
-    public function testIsCallable()
+    public function testIsCallable(): void
     {
         ensure('trim')->isString()->isCallable();
 
@@ -74,7 +74,7 @@ class StringEnsuranceTest extends TestCase
         ensure('foo')->isString()->isCallable();
     }
 
-    public function testIsClass()
+    public function testIsClass(): void
     {
         ensure(static::class)->isString()->isClass();
 

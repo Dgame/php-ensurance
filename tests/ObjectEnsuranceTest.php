@@ -7,7 +7,7 @@ class EA
 {
     public $test;
 
-    public function foo()
+    public function foo(): void
     {
     }
 }
@@ -35,63 +35,63 @@ class ED
 
 class ObjectEnsuranceTest extends TestCase
 {
-    public function testIsInstanceOf()
+    public function testIsInstanceOf(): void
     {
         $ea = new EA();
 
         ensure($ea)->isObject()->isInstanceOf(EA::class);
     }
 
-    public function testIs()
+    public function testIs(): void
     {
         $ea = new EA();
 
         ensure($ea)->isObject()->is(EA::class);
     }
 
-    public function testIsSome()
+    public function testIsSome(): void
     {
         $eb = new EB();
 
         ensure($eb)->isObject()->isSome(EA::class);
     }
 
-    public function testExtends()
+    public function testExtends(): void
     {
         $eb = new EB();
 
         ensure($eb)->isObject()->extends(EA::class);
     }
 
-    public function testImplements()
+    public function testImplements(): void
     {
         $ec = new EC();
 
         ensure($ec)->isObject()->implements(EI::class);
     }
 
-    public function testIsParentOf()
+    public function testIsParentOf(): void
     {
         $ea = new EA();
 
         ensure($ea)->isObject()->isParentOf(EB::class);
     }
 
-    public function testUses()
+    public function testUses(): void
     {
         $ed = new ED();
 
         ensure($ed)->isObject()->uses(ET::class);
     }
 
-    public function testHasProperty()
+    public function testHasProperty(): void
     {
         $ea = new EA();
 
         ensure($ea)->isObject()->hasProperty('test');
     }
 
-    public function testHasMethod()
+    public function testHasMethod(): void
     {
         $ea = new EA();
 

@@ -6,25 +6,25 @@ use function Dgame\Ensurance\ensure;
 
 class NumericEnsuranceTest extends TestCase
 {
-    public function testIsInt()
+    public function testIsInt(): void
     {
         ensure(42)->isInt();
         ensure('42')->isInt();
     }
 
-    public function testIsFloat()
+    public function testIsFloat(): void
     {
         ensure(4.2)->isFloat();
         ensure('4.2')->isFloat();
     }
 
-    public function testIsGraterThan()
+    public function testIsGraterThan(): void
     {
         ensure(42)->isNumeric()->isGreaterThan(23);
         ensure('42')->isNumeric()->isGreaterThan(23);
     }
 
-    public function tesIsGreaterOrEqualTo()
+    public function tesIsGreaterOrEqualTo(): void
     {
         ensure(42)->isNumeric()->isGreaterOrEqualTo(23);
         ensure(42)->isNumeric()->isGreaterOrEqualTo(42);
@@ -33,72 +33,72 @@ class NumericEnsuranceTest extends TestCase
         ensure('42')->isNumeric()->isGreaterOrEqualTo(42);
     }
 
-    public function testIsLessThan()
+    public function testIsLessThan(): void
     {
         ensure(23)->isNumeric()->isLessThan(42);
         ensure('23')->isNumeric()->isLessThan(42);
     }
 
-    public function testIsLessOrEqualTo()
+    public function testIsLessOrEqualTo(): void
     {
         ensure(23)->isNumeric()->isLessOrEqualTo(42);
         ensure('23')->isNumeric()->isLessOrEqualTo(23);
     }
 
-    public function testIsPositive()
+    public function testIsPositive(): void
     {
         foreach (range(0, 100) as $n) {
             ensure($n)->isPositive();
         }
     }
 
-    public function testIsNegative()
+    public function testIsNegative(): void
     {
         foreach (range(-1, -100) as $n) {
             ensure($n)->isNegative();
         }
     }
 
-    public function testIsEven()
+    public function testIsEven(): void
     {
         for ($i = 0; $i < 42; $i += 2) {
             ensure($i)->isEven();
         }
     }
 
-    public function testIsOdd()
+    public function testIsOdd(): void
     {
         for ($i = 1; $i < 42; $i += 2) {
             ensure($i)->isOdd();
         }
     }
 
-    public function testIsEqualTo()
+    public function testIsEqualTo(): void
     {
         ensure(42)->isEqualTo(42);
         ensure('42')->isEqualTo(42);
     }
 
-    public function testIsNotEqualTo()
+    public function testIsNotEqualTo(): void
     {
         ensure(42)->isNotEqualTo(23);
         ensure(42)->isNotEqualTo('23');
         ensure('42')->isNotEqualTo(23);
     }
 
-    public function testIsBetween()
+    public function testIsBetween(): void
     {
         ensure(2)->isNumeric()->isBetween(1, 3);
         ensure(50)->isNumeric()->isBetween(1, 100);
     }
 
-    public function testIsNotBetween()
+    public function testIsNotBetween(): void
     {
         ensure(3)->isNumeric()->isNotBetween(1, 2);
         ensure(0)->isNumeric()->isNotBetween(1, 100);
     }
 
-    public function testInvalidNumber()
+    public function testInvalidNumber(): void
     {
         $this->expectException(EnsuranceException::class);
         $this->expectExceptionMessage('not even');

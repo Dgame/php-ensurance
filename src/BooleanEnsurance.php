@@ -13,12 +13,11 @@ final class BooleanEnsurance implements EnsuranceInterface
     /**
      * BooleanEnsurance constructor.
      *
-     * @param bool $condition
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct(bool $condition)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        $this->value = $condition;
-        $this->ensure($condition);
+        $this->transferEnsurance($ensurance);
     }
 
     /**

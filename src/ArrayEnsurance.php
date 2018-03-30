@@ -13,11 +13,12 @@ final class ArrayEnsurance implements EnsuranceInterface
     /**
      * ArrayEnsurance constructor.
      *
-     * @param array $value
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct(array $value)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        $this->value = $value;
+        $this->transferEnsurance($ensurance);
+        $this->value = $ensurance->else([]);
     }
 
     /**

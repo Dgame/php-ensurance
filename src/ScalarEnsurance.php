@@ -2,8 +2,6 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\EnsuranceException;
-
 /**
  * Class ScalarEnsurance
  * @package Dgame\Ensurance
@@ -15,13 +13,11 @@ final class ScalarEnsurance implements EnsuranceInterface
     /**
      * ScalarEnsurance constructor.
      *
-     * @param $scalar
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct($scalar)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        enforce(is_scalar($scalar))->setThrowable(new EnsuranceException('That is not a scalar value'));
-
-        $this->value = $scalar;
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -31,7 +27,7 @@ final class ScalarEnsurance implements EnsuranceInterface
     {
         $this->ensure(is_string($this->value))->orThrow('That is not a string');
 
-        return new StringEnsurance($this->value);
+        return new StringEnsurance($this);
     }
 
     /**
@@ -41,7 +37,7 @@ final class ScalarEnsurance implements EnsuranceInterface
     {
         $this->ensure(is_numeric($this->value))->orThrow('That is not numeric');
 
-        return new NumericEnsurance($this->value);
+        return new NumericEnsurance($this);
     }
 
     /**
@@ -51,6 +47,6 @@ final class ScalarEnsurance implements EnsuranceInterface
     {
         $this->ensure(is_bool($this->value))->orThrow('That is not a bool');
 
-        return new BooleanEnsurance($this->value);
+        return new BooleanEnsurance($this);
     }
 }

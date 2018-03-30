@@ -2,7 +2,6 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\EnsuranceFormatException;
 use ReflectionClass;
 
 /**
@@ -21,16 +20,16 @@ class ClassEnsurance implements EnsuranceInterface
     /**
      * ClassEnsurance constructor.
      *
-     * @param string $class
+     * @param EnsuranceInterface $ensurance
      *
      * @throws \ReflectionException
      */
-    public function __construct(string $class)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        enforce(class_exists($class))->setThrowable(new EnsuranceFormatException('"%s" is not a class', $class));
-
-        $this->value      = $class;
-        $this->reflection = new ReflectionClass($class);
+        $this->transferEnsurance($ensurance);
+        if ($ensurance->isEnsured()) {
+            $this->reflection = new ReflectionClass($this->value);
+        }
     }
 
     /**

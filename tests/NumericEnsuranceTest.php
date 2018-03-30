@@ -9,12 +9,26 @@ class NumericEnsuranceTest extends TestCase
     public function testIsInt(): void
     {
         ensure(42)->isInt();
+    }
+
+    public function testIsNotInt()
+    {
+        $this->expectException(EnsuranceException::class);
+        $this->expectExceptionMessage('"42" is not an int');
+
         ensure('42')->isInt();
     }
 
     public function testIsFloat(): void
     {
         ensure(4.2)->isFloat();
+    }
+
+    public function testIsNotFloat()
+    {
+        $this->expectException(EnsuranceException::class);
+        $this->expectExceptionMessage('"4.2" is not a float');
+
         ensure('4.2')->isFloat();
     }
 
@@ -26,11 +40,11 @@ class NumericEnsuranceTest extends TestCase
 
     public function tesIsGreaterOrEqualTo(): void
     {
-        ensure(42)->isNumeric()->isGreaterOrEqualTo(23);
-        ensure(42)->isNumeric()->isGreaterOrEqualTo(42);
+        ensure(42)->isNumeric()->isGreaterThanOrEqualTo(23);
+        ensure(42)->isNumeric()->isGreaterThanOrEqualTo(42);
 
-        ensure('42')->isNumeric()->isGreaterOrEqualTo(23);
-        ensure('42')->isNumeric()->isGreaterOrEqualTo(42);
+        ensure('42')->isNumeric()->isGreaterThanOrEqualTo(23);
+        ensure('42')->isNumeric()->isGreaterThanOrEqualTo(42);
     }
 
     public function testIsLessThan(): void
@@ -41,8 +55,8 @@ class NumericEnsuranceTest extends TestCase
 
     public function testIsLessOrEqualTo(): void
     {
-        ensure(23)->isNumeric()->isLessOrEqualTo(42);
-        ensure('23')->isNumeric()->isLessOrEqualTo(23);
+        ensure(23)->isNumeric()->isLessThanOrEqualTo(42);
+        ensure('23')->isNumeric()->isLessThanOrEqualTo(23);
     }
 
     public function testIsPositive(): void

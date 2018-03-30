@@ -20,7 +20,7 @@ trait EnsuranceTrait
      */
     private $ensured = true;
     /**
-     * @var Throwable
+     * @var
      */
     private $throwable;
 
@@ -32,6 +32,36 @@ trait EnsuranceTrait
         if ($this->hasThrowable()) {
             throw $this->throwable;
         }
+    }
+
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
+    final public function then($value)
+    {
+        return $this->disregardThrowable()->isEnsured() ? $value : $this->value;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
+    final public function else($value)
+    {
+        return $this->disregardThrowable()->isEnsured() ? $this->value : $value;
+    }
+
+    /**
+     * @param null $default
+     *
+     * @return null
+     */
+    final public function get($default = null)
+    {
+        return $this->value ?? $default;
     }
 
     /**
@@ -55,11 +85,39 @@ trait EnsuranceTrait
     }
 
     /**
-     * @return EnsuranceInterface
+     * @return self
      */
-    final public function disregardThrowable(): EnsuranceInterface
+    final public function disregardThrowable(): self
     {
         $this->throwable = null;
+
+        return $this;
+    }
+
+    /**
+     * @return Throwable
+     */
+    final public function releaseThrowable(): Throwable
+    {
+        try {
+            return $this->throwable;
+        } finally {
+            $this->disregardThrowable();
+        }
+    }
+
+    /**
+     * @param EnsuranceInterface $ensurance
+     *
+     * @return self
+     */
+    final public function transferEnsurance(EnsuranceInterface $ensurance): self
+    {
+        $this->value = $ensurance->get();
+        $this->ensure($ensurance->isEnsured());
+        if ($ensurance->hasThrowable()) {
+            $this->setThrowable($ensurance->releaseThrowable());
+        }
 
         return $this;
     }
@@ -90,9 +148,9 @@ trait EnsuranceTrait
     /**
      * @param Throwable $throwable
      *
-     * @return EnsuranceInterface
+     * @return self
      */
-    final public function setThrowable(Throwable $throwable): EnsuranceInterface
+    final public function setThrowable(Throwable $throwable): self
     {
         if (!$this->isEnsured()) {
             $this->throwable = $throwable;

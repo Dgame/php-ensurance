@@ -11,6 +11,27 @@ use Throwable;
 interface EnsuranceInterface
 {
     /**
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function then($value);
+
+    /**
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function else($value);
+
+    /**
+     * @param null $default
+     *
+     * @return mixed
+     */
+    public function get($default = null);
+
+    /**
      * @return bool
      */
     public function isEnsured(): bool;
@@ -18,6 +39,8 @@ interface EnsuranceInterface
     /**
      * @param string $message
      * @param mixed  ...$args
+     *
+     * @return mixed
      */
     public function orThrow(string $message, ...$args);
 
@@ -29,9 +52,9 @@ interface EnsuranceInterface
     /**
      * @param Throwable $throwable
      *
-     * @return self
+     * @return mixed
      */
-    public function setThrowable(Throwable $throwable): self;
+    public function setThrowable(Throwable $throwable);
 
     /**
      * @return Throwable
@@ -39,7 +62,19 @@ interface EnsuranceInterface
     public function getThrowable(): Throwable;
 
     /**
-     * @return EnsuranceInterface
+     * @return mixed
      */
-    public function disregardThrowable(): self;
+    public function disregardThrowable();
+
+    /**
+     * @return Throwable
+     */
+    public function releaseThrowable(): Throwable;
+
+    /**
+     * @param self $ensurance
+     *
+     * @return mixed
+     */
+    public function transferEnsurance(self $ensurance);
 }

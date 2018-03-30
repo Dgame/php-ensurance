@@ -13,11 +13,11 @@ final class StringEnsurance implements EnsuranceInterface
     /**
      * StringEnsurance constructor.
      *
-     * @param string $str
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct(string $str)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        $this->value = $str;
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -148,22 +148,23 @@ final class StringEnsurance implements EnsuranceInterface
     }
 
     /**
-     *
+     * @return StringEnsurance
      */
-    public function isCallable(): void
+    public function isCallable(): self
     {
         $this->ensure(is_callable($this->value))->orThrow('"%s" is not a callable', $this->value);
+
+        return $this;
     }
 
     /**
      * @return ClassEnsurance
-     * @throws Exception\EnsuranceException
      * @throws \ReflectionException
      */
     public function isClass(): ClassEnsurance
     {
         $this->ensure(class_exists($this->value))->orThrow('"%s" is not a callable', $this->value);
 
-        return new ClassEnsurance($this->value);
+        return new ClassEnsurance($this);
     }
 }

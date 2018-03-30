@@ -22,11 +22,9 @@ function ensure($value): Ensurance
  */
 function enforce(bool $condition, string $message = null): BooleanEnsurance
 {
-    $error     = new AssertionError($message ?? 'Assertion failed');
-    $ensurance = new BooleanEnsurance($condition);
-    $ensurance->setThrowable($error);
+    $error = new AssertionError($message ?? 'Assertion failed');
 
-    return $ensurance;
+    return ensure($condition)->isTrue()->setThrowable($error);
 }
 
 /**

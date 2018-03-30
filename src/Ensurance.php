@@ -28,7 +28,7 @@ final class Ensurance implements EnsuranceInterface
     {
         $this->ensure(is_array($this->value))->orThrow('Value is not an array: %s', $this->value);
 
-        return new ArrayEnsurance($this->value);
+        return new ArrayEnsurance($this);
     }
 
     /**
@@ -39,7 +39,7 @@ final class Ensurance implements EnsuranceInterface
     {
         $this->ensure(is_object($this->value))->orThrow('Value is not an object: %s', $this->value);
 
-        return new ObjectEnsurance($this->value);
+        return new ObjectEnsurance($this);
     }
 
     /**
@@ -59,7 +59,7 @@ final class Ensurance implements EnsuranceInterface
     {
         $this->ensure(is_scalar($this->value))->orThrow('Value is not a scalar: %s', $this->value);
 
-        return new ScalarEnsurance($this->value);
+        return new ScalarEnsurance($this);
     }
 
     /**
@@ -270,5 +270,67 @@ final class Ensurance implements EnsuranceInterface
         $this->ensure(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of %s', $this->value, $data);
 
         return $this;
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return NumericEnsurance
+     */
+    public function isGreaterThan(float $value): NumericEnsurance
+    {
+        return $this->isNumeric()->isGreaterThan($value);
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return NumericEnsurance
+     */
+    public function isLessThan(float $value): NumericEnsurance
+    {
+        return $this->isNumeric()->isLessThan($value);
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return NumericEnsurance
+     */
+    public function isGreaterThanOrEqualTo(float $value): NumericEnsurance
+    {
+        return $this->isNumeric()->isGreaterThanOrEqualTo($value);
+    }
+
+    /**
+     * @param float $value
+     *
+     * @return NumericEnsurance
+     */
+    public function isLessThanOrEqualTo(float $value): NumericEnsurance
+    {
+        return $this->isNumeric()->isLessThanOrEqualTo($value);
+    }
+
+    /**
+     * @param float $lhs
+     * @param float $rhs
+     *
+     * @return NumericEnsurance
+     */
+    public function isBetween(float $lhs, float $rhs): NumericEnsurance
+    {
+        return $this->isNumeric()->isBetween($lhs, $rhs);
+    }
+
+    /**
+     * @param float $lhs
+     * @param float $rhs
+     *
+     * @return NumericEnsurance
+     */
+    public function isNotBetween(float $lhs, float $rhs): NumericEnsurance
+    {
+        return $this->isNumeric()->isNotBetween($lhs, $rhs);
     }
 }

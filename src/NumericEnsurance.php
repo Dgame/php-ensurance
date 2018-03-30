@@ -17,13 +17,11 @@ final class NumericEnsurance implements EnsuranceInterface
     /**
      * NumericEnsurance constructor.
      *
-     * @param $number
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct($number)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        enforce(is_numeric($number))->setThrowable(new EnsuranceException('That is not a numerical value'));
-
-        $this->value = $number + 0; // PHP converts a numerical string to a float/int by adding another numerical value
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -63,7 +61,7 @@ final class NumericEnsurance implements EnsuranceInterface
      *
      * @return NumericEnsurance
      */
-    public function isGreaterOrEqualTo(float $value): self
+    public function isGreaterThanOrEqualTo(float $value): self
     {
         $this->ensure($this->value >= $value)->orThrow('"%s" is not greater or equal than "%s"', $this->value, $value);
 
@@ -87,7 +85,7 @@ final class NumericEnsurance implements EnsuranceInterface
      *
      * @return NumericEnsurance
      */
-    public function isLessOrEqualTo(float $value): self
+    public function isLessThanOrEqualTo(float $value): self
     {
         $this->ensure($this->value <= $value)->orThrow('"%s" is greater than "%s"', $this->value, $value);
 
@@ -99,7 +97,7 @@ final class NumericEnsurance implements EnsuranceInterface
      */
     public function isPositive(): self
     {
-        return $this->isGreaterOrEqualTo(0);
+        return $this->isGreaterThanOrEqualTo(0);
     }
 
     /**

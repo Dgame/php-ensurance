@@ -2,8 +2,6 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Exception\EnsuranceException;
-
 defined('PHP_FLOAT_EPSILON') or define('PHP_FLOAT_EPSILON', 2.2204460492503e-16);
 
 /**

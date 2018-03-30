@@ -11,7 +11,7 @@ class NumericEnsuranceTest extends TestCase
         ensure(42)->isInt();
     }
 
-    public function testIsNotInt()
+    public function testIsNotInt(): void
     {
         $this->expectException(EnsuranceException::class);
         $this->expectExceptionMessage('"42" is not an int');
@@ -24,7 +24,7 @@ class NumericEnsuranceTest extends TestCase
         ensure(4.2)->isFloat();
     }
 
-    public function testIsNotFloat()
+    public function testIsNotFloat(): void
     {
         $this->expectException(EnsuranceException::class);
         $this->expectExceptionMessage('"4.2" is not a float');

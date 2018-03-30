@@ -112,11 +112,26 @@ class NumericEnsuranceTest extends TestCase
         ensure(0)->isNumeric()->isNotBetween(1, 100);
     }
 
-    public function testInvalidNumber(): void
+    public function testEven(): void
     {
         $this->expectException(EnsuranceException::class);
         $this->expectExceptionMessage('not even');
 
         ensure(23)->isNumeric()->orThrow('nothing to see')->isEven()->orThrow('not even');
+    }
+
+    public function testInvalidNumber()
+    {
+        $catched = false;
+        try {
+            ensure('c')->isNumeric()->isGreaterThan(12);
+        } catch (Throwable $t) {
+            $catched = true;
+            $this->assertEquals('"c" is not greater than "12"', $t->getMessage());
+            $this->assertNotNull($t->getPrevious());
+            $this->assertEquals('"c" is not numeric', $t->getPrevious()->getMessage());
+        }
+
+        $this->assertTrue($catched);
     }
 }

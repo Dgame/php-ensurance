@@ -25,7 +25,7 @@ final class ScalarEnsurance implements EnsuranceInterface
      */
     public function isString(): StringEnsurance
     {
-        $this->ensure(is_string($this->value))->orThrow('That is not a string');
+        $this->ensure(is_string($this->value))->orThrow('"%s" is not a string', $this->value);
 
         return new StringEnsurance($this);
     }
@@ -35,7 +35,7 @@ final class ScalarEnsurance implements EnsuranceInterface
      */
     public function isNumeric(): NumericEnsurance
     {
-        $this->ensure(is_numeric($this->value))->orThrow('That is not numeric');
+        $this->ensure(is_numeric($this->value))->orThrow('"%s" is not numeric', $this->value);
 
         return new NumericEnsurance($this);
     }
@@ -45,7 +45,7 @@ final class ScalarEnsurance implements EnsuranceInterface
      */
     public function isBool(): BooleanEnsurance
     {
-        $this->ensure(is_bool($this->value))->orThrow('That is not a bool');
+        $this->ensure(is_bool($this->value))->orThrow('"%s" is not a bool', $this->value);
 
         return new BooleanEnsurance($this);
     }

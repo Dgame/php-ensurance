@@ -26,7 +26,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isArray(): ArrayEnsurance
     {
-        $this->ensure(is_array($this->value))->orThrow('Value is not an array: %s', $this->value);
+        $this->ensure(is_array($this->value))->orThrow('Value "%a" is not an array', $this->value);
 
         return new ArrayEnsurance($this);
     }
@@ -37,7 +37,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isObject(): ReflectionEnsurance
     {
-        $this->ensure(is_object($this->value))->orThrow('Value is not an object: %s', $this->value);
+        $this->ensure(is_object($this->value))->orThrow('Value "%s" is not an object', $this->value);
 
         return new ReflectionEnsurance($this);
     }
@@ -47,7 +47,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isResource(): self
     {
-        $this->ensure(is_resource($this->value))->orThrow('Value is not a resource: %s', $this->value);
+        $this->ensure(is_resource($this->value))->orThrow('Value "%s" is not a resource', $this->value);
 
         return $this;
     }
@@ -57,7 +57,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isScalar(): ScalarEnsurance
     {
-        $this->ensure(is_scalar($this->value))->orThrow('Value is not a scalar: %s', $this->value);
+        $this->ensure(is_scalar($this->value))->orThrow('Value "%s" is not a scalar', $this->value);
 
         return new ScalarEnsurance($this);
     }
@@ -165,7 +165,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isNull(): self
     {
-        $this->ensure($this->value === null)->orThrow('Value is not null: %s', $this->value);
+        $this->ensure($this->value === null)->orThrow('Value "%s" is not null', $this->value);
 
         return $this;
     }
@@ -175,7 +175,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isNotNull(): self
     {
-        $this->ensure($this->value !== null)->orThrow('Value is null: %s', $this->value);
+        $this->ensure($this->value !== null)->orThrow('Value is null', $this->value);
 
         return $this;
     }
@@ -185,7 +185,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isEmpty(): self
     {
-        $this->ensure(empty($this->value))->orThrow('Value is not empty: %s', $this->value);
+        $this->ensure(empty($this->value))->orThrow('Value "%s" is not empty', $this->value);
 
         return $this;
     }
@@ -195,7 +195,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isNotEmpty(): self
     {
-        $this->ensure(!empty($this->value))->orThrow('Value is empty: %s', $this->value);
+        $this->ensure(!empty($this->value))->orThrow('Value "%s" is empty', $this->value);
 
         return $this;
     }

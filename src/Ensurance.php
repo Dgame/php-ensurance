@@ -32,14 +32,14 @@ final class Ensurance implements EnsuranceInterface
     }
 
     /**
-     * @return ObjectEnsurance
+     * @return ReflectionEnsurance
      * @throws \ReflectionException
      */
-    public function isObject(): ObjectEnsurance
+    public function isObject(): ReflectionEnsurance
     {
         $this->ensure(is_object($this->value))->orThrow('Value is not an object: %s', $this->value);
 
-        return new ObjectEnsurance($this);
+        return new ReflectionEnsurance($this);
     }
 
     /**

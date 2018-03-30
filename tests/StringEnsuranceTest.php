@@ -78,8 +78,8 @@ class StringEnsuranceTest extends TestCase
     {
         ensure(static::class)->isString()->isClass();
 
-//        $this->expectException(EnsuranceException::class);
+        $this->expectException(EnsuranceException::class);
 
-//        ensure(uniqid())->isString()->isClass();
+        ensure(uniqid())->isString()->isClass();
     }
 }

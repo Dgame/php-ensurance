@@ -158,13 +158,13 @@ final class StringEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @return ClassEnsurance
+     * @return ReflectionEnsurance
      * @throws \ReflectionException
      */
-    public function isClass(): ClassEnsurance
+    public function isClass(): ReflectionEnsurance
     {
         $this->ensure(class_exists($this->value))->orThrow('"%s" is not a callable', $this->value);
 
-        return new ClassEnsurance($this);
+        return new ReflectionEnsurance($this);
     }
 }

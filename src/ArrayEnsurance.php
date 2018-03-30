@@ -2,29 +2,22 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-
 /**
  * Class ArrayEnsurance
  * @package Dgame\Ensurance
  */
-final class ArrayEnsurance
+final class ArrayEnsurance implements EnsuranceInterface
 {
-    /**
-     * @var array
-     */
-    private $values = [];
-
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * ArrayEnsurance constructor.
      *
-     * @param array $values
+     * @param array $value
      */
-    public function __construct(array $values)
+    public function __construct(array $value)
     {
-        $this->values = $values;
+        $this->value = $value;
     }
 
     /**
@@ -34,7 +27,8 @@ final class ArrayEnsurance
      */
     public function hasKey($key): self
     {
-        $this->enforce(array_key_exists($key, $this->values))->orThrow('Key "%s" is not contained in %s', $key, $this->values);
+        $this->ensure(array_key_exists($key, $this->value))
+             ->orThrow('Key "%s" is not contained in %s', $key, $this->value);
 
         return $this;
     }
@@ -46,7 +40,8 @@ final class ArrayEnsurance
      */
     public function hasValue($value): self
     {
-        $this->enforce(in_array($value, $this->values))->orThrow('Value "%s" is not contained in ', $value, $this->values);
+        $this->ensure(in_array($value, $this->value))
+             ->orThrow('Value "%s" is not contained in ', $value, $this->value);
 
         return $this;
     }
@@ -58,8 +53,8 @@ final class ArrayEnsurance
      */
     public function hasLengthOf(int $length): self
     {
-        $count = count($this->values);
-        $this->enforce($count === $length)->orThrow('array has not the length %d (%d)', $length, $count);
+        $count = count($this->value);
+        $this->ensure($count === $length)->orThrow('array has not the length %d (%d)', $length, $count);
 
         return $this;
     }
@@ -71,8 +66,8 @@ final class ArrayEnsurance
      */
     public function isShorterThan(int $length): self
     {
-        $count = count($this->values);
-        $this->enforce($count < $length)->orThrow('array is not shorter than %d (%d)', $length, $count);
+        $count = count($this->value);
+        $this->ensure($count < $length)->orThrow('array is not shorter than %d (%d)', $length, $count);
 
         return $this;
     }
@@ -84,8 +79,8 @@ final class ArrayEnsurance
      */
     public function isShorterOrEqualsTo(int $length): self
     {
-        $count = count($this->values);
-        $this->enforce($count <= $length)->orThrow('array is not shorter or equal to %d (%d)', $length, $count);
+        $count = count($this->value);
+        $this->ensure($count <= $length)->orThrow('array is not shorter or equal to %d (%d)', $length, $count);
 
         return $this;
     }
@@ -97,8 +92,8 @@ final class ArrayEnsurance
      */
     public function isLongerThan(int $length): self
     {
-        $count = count($this->values);
-        $this->enforce($count > $length)->orThrow('array is longer than %d (%d)', $length, $count);
+        $count = count($this->value);
+        $this->ensure($count > $length)->orThrow('array is longer than %d (%d)', $length, $count);
 
         return $this;
     }
@@ -110,8 +105,8 @@ final class ArrayEnsurance
      */
     public function isLongerOrEqualTo(int $length): self
     {
-        $count = count($this->values);
-        $this->enforce($count >= $length)->orThrow('array is not longer or equal to %d (%d)', $length, $count);
+        $count = count($this->value);
+        $this->ensure($count >= $length)->orThrow('array is not longer or equal to %d (%d)', $length, $count);
 
         return $this;
     }
@@ -121,8 +116,9 @@ final class ArrayEnsurance
      */
     public function isAssociative(): self
     {
-        $count = count($this->values);
-        $this->enforce(array_keys($this->values) !== range(0, $count - 1))->orThrow('array is not associative');
+        $count = count($this->value);
+        $this->ensure(array_keys($this->value) !== range(0, $count - 1))
+             ->orThrow('array %s is not associative', $this->value);
 
         return $this;
     }
@@ -132,17 +128,20 @@ final class ArrayEnsurance
      */
     public function isNotAssociative(): self
     {
-        $count = count($this->values);
-        $this->enforce(array_keys($this->values) === range(0, $count - 1))->orThrow('array is associative');
+        $count = count($this->value);
+        $this->ensure(array_keys($this->value) === range(0, $count - 1))
+             ->orThrow('array %s is associative', $this->value);
 
         return $this;
     }
 
     /**
-     *
+     * @return ArrayEnsurance
      */
-    public function isCallable()
+    public function isCallable(): self
     {
-        $this->enforce(is_callable($this->values))->orThrow('Value is not a callable');
+        $this->ensure(is_callable($this->value))->orThrow('Value is not a callable');
+
+        return $this;
     }
 }

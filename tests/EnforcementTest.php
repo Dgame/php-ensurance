@@ -12,7 +12,7 @@ class EnforcementTest extends TestCase
 {
     public function testAssertionWithoutMessage()
     {
-        $this->expectException(EnsuranceException::class);
+        $this->expectException(AssertionError::class);
         $this->expectExceptionMessage('Assertion failed');
 
         enforce(0);
@@ -20,7 +20,7 @@ class EnforcementTest extends TestCase
 
     public function testAssertionWithMessage()
     {
-        $this->expectException(EnsuranceException::class);
+        $this->expectException(AssertionError::class);
         $this->expectExceptionMessage('That should never happen');
 
         enforce(0, 'That should never happen');
@@ -44,6 +44,6 @@ class EnforcementTest extends TestCase
         $this->expectException(FooException::class);
         $this->expectExceptionMessage('That is false');
 
-        enforce(false)->orThrow(new FooException('That is false'));
+        enforce(false)->setThrowable(new FooException('That is false'));
     }
 }

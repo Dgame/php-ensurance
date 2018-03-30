@@ -2,20 +2,13 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-
 /**
  * Class Ensurance
  * @package Dgame\Ensurance
  */
-final class Ensurance
+final class Ensurance implements EnsuranceInterface
 {
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * Ensurance constructor.
@@ -25,14 +18,7 @@ final class Ensurance
     public function __construct($value)
     {
         $this->value = $value;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getValue()
-    {
-        return $this->value;
+        $this->ensure($value !== null && $value !== false);
     }
 
     /**
@@ -40,27 +26,30 @@ final class Ensurance
      */
     public function isArray(): ArrayEnsurance
     {
-        $this->enforce(is_array($this->value))->orThrow('Value is not an array: %s', $this->value);
+        $this->ensure(is_array($this->value))->orThrow('Value is not an array: %s', $this->value);
 
         return new ArrayEnsurance($this->value);
     }
 
     /**
      * @return ObjectEnsurance
+     * @throws \ReflectionException
      */
     public function isObject(): ObjectEnsurance
     {
-        $this->enforce(is_object($this->value))->orThrow('Value is not an object: %s', $this->value);
+        $this->ensure(is_object($this->value))->orThrow('Value is not an object: %s', $this->value);
 
         return new ObjectEnsurance($this->value);
     }
 
     /**
-     *
+     * @return Ensurance
      */
-    public function isResource()
+    public function isResource(): self
     {
-        $this->enforce(is_resource($this->value))->orThrow('Value is not a resource: %s', $this->value);
+        $this->ensure(is_resource($this->value))->orThrow('Value is not a resource: %s', $this->value);
+
+        return $this;
     }
 
     /**
@@ -68,7 +57,7 @@ final class Ensurance
      */
     public function isScalar(): ScalarEnsurance
     {
-        $this->enforce(is_scalar($this->value))->orThrow('Value is not a scalar: %s', $this->value);
+        $this->ensure(is_scalar($this->value))->orThrow('Value is not a scalar: %s', $this->value);
 
         return new ScalarEnsurance($this->value);
     }
@@ -166,9 +155,9 @@ final class Ensurance
      *
      * @return StringEnsurance
      */
-    public function match(string $pattern): StringEnsurance
+    public function matches(string $pattern): StringEnsurance
     {
-        return $this->isString()->match($pattern);
+        return $this->isString()->matches($pattern);
     }
 
     /**
@@ -176,7 +165,7 @@ final class Ensurance
      */
     public function isNull(): self
     {
-        $this->enforce($this->value === null)->orThrow('Value is not null: %s', $this->value);
+        $this->ensure($this->value === null)->orThrow('Value is not null: %s', $this->value);
 
         return $this;
     }
@@ -186,7 +175,7 @@ final class Ensurance
      */
     public function isNotNull(): self
     {
-        $this->enforce($this->value !== null)->orThrow('Value is null: %s', $this->value);
+        $this->ensure($this->value !== null)->orThrow('Value is null: %s', $this->value);
 
         return $this;
     }
@@ -196,7 +185,7 @@ final class Ensurance
      */
     public function isEmpty(): self
     {
-        $this->enforce(empty($this->value))->orThrow('Value is not empty: %s', $this->value);
+        $this->ensure(empty($this->value))->orThrow('Value is not empty: %s', $this->value);
 
         return $this;
     }
@@ -206,7 +195,7 @@ final class Ensurance
      */
     public function isNotEmpty(): self
     {
-        $this->enforce(!empty($this->value))->orThrow('Value is empty: %s', $this->value);
+        $this->ensure(!empty($this->value))->orThrow('Value is empty: %s', $this->value);
 
         return $this;
     }
@@ -218,7 +207,7 @@ final class Ensurance
      */
     public function isEqualTo($value): self
     {
-        $this->enforce($this->value == $value)->orThrow('"%s" is not equal to "%s"', $this->value, $value);
+        $this->ensure($this->value == $value)->orThrow('"%s" is not equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -230,7 +219,7 @@ final class Ensurance
      */
     public function isNotEqualTo($value): self
     {
-        $this->enforce($this->value != $value)->orThrow('"%s" is equal to "%s"', $this->value, $value);
+        $this->ensure($this->value != $value)->orThrow('"%s" is equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -240,9 +229,9 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isSameAs($value): self
+    public function isIdenticalTo($value): self
     {
-        $this->enforce($this->value === $value)->orThrow('"%s" is not the same as "%s"', $this->value, $value);
+        $this->ensure($this->value === $value)->orThrow('"%s" is not the same as "%s"', $this->value, $value);
 
         return $this;
     }
@@ -252,9 +241,9 @@ final class Ensurance
      *
      * @return Ensurance
      */
-    public function isNotSameAs($value): self
+    public function isNotIdenticalTo($value): self
     {
-        $this->enforce($this->value !== $value)->orThrow('"%s" is the same as "%s"', $this->value, $value);
+        $this->ensure($this->value !== $value)->orThrow('"%s" is the same as "%s"', $this->value, $value);
 
         return $this;
     }
@@ -266,7 +255,7 @@ final class Ensurance
      */
     public function isIn(array $data): self
     {
-        $this->enforce(in_array($this->value, $data))->orThrow('"%s" is not a value of %s', $this->value, $data);
+        $this->ensure(in_array($this->value, $data))->orThrow('"%s" is not a value of %s', $this->value, $data);
 
         return $this;
     }
@@ -278,7 +267,7 @@ final class Ensurance
      */
     public function isKeyOf(array $data): self
     {
-        $this->enforce(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of %s', $this->value, $data);
+        $this->ensure(array_key_exists($this->value, $data))->orThrow('"%s" is not a key of %s', $this->value, $data);
 
         return $this;
     }

@@ -16,9 +16,9 @@ class StringEnsuranceTest extends TestCase
         ensure('foo')->isString()->isNotEqualTo('bar');
     }
 
-    public function testMatch()
+    public function testMatches()
     {
-        ensure('test@foo')->isString()->match('#^[a-z]+@\w{3}$#i');
+        ensure('test@foo')->isString()->matches('#^[a-z]+@\w{3}$#i');
     }
 
     public function testHasLengthOf()

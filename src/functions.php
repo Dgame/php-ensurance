@@ -2,7 +2,7 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\Enforcement;
+use AssertionError;
 
 /**
  * @param $value
@@ -18,34 +18,34 @@ function ensure($value): Ensurance
  * @param bool        $condition
  * @param string|null $message
  *
- * @return Enforcement
+ * @return BooleanEnsurance
  */
-function enforce(bool $condition, string $message = null): Enforcement
+function enforce(bool $condition, string $message = null): BooleanEnsurance
 {
-    return new Enforcement($condition, $message);
+    $error     = new AssertionError($message ?? 'Assertion failed');
+    $ensurance = new BooleanEnsurance($condition);
+    $ensurance->setThrowable($error);
+
+    return $ensurance;
 }
 
 /**
- * @param bool        $condition
- * @param string|null $message
+ * @param string $message
+ * @param mixed  ...$args
  *
- * @throws \AssertionError
+ * @return string
  */
-function assertion(bool $condition, string $message = null)
+function format(string $message, ...$args): string
 {
-    if (!$condition) {
-        throw new \AssertionError($message ?? 'Assertion failed');
+    if (empty($args)) {
+        return $message;
     }
-}
 
-/**
- * @param bool        $condition
- * @param string|null $message
- *
- * @throws \AssertionError
- * @deprecated Use assertion instead. `assure` is just an alias for `assertion`, since `assertion` is a more meaningful name.
- */
-function assure(bool $condition, string $message = null)
-{
-    assertion($condition, $message);
+    foreach ($args as &$arg) {
+        if (is_array($arg) || is_object($arg)) {
+            $arg = print_r($arg, true);
+        }
+    }
+
+    return sprintf($message, ...$args);
 }

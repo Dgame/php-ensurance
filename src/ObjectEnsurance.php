@@ -11,26 +11,24 @@ use Dgame\Ensurance\Exception\EnsuranceException;
 final class ObjectEnsurance extends ClassEnsurance
 {
     /**
-     * @var object
+     * @var string
      */
-    private $object;
+    private $class;
 
     /**
      * ObjectEnsurance constructor.
      *
      * @param $object
      *
-     * @throws EnsuranceException
+     * @throws \ReflectionException
      */
     public function __construct($object)
     {
-        if (!is_object($object)) {
-            throw new EnsuranceException('That is not an object');
-        }
+        enforce(is_object($object))->setThrowable(new EnsuranceException('That is not an object'));
 
         parent::__construct(get_class($object));
 
-        $this->object = $object;
+        $this->class = $object;
     }
 
     /**
@@ -40,7 +38,7 @@ final class ObjectEnsurance extends ClassEnsurance
      */
     public function isSome(string $class): self
     {
-        $this->enforce(is_a($this->object, $class))->orThrow('"%s" is not "%s"', get_class($this->object), $class);
+        $this->ensure(is_a($this->class, $class))->orThrow('"%s" is not "%s"', get_class($this->class), $class);
 
         return $this;
     }
@@ -52,7 +50,7 @@ final class ObjectEnsurance extends ClassEnsurance
      */
     public function isNotSome(string $class): self
     {
-        $this->enforce(!is_a($this->object, $class))->orThrow('"%s" is "%s"', get_class($this->object), $class);
+        $this->ensure(!is_a($this->class, $class))->orThrow('"%s" is "%s"', get_class($this->class), $class);
 
         return $this;
     }
@@ -65,7 +63,7 @@ final class ObjectEnsurance extends ClassEnsurance
     public function isInstanceOf($class): self
     {
         $class = is_object($class) ? get_class($class) : $class;
-        $this->enforce($this->object instanceof $class)->orThrow('"%s" is not an instance of "%s"', get_class($this->object), $class);
+        $this->ensure($this->class instanceof $class)->orThrow('"%s" is not an instance of "%s"', get_class($this->class), $class);
 
         return $this;
     }
@@ -78,7 +76,7 @@ final class ObjectEnsurance extends ClassEnsurance
     public function isNotInstanceOf($class): self
     {
         $class = is_object($class) ? get_class($class) : $class;
-        $this->enforce(!($this->object instanceof $class))->orThrow('"%s" is an instance of "%s"', get_class($this->object), $class);
+        $this->ensure(!($this->class instanceof $class))->orThrow('"%s" is an instance of "%s"', get_class($this->class), $class);
 
         return $this;
     }

@@ -2,50 +2,35 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-use Dgame\Ensurance\Exception\EnsuranceException;
+use Dgame\Ensurance\Exception\EnsuranceFormatException;
 use ReflectionClass;
 
 /**
  * Class ClassEnsurance
  * @package Dgame\Ensurance
  */
-class ClassEnsurance
+class ClassEnsurance implements EnsuranceInterface
 {
-    /**
-     * @var string
-     */
-    private $class;
     /**
      * @var ReflectionClass
      */
     private $reflection;
 
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * ClassEnsurance constructor.
      *
      * @param string $class
      *
-     * @throws EnsuranceException
+     * @throws \ReflectionException
      */
     public function __construct(string $class)
     {
-        if (!class_exists($class)) {
-            throw new EnsuranceException('"%s" is not a class', $class);
-        }
+        enforce(class_exists($class))->setThrowable(new EnsuranceFormatException('"%s" is not a class', $class));
 
-        $this->class      = $class;
+        $this->value      = $class;
         $this->reflection = new ReflectionClass($class);
-    }
-
-    /**
-     * @return string
-     */
-    final protected function getClass(): string
-    {
-        return $this->class;
     }
 
     /**
@@ -63,7 +48,7 @@ class ClassEnsurance
      */
     public function is(string $class): self
     {
-        $this->enforce($this->class === $class)->orThrow('"%s" is not "%s"', $this->class, $class);
+        $this->ensure($this->value === $class)->orThrow('"%s" is not "%s"', $this->value, $class);
 
         return $this;
     }
@@ -75,7 +60,7 @@ class ClassEnsurance
      */
     public function isNot(string $class): self
     {
-        $this->enforce($this->class !== $class)->orThrow('"%s" is "%s"', $this->class, $class);
+        $this->ensure($this->value !== $class)->orThrow('"%s" is "%s"', $this->value, $class);
 
         return $this;
     }
@@ -87,7 +72,7 @@ class ClassEnsurance
      */
     public function extends(string $class): self
     {
-        $this->enforce($this->reflection->isSubclassOf($class))->orThrow('"%s" did not extend "%s"', $this->class, $class);
+        $this->ensure($this->reflection->isSubclassOf($class))->orThrow('"%s" did not extend "%s"', $this->value, $class);
 
         return $this;
     }
@@ -99,7 +84,7 @@ class ClassEnsurance
      */
     public function extendsNot(string $class): self
     {
-        $this->enforce(!$this->reflection->isSubclassOf($class))->orThrow('"%s" did extend "%s"', $this->class, $class);
+        $this->ensure(!$this->reflection->isSubclassOf($class))->orThrow('"%s" did extend "%s"', $this->value, $class);
 
         return $this;
     }
@@ -111,8 +96,8 @@ class ClassEnsurance
      */
     public function implements(string $interface): self
     {
-        $this->enforce(array_key_exists($interface, class_implements($this->class, true)))
-             ->orThrow('"%s" does not implements interface "%s"', $this->class, $interface);
+        $this->ensure(array_key_exists($interface, class_implements($this->value, true)))
+             ->orThrow('"%s" does not implements interface "%s"', $this->value, $interface);
 
         return $this;
     }
@@ -124,8 +109,8 @@ class ClassEnsurance
      */
     public function implementsNot(string $interface): self
     {
-        $this->enforce(!array_key_exists($interface, class_implements($this->class, true)))
-             ->orThrow('"%s" does implements interface "%s"', $this->class, $interface);
+        $this->ensure(!array_key_exists($interface, class_implements($this->value, true)))
+             ->orThrow('"%s" does implements interface "%s"', $this->value, $interface);
 
         return $this;
     }
@@ -137,8 +122,8 @@ class ClassEnsurance
      */
     public function isParentOf(string $class): self
     {
-        $this->enforce(array_key_exists($this->class, class_parents($class, true)))
-             ->orThrow('"%s" is not a parent of "%s"', $this->class, $class);
+        $this->ensure(array_key_exists($this->value, class_parents($class, true)))
+             ->orThrow('"%s" is not a parent of "%s"', $this->value, $class);
 
         return $this;
     }
@@ -150,8 +135,8 @@ class ClassEnsurance
      */
     public function isNotParentOf(string $class): self
     {
-        $this->enforce(!array_key_exists($this->class, class_parents($class, true)))
-             ->orThrow('"%s" is a parent of "%s"', $this->class, $class);
+        $this->ensure(!array_key_exists($this->value, class_parents($class, true)))
+             ->orThrow('"%s" is a parent of "%s"', $this->value, $class);
 
         return $this;
     }
@@ -163,8 +148,8 @@ class ClassEnsurance
      */
     public function uses(string $trait): self
     {
-        $this->enforce(array_key_exists($trait, class_uses($this->class, true)))
-             ->orThrow('"%s" does not use trait "%s"', $this->class, $trait);
+        $this->ensure(array_key_exists($trait, class_uses($this->value, true)))
+             ->orThrow('"%s" does not use trait "%s"', $this->value, $trait);
 
         return $this;
     }
@@ -176,8 +161,8 @@ class ClassEnsurance
      */
     public function hasProperty(string $property): self
     {
-        $this->enforce($this->reflection->hasProperty($property))
-             ->orThrow('"%s" does not have a property "%s"', $this->class, $property);
+        $this->ensure($this->reflection->hasProperty($property))
+             ->orThrow('"%s" does not have a property "%s"', $this->value, $property);
 
         return $this;
     }
@@ -189,8 +174,8 @@ class ClassEnsurance
      */
     public function hasMethod(string $method): self
     {
-        $this->enforce($this->reflection->hasMethod($method))
-             ->orThrow('"%s" does not have a method "%s"', $this->class, $method);
+        $this->ensure($this->reflection->hasMethod($method))
+             ->orThrow('"%s" does not have a method "%s"', $this->value, $method);
 
         return $this;
     }

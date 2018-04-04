@@ -75,9 +75,9 @@ class EnsuranceTest extends TestCase
     }
 
     public function testIsEven(): void
-{
-    $this->assertEquals('foo', ensure(42)->isEven()->then('foo'));
-}
+    {
+        $this->assertEquals('foo', ensure(42)->isEven()->then('foo'));
+    }
 
     public function testIsOdd(): void
     {

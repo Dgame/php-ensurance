@@ -20,7 +20,7 @@ ensure('foo')->isString()->isNotEqualTo('bar');
 
 ### pattern
 ```php
-ensure('test@foo')->isString()->match('#^[a-z]+@\w{3}$#i');
+ensure('test@foo')->isString()->matches('#^[a-z]+@\w{3}$#i');
 ensure('FooBar')->isString()->beginsWith('Fo');
 ensure('FooBar')->isString()->endsWith('ar');
 ```
@@ -142,7 +142,6 @@ You can also specify your own Exception messages:
 ensure(1 === 1)->isTrue()->orThrow('You will never see this error');
 ```
 
-
 # Enforcement
 
 If you want to enforce that some condition is true, use `enforce`:
@@ -150,12 +149,24 @@ If you want to enforce that some condition is true, use `enforce`:
 enforce(true)->orThrow('That is not true...');
 ```
 
-# Assurance
-
-If you want to assure that some condition is true, you could use the PHP `assert` function. Sadly, PHP assertions are disabled in production mode, but `assure` is not:
-
+If you don't specify a Throwable, an `AssertionError` will be used:
 ```php
-assure(0);
+enforce(0); // throws AssertionError
 ```
 
-Will throw an AssertionError as a correctly configured `assert` would do.
+# Expectations
+
+Bind expectations to your values and offer default values if the expectation don't apply.
+You can either use `else` or `then` to evaluate if an Throwable was thrown. The usage of `else` or `then` will disregard and invalidate the Throwable internally:
+
+```php
+$this->assertEquals('foo', ensure(42)->isEven()->then('foo'));
+$this->assertEquals(23, ensure(42)->isOdd()->else(23));
+```
+
+also you can use `either ... or` to set values for both outcomes:
+
+```php
+$this->assertTrue(ensure(42)->isOdd()->either(false)->or(true));
+$this->assertFalse(ensure(23)->isOdd()->either(false)->or(true));
+```

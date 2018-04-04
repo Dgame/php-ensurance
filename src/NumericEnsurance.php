@@ -2,38 +2,24 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-use Dgame\Ensurance\Exception\EnsuranceException;
+defined('PHP_FLOAT_EPSILON') or define('PHP_FLOAT_EPSILON', 2.2204460492503e-16);
 
 /**
  * Class NumericEnsurance
  * @package Dgame\Ensurance
  */
-final class NumericEnsurance
+final class NumericEnsurance implements EnsuranceInterface
 {
-    const EPSILON = 0.00001;
-
-    /**
-     * @var int|float
-     */
-    private $number;
-
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * NumericEnsurance constructor.
      *
-     * @param $number
-     *
-     * @throws EnsuranceException
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct($number)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        if (!is_numeric($number)) {
-            throw new EnsuranceException('That is not a numerical value');
-        }
-
-        $this->number = $number + 0; // PHP converts a numerical string to a float/int by adding another numerical value
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -41,7 +27,7 @@ final class NumericEnsurance
      */
     public function isInt(): self
     {
-        $this->enforce(is_int($this->number))->orThrow('"%s" is not an int', $this->number);
+        $this->ensure(is_int($this->value))->orThrow('"%s" is not an int', $this->value);
 
         return $this;
     }
@@ -51,7 +37,7 @@ final class NumericEnsurance
      */
     public function isFloat(): self
     {
-        $this->enforce(is_float($this->number))->orThrow('"%s" is not a float', $this->number);
+        $this->ensure(is_float($this->value))->orThrow('"%s" is not a float', $this->value);
 
         return $this;
     }
@@ -63,7 +49,7 @@ final class NumericEnsurance
      */
     public function isGreaterThan(float $value): self
     {
-        $this->enforce($this->number > $value)->orThrow('"%s" is not greater than "%s"', $this->number, $value);
+        $this->ensure($this->value > $value)->orThrow('"%s" is not greater than "%s"', $this->value, $value);
 
         return $this;
     }
@@ -73,9 +59,9 @@ final class NumericEnsurance
      *
      * @return NumericEnsurance
      */
-    public function isGreaterOrEqualTo(float $value): self
+    public function isGreaterThanOrEqualTo(float $value): self
     {
-        $this->enforce($this->number >= $value)->orThrow('"%s" is not greater or equal than "%s"', $this->number, $value);
+        $this->ensure($this->value >= $value)->orThrow('"%s" is not greater or equal than "%s"', $this->value, $value);
 
         return $this;
     }
@@ -87,7 +73,7 @@ final class NumericEnsurance
      */
     public function isLessThan(float $value): self
     {
-        $this->enforce($this->number < $value)->orThrow('"%s" is greater or equal to "%s"', $this->number, $value);
+        $this->ensure($this->value < $value)->orThrow('"%s" is greater or equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -97,9 +83,9 @@ final class NumericEnsurance
      *
      * @return NumericEnsurance
      */
-    public function isLessOrEqualTo(float $value): self
+    public function isLessThanOrEqualTo(float $value): self
     {
-        $this->enforce($this->number <= $value)->orThrow('"%s" is greater than "%s"', $this->number, $value);
+        $this->ensure($this->value <= $value)->orThrow('"%s" is greater than "%s"', $this->value, $value);
 
         return $this;
     }
@@ -109,7 +95,7 @@ final class NumericEnsurance
      */
     public function isPositive(): self
     {
-        return $this->isGreaterOrEqualTo(0);
+        return $this->isGreaterThanOrEqualTo(0);
     }
 
     /**
@@ -125,7 +111,7 @@ final class NumericEnsurance
      */
     public function isEven(): self
     {
-        $this->enforce(($this->number & 1) === 0)->orThrow('"%s is not even"', $this->number);
+        $this->ensure(($this->value & 1) === 0)->orThrow('"%s is not even"', $this->value);
 
         return $this;
     }
@@ -135,7 +121,7 @@ final class NumericEnsurance
      */
     public function isOdd(): self
     {
-        $this->enforce(($this->number & 1) === 1)->orThrow('"%s is not odd"', $this->number);
+        $this->ensure(($this->value & 1) === 1)->orThrow('"%s is not odd"', $this->value);
 
         return $this;
     }
@@ -147,7 +133,7 @@ final class NumericEnsurance
      */
     public function isEqualTo(float $value): self
     {
-        $this->enforce(abs($this->number - $value) < self::EPSILON)->orThrow('"%s" is not equal to "%s"', $this->number, $value);
+        $this->ensure(abs($this->value - $value) < PHP_FLOAT_EPSILON)->orThrow('"%s" is not equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -159,7 +145,7 @@ final class NumericEnsurance
      */
     public function isNotEqualTo(float $value): self
     {
-        $this->enforce(abs($this->number - $value) > self::EPSILON)->orThrow('"%s" is equal to "%s"', $this->number, $value);
+        $this->ensure(abs($this->value - $value) > PHP_FLOAT_EPSILON)->orThrow('"%s" is equal to "%s"', $this->value, $value);
 
         return $this;
     }
@@ -172,8 +158,8 @@ final class NumericEnsurance
      */
     public function isBetween(float $lhs, float $rhs): self
     {
-        $this->enforce($lhs <= $this->number && $rhs >= $this->number)
-             ->orThrow('"%s" is not between "%s" and "%s"', $this->number, $lhs, $rhs);
+        $this->ensure($lhs <= $this->value && $rhs >= $this->value)
+             ->orThrow('"%s" is not between "%s" and "%s"', $this->value, $lhs, $rhs);
 
         return $this;
     }
@@ -186,8 +172,8 @@ final class NumericEnsurance
      */
     public function isNotBetween(float $lhs, float $rhs): self
     {
-        $this->enforce($lhs > $this->number || $rhs < $this->number)
-             ->orThrow('"%s" is between "%s" and "%s"', $this->number, $lhs, $rhs);
+        $this->ensure($lhs > $this->value || $rhs < $this->value)
+             ->orThrow('"%s" is between "%s" and "%s"', $this->value, $lhs, $rhs);
 
         return $this;
     }

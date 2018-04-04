@@ -10,28 +10,28 @@ class FooException extends Exception
 
 class EnforcementTest extends TestCase
 {
-    public function testAssertionWithoutMessage()
+    public function testAssertionWithoutMessage(): void
     {
-        $this->expectException(EnsuranceException::class);
+        $this->expectException(AssertionError::class);
         $this->expectExceptionMessage('Assertion failed');
 
         enforce(0);
     }
 
-    public function testAssertionWithMessage()
+    public function testAssertionWithMessage(): void
     {
-        $this->expectException(EnsuranceException::class);
+        $this->expectException(AssertionError::class);
         $this->expectExceptionMessage('That should never happen');
 
         enforce(0, 'That should never happen');
     }
 
-    public function testValidEnforce()
+    public function testValidEnforce(): void
     {
         enforce(true)->orThrow('That is not true?!');
     }
 
-    public function testInvalidEnforce()
+    public function testInvalidEnforce(): void
     {
         $this->expectException(EnsuranceException::class);
         $this->expectExceptionMessage('That is false');
@@ -39,11 +39,11 @@ class EnforcementTest extends TestCase
         enforce(false)->orThrow('That is false');
     }
 
-    public function testInvalidEnforceWithException()
+    public function testInvalidEnforceWithException(): void
     {
         $this->expectException(FooException::class);
         $this->expectExceptionMessage('That is false');
 
-        enforce(false)->orThrow(new FooException('That is false'));
+        enforce(false)->setThrowable(new FooException('That is false'));
     }
 }

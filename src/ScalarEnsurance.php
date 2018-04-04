@@ -2,36 +2,22 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-use Dgame\Ensurance\Exception\EnsuranceException;
-
 /**
  * Class ScalarEnsurance
  * @package Dgame\Ensurance
  */
-final class ScalarEnsurance
+final class ScalarEnsurance implements EnsuranceInterface
 {
-    /**
-     * @var bool|float|int|string
-     */
-    private $scalar;
-
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * ScalarEnsurance constructor.
      *
-     * @param $scalar
-     *
-     * @throws EnsuranceException
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct($scalar)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        if (!is_scalar($scalar)) {
-            throw new EnsuranceException('That is not a scalar value');
-        }
-
-        $this->scalar = $scalar;
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -39,9 +25,9 @@ final class ScalarEnsurance
      */
     public function isString(): StringEnsurance
     {
-        $this->enforce(is_string($this->scalar))->orThrow('That is not a string');
+        $this->ensure(is_string($this->value))->orThrow('"%s" is not a string', $this->value);
 
-        return new StringEnsurance($this->scalar);
+        return new StringEnsurance($this);
     }
 
     /**
@@ -49,9 +35,9 @@ final class ScalarEnsurance
      */
     public function isNumeric(): NumericEnsurance
     {
-        $this->enforce(is_numeric($this->scalar))->orThrow('That is not numeric');
+        $this->ensure(is_numeric($this->value))->orThrow('"%s" is not numeric', $this->value);
 
-        return new NumericEnsurance($this->scalar);
+        return new NumericEnsurance($this);
     }
 
     /**
@@ -59,8 +45,8 @@ final class ScalarEnsurance
      */
     public function isBool(): BooleanEnsurance
     {
-        $this->enforce(is_bool($this->scalar))->orThrow('That is not a bool');
+        $this->ensure(is_bool($this->value))->orThrow('"%s" is not a bool', $this->value);
 
-        return new BooleanEnsurance($this->scalar);
+        return new BooleanEnsurance($this);
     }
 }

@@ -6,7 +6,7 @@ use function Dgame\Ensurance\ensure;
 
 class BooleanEnsuranceTest extends TestCase
 {
-    public function testIsTrue()
+    public function testIsTrue(): void
     {
         ensure((2 * 3) === (3 * 2))->isTrue();
 
@@ -15,7 +15,7 @@ class BooleanEnsuranceTest extends TestCase
         ensure((2 * 2) === (3 * 2))->isTrue();
     }
 
-    public function testIsFalse()
+    public function testIsFalse(): void
     {
         ensure((2 * 3) === (3 * 3))->isFalse();
 

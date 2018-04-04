@@ -2,29 +2,22 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-
 /**
  * Class BooleanEnsurance
  * @package Dgame\Ensurance
  */
-final class BooleanEnsurance
+final class BooleanEnsurance implements EnsuranceInterface
 {
-    /**
-     * @var bool
-     */
-    private $condition;
-
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * BooleanEnsurance constructor.
      *
-     * @param bool $condition
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct(bool $condition)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        $this->condition = $condition;
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -32,7 +25,7 @@ final class BooleanEnsurance
      */
     public function isTrue(): self
     {
-        $this->enforce($this->condition === true)->orThrow('The value is not true');
+        $this->ensure($this->value)->orThrow('The value is not true');
 
         return $this;
     }
@@ -42,7 +35,7 @@ final class BooleanEnsurance
      */
     public function isFalse(): self
     {
-        $this->enforce($this->condition === false)->orThrow('The value is true');
+        $this->ensure(!$this->value)->orThrow('The value is true');
 
         return $this;
     }

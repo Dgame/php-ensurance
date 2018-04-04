@@ -6,7 +6,7 @@ use function Dgame\Ensurance\ensure;
 
 class ArrayEnsuranceTest extends TestCase
 {
-    public function testHasKey()
+    public function testHasKey(): void
     {
         ensure(['a' => 'b'])->isArray()->hasKey('a');
 
@@ -15,7 +15,7 @@ class ArrayEnsuranceTest extends TestCase
         ensure(['a' => 'b'])->isArray()->hasKey('b');
     }
 
-    public function testHasValue()
+    public function testHasValue(): void
     {
         ensure(['a', 'b'])->isArray()->hasValue('a');
         ensure(['a', 'b'])->isArray()->hasValue('b');
@@ -25,35 +25,35 @@ class ArrayEnsuranceTest extends TestCase
         ensure(['a', 'b'])->isArray()->hasValue('c');
     }
 
-    public function testHasLengthOf()
+    public function testHasLengthOf(): void
     {
         ensure([])->isArray()->hasLengthOf(0);
         ensure(range(0, 99))->isArray()->hasLengthOf(100);
     }
 
-    public function testIsShorterThan()
+    public function testIsShorterThan(): void
     {
         ensure([1, 2, 3])->isArray()->isShorterThan(4);
     }
 
-    public function testIsShorterOrEqualsTo()
+    public function testIsShorterOrEqualsTo(): void
     {
         ensure([1, 2, 3])->isArray()->isShorterOrEqualsTo(4);
         ensure([1, 2, 3])->isArray()->isShorterOrEqualsTo(3);
     }
 
-    public function testIsLongerThan()
+    public function testIsLongerThan(): void
     {
         ensure([1, 2, 3])->isArray()->isLongerThan(2);
     }
 
-    public function testIsLongerOrEqualTo()
+    public function testIsLongerOrEqualTo(): void
     {
         ensure([1, 2, 3])->isArray()->isLongerOrEqualTo(3);
         ensure([1, 2, 3])->isArray()->isLongerOrEqualTo(2);
     }
 
-    public function testIsAssociative()
+    public function testIsAssociative(): void
     {
         ensure(['a' => 'b'])->isArray()->isAssociative();
 
@@ -62,7 +62,7 @@ class ArrayEnsuranceTest extends TestCase
         ensure(['a', 'b'])->isArray()->isAssociative();
     }
 
-    public function testIsNotAssociative()
+    public function testIsNotAssociative(): void
     {
         ensure(['a', 'b'])->isArray()->isNotAssociative();
 

@@ -2,29 +2,22 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Ensurance\Enforcement\EnforcementTrait;
-
 /**
  * Class StringEnsurance
  * @package Dgame\Ensurance
  */
-final class StringEnsurance
+final class StringEnsurance implements EnsuranceInterface
 {
-    /**
-     * @var string
-     */
-    private $value;
-
-    use EnforcementTrait;
+    use EnsuranceTrait;
 
     /**
      * StringEnsurance constructor.
      *
-     * @param string $str
+     * @param EnsuranceInterface $ensurance
      */
-    public function __construct(string $str)
+    public function __construct(EnsuranceInterface $ensurance)
     {
-        $this->value = $str;
+        $this->transferEnsurance($ensurance);
     }
 
     /**
@@ -34,7 +27,7 @@ final class StringEnsurance
      */
     public function isEqualTo(string $str): self
     {
-        $this->enforce($this->value === $str)->orThrow('"%s" is not equal to "%s"', $this->value, $str);
+        $this->ensure($this->value === $str)->orThrow('"%s" is not equal to "%s"', $this->value, $str);
 
         return $this;
     }
@@ -46,7 +39,7 @@ final class StringEnsurance
      */
     public function isNotEqualTo(string $str): self
     {
-        $this->enforce($this->value !== $str)->orThrow('"%s" is equal to "%s"', $this->value, $str);
+        $this->ensure($this->value !== $str)->orThrow('"%s" is equal to "%s"', $this->value, $str);
 
         return $this;
     }
@@ -56,9 +49,9 @@ final class StringEnsurance
      *
      * @return StringEnsurance
      */
-    public function match(string $pattern): self
+    public function matches(string $pattern): self
     {
-        $this->enforce((bool) preg_match($pattern, $this->value))->orThrow('"%s" does not match pattern "%s"', $this->value, $pattern);
+        $this->ensure((bool) preg_match($pattern, $this->value))->orThrow('"%s" does not match pattern "%s"', $this->value, $pattern);
 
         return $this;
     }
@@ -71,7 +64,7 @@ final class StringEnsurance
     public function hasLengthOf(int $length): self
     {
         $len = strlen($this->value);
-        $this->enforce($len === $length)->orThrow('"%s" (%d) has not the length of %d', $this->value, $len, $length);
+        $this->ensure($len === $length)->orThrow('"%s" (%d) has not the length of %d', $this->value, $len, $length);
 
         return $this;
     }
@@ -84,7 +77,7 @@ final class StringEnsurance
     public function isShorterThan(int $length): self
     {
         $len = strlen($this->value);
-        $this->enforce($len < $length)->orThrow('"%s" (%d) is not shorter than %d', $this->value, $len, $length);
+        $this->ensure($len < $length)->orThrow('"%s" (%d) is not shorter than %d', $this->value, $len, $length);
 
         return $this;
     }
@@ -97,7 +90,7 @@ final class StringEnsurance
     public function isShorterOrEqualTo(int $length): self
     {
         $len = strlen($this->value);
-        $this->enforce($len <= $length)->orThrow('"%s" (%d) is not shorter or equal to %d', $this->value, $len, $length);
+        $this->ensure($len <= $length)->orThrow('"%s" (%d) is not shorter or equal to %d', $this->value, $len, $length);
 
         return $this;
     }
@@ -110,7 +103,7 @@ final class StringEnsurance
     public function isLongerThan(int $length): self
     {
         $len = strlen($this->value);
-        $this->enforce($len > $length)->orThrow('"%s" (%d) is longer than %d', $this->value, $len, $length);
+        $this->ensure($len > $length)->orThrow('"%s" (%d) is longer than %d', $this->value, $len, $length);
 
         return $this;
     }
@@ -123,7 +116,7 @@ final class StringEnsurance
     public function isLongerOrEqualTo(int $length): self
     {
         $len = strlen($this->value);
-        $this->enforce($len >= $length)->orThrow('"%s" (%d) is not longer or equal to %d', $this->value, $len, $length);
+        $this->ensure($len >= $length)->orThrow('"%s" (%d) is not longer or equal to %d', $this->value, $len, $length);
 
         return $this;
     }
@@ -136,7 +129,7 @@ final class StringEnsurance
     public function beginsWith(string $str): self
     {
         $len = strlen($str);
-        $this->enforce(substr($this->value, 0, $len) === $str)->orThrow('"%s" did not begin with "%s"', $this->value, $str);
+        $this->ensure(substr($this->value, 0, $len) === $str)->orThrow('"%s" did not begin with "%s"', $this->value, $str);
 
         return $this;
     }
@@ -149,26 +142,29 @@ final class StringEnsurance
     public function endsWith(string $str): self
     {
         $len = strlen($str);
-        $this->enforce(substr($this->value, $len * -1) === $str)->orThrow('"%s" did not end with "%s"', $this->value, $str);
+        $this->ensure(substr($this->value, $len * -1) === $str)->orThrow('"%s" did not end with "%s"', $this->value, $str);
 
         return $this;
     }
 
     /**
-     *
+     * @return StringEnsurance
      */
-    public function isCallable()
+    public function isCallable(): self
     {
-        $this->enforce(is_callable($this->value))->orThrow('"%s" is not a callable', $this->value);
+        $this->ensure(is_callable($this->value))->orThrow('"%s" is not a callable', $this->value);
+
+        return $this;
     }
 
     /**
-     * @return ClassEnsurance
+     * @return ReflectionEnsurance
+     * @throws \ReflectionException
      */
-    public function isClass(): ClassEnsurance
+    public function isClass(): ReflectionEnsurance
     {
-        $this->enforce(class_exists($this->value))->orThrow('"%s" is not a callable', $this->value);
+        $this->ensure(class_exists($this->value))->orThrow('"%s" is not a callable', $this->value);
 
-        return new ClassEnsurance($this->value);
+        return new ReflectionEnsurance($this);
     }
 }

@@ -55,6 +55,16 @@ trait EnsuranceTrait
     }
 
     /**
+     * @param $value
+     *
+     * @return Either
+     */
+    final public function either($value): Either
+    {
+        return new Either($value, $this->disregardThrowable()->isEnsured());
+    }
+
+    /**
      * @param null $default
      *
      * @return null

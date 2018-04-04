@@ -73,4 +73,20 @@ class EnsuranceTest extends TestCase
         $this->assertFalse(ensure('foo')->isIn(['bar'])->disregardThrowable()->isEnsured());
         $this->assertFalse(ensure('foo')->isKeyOf(['foo', 'bar'])->disregardThrowable()->isEnsured());
     }
+
+    public function testIsEven(): void
+{
+    $this->assertEquals('foo', ensure(42)->isEven()->then('foo'));
+}
+
+    public function testIsOdd(): void
+    {
+        $this->assertEquals(23, ensure(42)->isOdd()->else(23));
+    }
+
+    public function tessEither(): void
+    {
+        $this->assertTrue(ensure(42)->isOdd()->either(false)->or(true));
+        $this->assertFalse(ensure(23)->isOdd()->either(false)->or(true));
+    }
 }

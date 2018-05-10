@@ -3,6 +3,7 @@
 namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\EnsuranceException;
+use Dgame\Type\Type;
 use Throwable;
 
 /**
@@ -20,7 +21,7 @@ trait EnsuranceTrait
      */
     private $ensured = true;
     /**
-     * @var
+     * @var Throwable
      */
     private $throwable;
 
@@ -32,6 +33,35 @@ trait EnsuranceTrait
         if ($this->hasThrowable()) {
             throw $this->throwable;
         }
+    }
+
+    /**
+     * @param callable $callback
+     *
+     * @return self
+     */
+    final public function is(callable $callback): self
+    {
+        try {
+            $result = (bool) $callback($this->value);
+        } catch (Throwable $t) {
+            $result = false;
+        }
+
+        return $this->ensure($result);
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return EnsuranceTrait
+     * @throws \Exception
+     */
+    final public function isTypeOf(string $type): self
+    {
+        $type = Type::import($type);
+
+        return $this->ensure($type->accept($this->value));
     }
 
     /**
@@ -65,9 +95,9 @@ trait EnsuranceTrait
     }
 
     /**
-     * @param null $default
+     * @param mixed $default
      *
-     * @return null
+     * @return mixed
      */
     final public function get($default = null)
     {

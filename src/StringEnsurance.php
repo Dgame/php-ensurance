@@ -167,4 +167,33 @@ final class StringEnsurance implements EnsuranceInterface
 
         return new ReflectionEnsurance($this);
     }
+
+    /**
+     * @return StringEnsurance
+     */
+    public function isJson(): self
+    {
+        json_decode($this->value);
+
+        $this->ensure(json_last_error() === JSON_ERROR_NONE);
+
+        return $this;
+    }
+
+    /**
+     * @return StringEnsurance
+     */
+    public function isXml(): self
+    {
+        libxml_use_internal_errors(false);
+
+        try {
+            $doc = new \DOMDocument();
+            $this->ensure(@$doc->loadXML($this->value));
+        } finally {
+            libxml_clear_errors();
+        }
+
+        return $this;
+    }
 }

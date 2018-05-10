@@ -2,6 +2,8 @@
 
 namespace Dgame\Ensurance;
 
+use Dgame\Type\Type;
+
 /**
  * Class ArrayEnsurance
  * @package Dgame\Ensurance
@@ -19,6 +21,43 @@ final class ArrayEnsurance implements EnsuranceInterface
     {
         $this->transferEnsurance($ensurance);
         $this->value = $ensurance->else([]);
+    }
+
+    private function forEach(callable $callback): array
+    {
+        return array_filter(array_map($callback, $this->value));
+    }
+
+    public function all(callable $callback): self
+    {
+        $this->ensure(count($this->forEach($callback)) === count($this->value));
+
+        return $this;
+    }
+
+    public function any(callable $callback): self
+    {
+        $this->ensure(!empty($this->forEach($callback)));
+
+        return $this;
+    }
+
+    public function allTypeOf(string $type): self
+    {
+        $type = Type::import($type);
+
+        return $this->all(function ($value) use ($type): bool {
+            return $type->accept($value);
+        });
+    }
+
+    public function anyTypeOf(string $type): self
+    {
+        $type = Type::import($type);
+
+        return $this->any(function ($value) use ($type): bool {
+            return $type->accept($value);
+        });
     }
 
     /**

@@ -1,6 +1,5 @@
 <?php
 
-use Dgame\Ensurance\EnsuranceInterface;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use PHPUnit\Framework\TestCase;
 use function Dgame\Ensurance\ensure;
@@ -91,7 +90,7 @@ class EnsuranceTest extends TestCase
         $this->assertFalse(ensure(23)->isOdd()->either(false)->or(true));
     }
 
-    public function testIs()
+    public function testIs(): void
     {
         $callback = function (int $i): bool {
             return $i === 42;

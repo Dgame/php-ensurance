@@ -71,30 +71,30 @@ class ArrayEnsuranceTest extends TestCase
         ensure(['a' => 'b'])->isArray()->isNotAssociative();
     }
 
-    public function testAll()
+    public function testAll(): void
     {
-        $this->assertTrue(ensure([2, 4, 8])->isArray()->all(function(int $v): bool {
+        $this->assertTrue(ensure([2, 4, 8])->isArray()->all(function (int $v): bool {
             return $v % 2 === 0;
         })->isEnsured());
-        $this->assertFalse(ensure([1, 2, 4, 8])->isArray()->all(function(int $v): bool {
+        $this->assertFalse(ensure([1, 2, 4, 8])->isArray()->all(function (int $v): bool {
             return $v % 2 === 0;
         })->isEnsured());
-        $this->assertTrue(ensure([2, 3])->isArray()->all(function(int $v): bool {
+        $this->assertTrue(ensure([2, 3])->isArray()->all(function (int $v): bool {
             return $v > 1;
         })->isEnsured());
     }
 
-    public function testAny()
+    public function testAny(): void
     {
-        $this->assertTrue(ensure([1, 2])->isArray()->any(function(int $v): bool {
+        $this->assertTrue(ensure([1, 2])->isArray()->any(function (int $v): bool {
             return $v % 2 === 0;
         })->isEnsured());
-        $this->assertFalse(ensure([37, 43, 65])->isArray()->any(function(int $v): bool {
+        $this->assertFalse(ensure([37, 43, 65])->isArray()->any(function (int $v): bool {
             return $v % 2 === 0;
         })->isEnsured());
     }
 
-    public function testAllTypeOf()
+    public function testAllTypeOf(): void
     {
         $this->assertFalse(ensure([1, '0', true])->isArray()->allTypeOf('int')->isEnsured());
         $this->assertTrue(ensure([1])->isArray()->allTypeOf('int')->isEnsured());
@@ -102,7 +102,7 @@ class ArrayEnsuranceTest extends TestCase
         $this->assertTrue(ensure(['a', 'b'])->isArray()->allTypeOf('string')->isEnsured());
     }
 
-    public function testAnyTypeOf()
+    public function testAnyTypeOf(): void
     {
         $this->assertTrue(ensure([1, '0', true])->isArray()->anyTypeOf('int')->isEnsured());
         $this->assertFalse(ensure([true])->isArray()->anyTypeOf('int')->isEnsured());

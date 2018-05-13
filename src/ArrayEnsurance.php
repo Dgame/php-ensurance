@@ -3,6 +3,7 @@
 namespace Dgame\Ensurance;
 
 use Dgame\Type\Type;
+use Dgame\Type\TypeFactory;
 
 /**
  * Class ArrayEnsurance
@@ -23,40 +24,67 @@ final class ArrayEnsurance implements EnsuranceInterface
         $this->value = $ensurance->else([]);
     }
 
-    private function forEach(callable $callback): array
+    /**
+     * @param callable $callback
+     *
+     * @return array
+     */
+    private function filterBy(callable $callback): array
     {
         return array_filter(array_map($callback, $this->value));
     }
 
+    /**
+     * @param callable $callback
+     *
+     * @return ArrayEnsurance
+     */
     public function all(callable $callback): self
     {
-        $this->ensure(count($this->forEach($callback)) === count($this->value));
+        $this->ensure(count($this->filterBy($callback)) === count($this->value));
 
         return $this;
     }
 
+    /**
+     * @param callable $callback
+     *
+     * @return ArrayEnsurance
+     */
     public function any(callable $callback): self
     {
-        $this->ensure(!empty($this->forEach($callback)));
+        $this->ensure(!empty($this->filterBy($callback)));
 
         return $this;
     }
 
+    /**
+     * @param string $type
+     *
+     * @return ArrayEnsurance
+     * @throws \Exception
+     */
     public function allTypeOf(string $type): self
     {
         $type = Type::import($type);
 
         return $this->all(function ($value) use ($type): bool {
-            return $type->accept($value);
+            return TypeFactory::expression($value)->isSame($type);
         });
     }
 
+    /**
+     * @param string $type
+     *
+     * @return ArrayEnsurance
+     * @throws \Exception
+     */
     public function anyTypeOf(string $type): self
     {
         $type = Type::import($type);
 
         return $this->any(function ($value) use ($type): bool {
-            return $type->accept($value);
+            return TypeFactory::expression($value)->isSame($type);
         });
     }
 

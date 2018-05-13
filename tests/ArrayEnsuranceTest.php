@@ -70,4 +70,42 @@ class ArrayEnsuranceTest extends TestCase
 
         ensure(['a' => 'b'])->isArray()->isNotAssociative();
     }
+
+    public function testAll()
+    {
+        $this->assertTrue(ensure([2, 4, 8])->isArray()->all(function(int $v): bool {
+            return $v % 2 === 0;
+        })->isEnsured());
+        $this->assertFalse(ensure([1, 2, 4, 8])->isArray()->all(function(int $v): bool {
+            return $v % 2 === 0;
+        })->isEnsured());
+        $this->assertTrue(ensure([2, 3])->isArray()->all(function(int $v): bool {
+            return $v > 1;
+        })->isEnsured());
+    }
+
+    public function testAny()
+    {
+        $this->assertTrue(ensure([1, 2])->isArray()->any(function(int $v): bool {
+            return $v % 2 === 0;
+        })->isEnsured());
+        $this->assertFalse(ensure([37, 43, 65])->isArray()->any(function(int $v): bool {
+            return $v % 2 === 0;
+        })->isEnsured());
+    }
+
+    public function testAllTypeOf()
+    {
+        $this->assertFalse(ensure([1, '0', true])->isArray()->allTypeOf('int')->isEnsured());
+        $this->assertTrue(ensure([1])->isArray()->allTypeOf('int')->isEnsured());
+        $this->assertTrue(ensure([1, 2, 3])->isArray()->allTypeOf('int')->isEnsured());
+        $this->assertTrue(ensure(['a', 'b'])->isArray()->allTypeOf('string')->isEnsured());
+    }
+
+    public function testAnyTypeOf()
+    {
+        $this->assertTrue(ensure([1, '0', true])->isArray()->anyTypeOf('int')->isEnsured());
+        $this->assertFalse(ensure([true])->isArray()->anyTypeOf('int')->isEnsured());
+        $this->assertTrue(ensure(['a', 'b', 42])->isArray()->anyTypeOf('string')->isEnsured());
+    }
 }

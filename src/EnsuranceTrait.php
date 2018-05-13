@@ -4,6 +4,7 @@ namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\EnsuranceException;
 use Dgame\Type\Type;
+use Dgame\Type\TypeFactory;
 use Throwable;
 
 /**
@@ -61,7 +62,7 @@ trait EnsuranceTrait
     {
         $type = Type::import($type);
 
-        return $this->ensure($type->accept($this->value));
+        return $this->ensure(TypeFactory::expression($this->value)->isSame($type));
     }
 
     /**

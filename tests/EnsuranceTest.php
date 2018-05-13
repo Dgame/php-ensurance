@@ -100,4 +100,15 @@ class EnsuranceTest extends TestCase
         $this->assertTrue(ensure(42)->is($callback)->isEnsured());
         $this->assertFalse(ensure(23)->is($callback)->isEnsured());
     }
+
+    public function testIsTypeOf()
+    {
+        $this->assertTrue(ensure(42)->isTypeOf('int')->isEnsured());
+        $this->assertFalse(ensure(42)->isTypeOf('string')->isEnsured());
+        $this->assertTrue(ensure('0' + 0)->isTypeOf('int')->isEnsured());
+        $this->assertTrue(ensure(0.0)->isTypeOf('float')->isEnsured());
+        $this->assertTrue(ensure('0')->isTypeOf('numeric')->isEnsured());
+        $this->assertFalse(ensure('0')->isTypeOf('int')->isEnsured());
+        $this->assertTrue(ensure('a')->isTypeOf('string')->isEnsured());
+    }
 }

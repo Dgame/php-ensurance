@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b1680fb474eef87bfc4bbd753103ac4",
+    "content-hash": "b7b8a91a5147f51661033c0651782724",
     "packages": [
         {
             "name": "dgame/php-type",
-            "version": "dev-master",
+            "version": "v0.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dgame/php-type.git",
@@ -51,7 +51,7 @@
             ],
             "description": "php type",
             "homepage": "https://github.com/php-type",
-            "time": "2018-05-08 13:06:59"
+            "time": "2018-05-08T13:06:59+00:00"
         }
     ],
     "packages-dev": [
@@ -1515,9 +1515,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "dgame/php-type": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

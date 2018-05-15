@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "dgame/php-type": "dev-master"
+        "dgame/php-type": "^0.9"
     },
     "autoload": {
         "classmap": [

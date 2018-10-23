@@ -44,6 +44,6 @@ class EnforcementTest extends TestCase
         $this->expectException(FooException::class);
         $this->expectExceptionMessage('That is false');
 
-        enforce(false)->setThrowable(new FooException('That is false'));
+        enforce(false)->orThrowWith(new FooException('That is false'));
     }
 }

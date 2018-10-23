@@ -19,6 +19,14 @@ class NumericEnsuranceTest extends TestCase
         ensure('42')->isInt();
     }
 
+    public function testIsNotIntThrow(): void
+    {
+        $this->expectException(EnsuranceException::class);
+        $this->expectExceptionMessage('"42" ist nicht die Antwort');
+
+        ensure('42')->isInt()->orThrow('"42" ist nicht die Antwort');
+    }
+
     public function testIsFloat(): void
     {
         ensure(4.2)->isFloat();

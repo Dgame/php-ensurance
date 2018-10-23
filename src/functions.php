@@ -24,7 +24,7 @@ function enforce(bool $condition, string $message = null): BooleanEnsurance
 {
     $error = new AssertionError($message ?? 'Assertion failed');
 
-    return ensure($condition)->isTrue()->setThrowable($error);
+    return ensure($condition)->isTrue()->orThrowWith($error);
 }
 
 /**

@@ -15,6 +15,25 @@ class ArrayEnsuranceTest extends TestCase
         ensure(['a' => 'b'])->isArray()->hasKey('b');
     }
 
+    public function testObjectHasKeyIsInvalid(): void
+    {
+        $std      = new stdClass();
+        $std->foo = 42;
+
+        $this->expectException(EnsuranceException::class);
+        $this->expectExceptionMessage(sprintf('Key "foo" is not contained in ', print_r([], true)));
+
+        ensure($std)->isArray()->hasKey('foo');
+    }
+
+    public function testObjectHasKeyIsValidWithCast(): void
+    {
+        $std      = new stdClass();
+        $std->foo = 42;
+
+        ensure((array) $std)->isArray()->hasKey('foo');
+    }
+
     public function testHasValue(): void
     {
         ensure(['a', 'b'])->isArray()->hasValue('a');

@@ -1,5 +1,6 @@
 <?php
 
+use Dgame\Ensurance\Exception\EnsuranceException;
 use PHPUnit\Framework\TestCase;
 use function Dgame\Ensurance\ensure;
 
@@ -75,5 +76,30 @@ class ObjectEnsuranceTest extends TestCase
         $ea = new EA();
 
         ensure($ea)->isObject()->hasMethod('foo');
+    }
+
+    public function testNonExistingDynamicProperty(): void
+    {
+        $this->expectException(EnsuranceException::class);
+        $std = new stdClass();
+        $this->expectExceptionMessage(sprintf('"%s" does not have a property "%s"', print_r($std, true), 'foo'));
+
+        ensure($std)->isObject()->hasProperty('foo');
+    }
+
+    public function testNonExistingStaticProperty(): void
+    {
+        $this->expectException(EnsuranceException::class);
+        $this->expectExceptionMessage(sprintf('"%s" does not have a property "%s"', stdClass::class, 'foo'));
+
+        ensure(stdClass::class)->isObject()->hasProperty('foo');
+    }
+
+    public function testExistingDynamicProperty(): void
+    {
+        $std      = new stdClass();
+        $std->foo = 42;
+
+        ensure($std)->isObject()->hasProperty('foo');
     }
 }

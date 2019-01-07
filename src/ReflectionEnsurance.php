@@ -3,6 +3,8 @@
 namespace Dgame\Ensurance;
 
 use ReflectionClass;
+use ReflectionObject;
+use Reflector;
 use stdClass;
 
 /**
@@ -14,7 +16,7 @@ final class ReflectionEnsurance implements EnsuranceInterface
     use EnsuranceTrait;
 
     /**
-     * @var ReflectionClass
+     * @var ReflectionObject|ReflectionClass
      */
     private $reflection;
 
@@ -29,10 +31,38 @@ final class ReflectionEnsurance implements EnsuranceInterface
     {
         $this->transferEnsurance($ensurance);
         if ($this->isEnsured()) {
-            $this->reflection = new ReflectionClass($this->value);
+            $this->reflection = self::getReflection($this->value);
         } else {
-            $this->reflection = new ReflectionClass(new stdClass());
+            $this->reflection = self::getEmptyReflection();
         }
+    }
+
+    /**
+     * @param $value
+     *
+     * @return Reflector
+     * @throws \ReflectionException
+     */
+    private static function getReflection($value): Reflector
+    {
+        if (is_object($value)) {
+            return new ReflectionObject($value);
+        }
+
+        if (is_string($value)) {
+            return new ReflectionClass($value);
+        }
+
+        return self::getEmptyReflection();
+    }
+
+    /**
+     * @return Reflector
+     * @throws \ReflectionException
+     */
+    private static function getEmptyReflection(): Reflector
+    {
+        return new ReflectionClass(new stdClass());
     }
 
     /**

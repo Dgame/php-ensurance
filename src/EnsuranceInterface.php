@@ -11,14 +11,14 @@ use Throwable;
 interface EnsuranceInterface
 {
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */
     public function then($value);
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */

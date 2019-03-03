@@ -33,7 +33,8 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4"
+        "phpunit/phpunit": "^6.4",
+        "phpstan/phpstan": "^0.11.2"
     },
     "scripts": {
         "test": [

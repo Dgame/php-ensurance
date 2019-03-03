@@ -5,6 +5,7 @@ namespace Dgame\Ensurance;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use Dgame\Type\Type;
 use Dgame\Type\TypeFactory;
+use Exception;
 use Throwable;
 
 /**
@@ -22,7 +23,7 @@ trait EnsuranceTrait
      */
     private $ensured = true;
     /**
-     * @var Throwable
+     * @var Throwable|null
      */
     private $throwable;
 
@@ -55,8 +56,8 @@ trait EnsuranceTrait
     /**
      * @param string $type
      *
-     * @return EnsuranceTrait
-     * @throws \Exception
+     * @return self
+     * @throws Exception
      */
     final public function isTypeOf(string $type): self
     {
@@ -66,7 +67,7 @@ trait EnsuranceTrait
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -76,7 +77,7 @@ trait EnsuranceTrait
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */
@@ -86,7 +87,7 @@ trait EnsuranceTrait
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return Either
      */
@@ -191,7 +192,7 @@ trait EnsuranceTrait
      *
      * @deprecated Use "orThrowWith" instead
      *
-     * @return EnsuranceTrait
+     * @return self
      */
     final public function setThrowable(Throwable $throwable): self
     {

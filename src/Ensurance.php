@@ -13,7 +13,7 @@ final class Ensurance implements EnsuranceInterface
     /**
      * Ensurance constructor.
      *
-     * @param $value
+     * @param mixed $value
      */
     public function __construct($value)
     {
@@ -201,7 +201,7 @@ final class Ensurance implements EnsuranceInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return Ensurance
      */
@@ -213,7 +213,7 @@ final class Ensurance implements EnsuranceInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return Ensurance
      */
@@ -225,7 +225,7 @@ final class Ensurance implements EnsuranceInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return Ensurance
      */
@@ -237,7 +237,7 @@ final class Ensurance implements EnsuranceInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return Ensurance
      */

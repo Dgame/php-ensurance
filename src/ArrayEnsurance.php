@@ -89,7 +89,7 @@ final class ArrayEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @param $key
+     * @param mixed $key
      *
      * @return ArrayEnsurance
      */
@@ -102,7 +102,7 @@ final class ArrayEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return ArrayEnsurance
      */

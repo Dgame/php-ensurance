@@ -3,8 +3,8 @@
 namespace Dgame\Ensurance;
 
 use ReflectionClass;
+use ReflectionException;
 use ReflectionObject;
-use Reflector;
 use stdClass;
 
 /**
@@ -16,7 +16,7 @@ final class ReflectionEnsurance implements EnsuranceInterface
     use EnsuranceTrait;
 
     /**
-     * @var ReflectionObject|ReflectionClass
+     * @var ReflectionClass
      */
     private $reflection;
 
@@ -25,7 +25,7 @@ final class ReflectionEnsurance implements EnsuranceInterface
      *
      * @param EnsuranceInterface $ensurance
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct(EnsuranceInterface $ensurance)
     {
@@ -38,12 +38,12 @@ final class ReflectionEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
-     * @return Reflector
-     * @throws \ReflectionException
+     * @return ReflectionClass
+     * @throws ReflectionException
      */
-    private static function getReflection($value): Reflector
+    private static function getReflection($value): ReflectionClass
     {
         if (is_object($value)) {
             return new ReflectionObject($value);
@@ -57,10 +57,10 @@ final class ReflectionEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @return Reflector
-     * @throws \ReflectionException
+     * @return ReflectionClass
+     * @throws ReflectionException
      */
-    private static function getEmptyReflection(): Reflector
+    private static function getEmptyReflection(): ReflectionClass
     {
         return new ReflectionClass(new stdClass());
     }
@@ -229,7 +229,7 @@ final class ReflectionEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @param $class
+     * @param mixed $class
      *
      * @return ReflectionEnsurance
      */
@@ -242,7 +242,7 @@ final class ReflectionEnsurance implements EnsuranceInterface
     }
 
     /**
-     * @param $class
+     * @param mixed $class
      *
      * @return ReflectionEnsurance
      */

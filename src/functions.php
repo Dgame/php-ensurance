@@ -5,7 +5,7 @@ namespace Dgame\Ensurance;
 use AssertionError;
 
 /**
- * @param $value
+ * @param mixed $value
  *
  * @return Ensurance
  */

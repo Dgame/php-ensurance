@@ -20,8 +20,8 @@ final class Either
     /**
      * Either constructor.
      *
-     * @param                    $value
-     * @param bool               $ensured
+     * @param mixed $value
+     * @param bool  $ensured
      */
     public function __construct($value, bool $ensured)
     {
@@ -30,7 +30,7 @@ final class Either
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      *
      * @return mixed
      */

@@ -19,7 +19,8 @@
     ],
     "require": {
         "php": "^7.1",
-        "dgame/php-type": "^0.9"
+        "dgame/php-type": "^0.9",
+        "ext-curl": "*"
     },
     "autoload": {
         "classmap": [
@@ -38,7 +39,8 @@
     },
     "scripts": {
         "test": [
-            "phpunit"
+            "phpunit",
+            "phpstan analyse src --level=6"
         ],
         "coverage": [
             "phpunit --coverage-clover=coverage"

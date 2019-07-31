@@ -255,7 +255,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isIn(array $data): self
     {
-        $this->ensure(in_array($this->value, $data))->orThrow('"%s" is not a value of %s', $this->value, $data);
+        $this->ensure(in_array($this->value, $data, true))->orThrow('"%s" is not a value of %s', $this->value, $data);
 
         return $this;
     }

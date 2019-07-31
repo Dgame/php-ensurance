@@ -2,6 +2,8 @@
 
 namespace Dgame\Ensurance;
 
+use DOMDocument;
+
 /**
  * Class StringEnsurance
  * @package Dgame\Ensurance
@@ -128,8 +130,7 @@ final class StringEnsurance implements EnsuranceInterface
      */
     public function beginsWith(string $str): self
     {
-        $len = strlen($str);
-        $this->ensure(substr($this->value, 0, $len) === $str)->orThrow('"%s" did not begin with "%s"', $this->value, $str);
+        $this->ensure(strpos($this->value, $str) === 0)->orThrow('"%s" did not begin with "%s"', $this->value, $str);
 
         return $this;
     }
@@ -173,7 +174,7 @@ final class StringEnsurance implements EnsuranceInterface
      */
     public function isJson(): self
     {
-        json_decode($this->value);
+        json_decode($this->value, true);
 
         $this->ensure(json_last_error() === JSON_ERROR_NONE);
 
@@ -188,7 +189,7 @@ final class StringEnsurance implements EnsuranceInterface
         libxml_use_internal_errors(false);
 
         try {
-            $doc = new \DOMDocument();
+            $doc = new DOMDocument();
             $this->ensure(@$doc->loadXML($this->value));
         } finally {
             libxml_clear_errors();

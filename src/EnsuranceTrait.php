@@ -28,11 +28,11 @@ trait EnsuranceTrait
     private $throwable;
 
     /**
-     *
+     * @throws Throwable
      */
     public function __destruct()
     {
-        if ($this->hasThrowable()) {
+        if ($this->throwable !== null) {
             throw $this->throwable;
         }
     }
@@ -137,9 +137,9 @@ trait EnsuranceTrait
     }
 
     /**
-     * @return Throwable
+     * @return Throwable|null
      */
-    final public function releaseThrowable(): Throwable
+    final public function releaseThrowable(): ?Throwable
     {
         try {
             return $this->throwable;
@@ -157,8 +157,10 @@ trait EnsuranceTrait
     {
         $this->value = $ensurance->get();
         $this->ensure($ensurance->isEnsured());
-        if ($ensurance->hasThrowable()) {
-            $this->orThrowWith($ensurance->releaseThrowable());
+
+        $throwable = $ensurance->releaseThrowable();
+        if ($throwable !== null) {
+            $this->orThrowWith($throwable);
         }
 
         return $this;
@@ -190,9 +192,9 @@ trait EnsuranceTrait
     /**
      * @param Throwable $throwable
      *
+     * @return self
      * @deprecated Use "orThrowWith" instead
      *
-     * @return self
      */
     final public function setThrowable(Throwable $throwable): self
     {
@@ -214,9 +216,9 @@ trait EnsuranceTrait
     }
 
     /**
-     * @return Throwable
+     * @return Throwable|null
      */
-    final public function getThrowable(): Throwable
+    final public function getThrowable(): ?Throwable
     {
         return $this->throwable;
     }

@@ -15,7 +15,7 @@ final class Either
     /**
      * @var bool
      */
-    private $ensured = false;
+    private $ensured;
 
     /**
      * Either constructor.

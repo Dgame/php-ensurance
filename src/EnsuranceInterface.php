@@ -25,7 +25,7 @@ interface EnsuranceInterface
     public function else($value);
 
     /**
-     * @param null $default
+     * @param mixed $default
      *
      * @return mixed
      */
@@ -57,9 +57,9 @@ interface EnsuranceInterface
     public function setThrowable(Throwable $throwable);
 
     /**
-     * @return Throwable
+     * @return Throwable|null
      */
-    public function getThrowable(): Throwable;
+    public function getThrowable(): ?Throwable;
 
     /**
      * @return mixed
@@ -67,9 +67,9 @@ interface EnsuranceInterface
     public function disregardThrowable();
 
     /**
-     * @return Throwable
+     * @return Throwable|null
      */
-    public function releaseThrowable(): Throwable;
+    public function releaseThrowable(): ?Throwable;
 
     /**
      * @param self $ensurance

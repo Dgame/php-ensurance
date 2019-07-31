@@ -68,7 +68,7 @@ final class ArrayEnsurance implements EnsuranceInterface
     {
         $type = Type::import($type);
 
-        return $this->all(function ($value) use ($type): bool {
+        return $this->all(static function ($value) use ($type): bool {
             return TypeFactory::expression($value)->isSame($type);
         });
     }
@@ -83,7 +83,7 @@ final class ArrayEnsurance implements EnsuranceInterface
     {
         $type = Type::import($type);
 
-        return $this->any(function ($value) use ($type): bool {
+        return $this->any(static function ($value) use ($type): bool {
             return TypeFactory::expression($value)->isSame($type);
         });
     }
@@ -108,7 +108,7 @@ final class ArrayEnsurance implements EnsuranceInterface
      */
     public function hasValue($value): self
     {
-        $this->ensure(in_array($value, $this->value))
+        $this->ensure(in_array($value, $this->value, true))
              ->orThrow('Value "%s" is not contained in ', $value, $this->value);
 
         return $this;

@@ -1,8 +1,8 @@
 <?php
 
+use function Dgame\Ensurance\ensure;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use PHPUnit\Framework\TestCase;
-use function Dgame\Ensurance\ensure;
 
 class BooleanEnsuranceTest extends TestCase
 {

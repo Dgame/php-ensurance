@@ -1,11 +1,11 @@
 # php-ensurance
 
+[![CircleCI](https://circleci.com/gh/Dgame/php-ensurance/tree/master.svg?style=svg)](https://circleci.com/gh/Dgame/php-ensurance/tree/master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Dgame/php-ensurance/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-ensurance/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/Dgame/php-ensurance/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-ensurance/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/Dgame/php-ensurance/badges/build.png?b=master)](https://scrutinizer-ci.com/g/Dgame/php-ensurance/build-status/master)
 [![StyleCI](https://styleci.io/repos/63493775/shield?branch=master)](https://styleci.io/repos/63493775)
 [![Build Status](https://travis-ci.org/Dgame/php-ensurance.svg?branch=master)](https://travis-ci.org/Dgame/php-ensurance)
-[![CircleCI](https://circleci.com/gh/Dgame/php-ensurance/tree/master.svg?style=svg)](https://circleci.com/gh/Dgame/php-ensurance/tree/master)
 
 ## design by contract for PHP
 

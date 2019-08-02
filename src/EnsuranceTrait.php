@@ -23,12 +23,12 @@ trait EnsuranceTrait
      */
     private $ensured = true;
     /**
-     * @var Throwable|null
+     * @var Throwable|EnsuranceException|null
      */
     private $throwable;
 
     /**
-     * @throws Throwable
+     * @throws Throwable|EnsuranceException
      */
     public function __destruct()
     {

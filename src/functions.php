@@ -3,13 +3,14 @@
 namespace Dgame\Ensurance;
 
 use AssertionError;
+use Dgame\Ensurance\Exception\EnsuranceException;
 use Throwable;
 
 /**
  * @param mixed $value
  *
  * @return Ensurance
- * @throws Throwable
+ * @throws Throwable|EnsuranceException
  */
 function ensure($value): Ensurance
 {
@@ -21,7 +22,7 @@ function ensure($value): Ensurance
  * @param string|null $message
  *
  * @return BooleanEnsurance
- * @throws Throwable
+ * @throws Throwable|EnsuranceException
  */
 function enforce(bool $condition, string $message = null): BooleanEnsurance
 {

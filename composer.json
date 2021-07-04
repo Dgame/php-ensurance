@@ -18,12 +18,12 @@
         }
     ],
     "require": {
-        "php": "^7.1",
+        "php": ">=7.1",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "dgame/php-type": "^0.9"
+        "dgame/php-type": "^0.13"
     },
     "autoload": {
         "classmap": [
@@ -37,13 +37,13 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.5",
-        "phpstan/phpstan": "^0.11.2"
+        "phpunit/phpunit": ">= 8",
+        "phpstan/phpstan": "^0.12"
     },
     "scripts": {
         "test": [
             "phpunit",
-            "phpstan analyse src --level=7"
+            "phpstan analyse src --level=5"
         ],
         "coverage": [
             "phpunit --coverage-clover=coverage"

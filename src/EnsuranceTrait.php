@@ -3,8 +3,8 @@
 namespace Dgame\Ensurance;
 
 use Dgame\Ensurance\Exception\EnsuranceException;
-use Dgame\Type\Type;
-use Dgame\Type\TypeFactory;
+use Dgame\Type\TypeOf;
+use Dgame\Type\TypeOfFactory;
 use Exception;
 use Throwable;
 
@@ -61,9 +61,9 @@ trait EnsuranceTrait
      */
     final public function isTypeOf(string $type): self
     {
-        $type = Type::import($type);
+        $type = TypeOf::import($type);
 
-        return $this->ensure(TypeFactory::expression($this->value)->isSame($type));
+        return $this->ensure(TypeOfFactory::expression($this->value)->isSame($type));
     }
 
     /**

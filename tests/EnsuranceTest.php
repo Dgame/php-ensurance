@@ -51,6 +51,10 @@ class EnsuranceTest extends TestCase
 
     public function testIsResource(): void
     {
+        if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
+            $this->markTestSkipped();
+        }
+
         $ch = curl_init();
         ensure($ch)->isResource();
         curl_close($ch);

@@ -135,9 +135,15 @@ class NumericEnsuranceTest extends TestCase
             ensure('c')->isNumeric()->isGreaterThan(12);
         } catch (Throwable $t) {
             $catched = true;
-            $this->assertEquals('"c" is not greater than "12"', $t->getMessage());
-            $this->assertNotNull($t->getPrevious());
-            $this->assertEquals('"c" is not numeric', $t->getPrevious()->getMessage());
+
+            if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
+                $this->assertEquals('"c" is not numeric', $t->getMessage());
+                $this->assertNull($t->getPrevious());
+            } else {
+                $this->assertEquals('"c" is not greater than "12"', $t->getMessage());
+                $this->assertNotNull($t->getPrevious());
+                $this->assertEquals('"c" is not numeric', $t->getPrevious()->getMessage());
+            }
         }
 
         $this->assertTrue($catched);

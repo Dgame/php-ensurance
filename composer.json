@@ -23,7 +23,7 @@
         "ext-json": "*",
         "ext-dom": "*",
         "ext-libxml": "*",
-        "dgame/php-type": "^0.9"
+        "dgame/php-type": "^0.13"
     },
     "autoload": {
         "classmap": [

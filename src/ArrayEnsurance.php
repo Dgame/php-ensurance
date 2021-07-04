@@ -2,8 +2,8 @@
 
 namespace Dgame\Ensurance;
 
-use Dgame\Type\Type;
-use Dgame\Type\TypeFactory;
+use Dgame\Type\TypeOf;
+use Dgame\Type\TypeOfFactory;
 
 /**
  * Class ArrayEnsurance
@@ -66,10 +66,10 @@ final class ArrayEnsurance implements EnsuranceInterface
      */
     public function allTypeOf(string $type): self
     {
-        $type = Type::import($type);
+        $type = TypeOf::import($type);
 
         return $this->all(static function ($value) use ($type): bool {
-            return TypeFactory::expression($value)->isSame($type);
+            return TypeOfFactory::expression($value)->isSame($type);
         });
     }
 
@@ -81,10 +81,10 @@ final class ArrayEnsurance implements EnsuranceInterface
      */
     public function anyTypeOf(string $type): self
     {
-        $type = Type::import($type);
+        $type = TypeOf::import($type);
 
         return $this->any(static function ($value) use ($type): bool {
-            return TypeFactory::expression($value)->isSame($type);
+            return TypeOfFactory::expression($value)->isSame($type);
         });
     }
 

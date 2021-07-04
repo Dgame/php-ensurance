@@ -26,7 +26,7 @@ final class Ensurance implements EnsuranceInterface
      */
     public function isArray(): ArrayEnsurance
     {
-        $this->ensure(is_array($this->value))->orThrow('Value "%a" is not an array', $this->value);
+        $this->ensure(is_array($this->value))->orThrow('Value "%s" is not an array', $this->value);
 
         return new ArrayEnsurance($this);
     }

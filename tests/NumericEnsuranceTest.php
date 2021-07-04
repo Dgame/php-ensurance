@@ -138,8 +138,7 @@ class NumericEnsuranceTest extends TestCase
 
             if (version_compare(PHP_VERSION, '8.0.0') >= 0) {
                 $this->assertEquals('"c" is not numeric', $t->getMessage());
-                $this->assertNotNull($t->getPrevious());
-                $this->assertEquals('"c" is not greater than "12"', $t->getPrevious()->getMessage());
+                $this->assertNull($t->getPrevious());
             } else {
                 $this->assertEquals('"c" is not greater than "12"', $t->getMessage());
                 $this->assertNotNull($t->getPrevious());

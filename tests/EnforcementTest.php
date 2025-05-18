@@ -1,8 +1,8 @@
 <?php
 
-use function Dgame\Ensurance\enforce;
 use Dgame\Ensurance\Exception\EnsuranceException;
 use PHPUnit\Framework\TestCase;
+use function Dgame\Ensurance\enforce;
 
 class FooException extends Exception
 {

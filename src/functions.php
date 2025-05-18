@@ -23,7 +23,7 @@ function ensure($value): Ensurance
  * @return BooleanEnsurance
  * @throws Throwable
  */
-function enforce(bool $condition, string $message = null): BooleanEnsurance
+function enforce(bool $condition, ?string $message = null): BooleanEnsurance
 {
     $error = new AssertionError($message ?? 'Assertion failed');
 

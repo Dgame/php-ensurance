@@ -31,8 +31,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           tools: composer:v2
           coverage: none
-        env:
-          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PRIVATE_TOKEN }}
 
       - name: Display PHP information
         run: |

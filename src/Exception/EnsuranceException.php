@@ -14,10 +14,10 @@ class EnsuranceException extends Exception
     /**
      * EnsuranceException constructor.
      *
-     * @param string    $message
-     * @param Throwable $previous
+     * @param string         $message
+     * @param Throwable|null $previous
      */
-    public function __construct(string $message, Throwable $previous = null)
+    public function __construct(string $message, ?Throwable $previous = null)
     {
         parent::__construct($message, 0, $previous);
     }
